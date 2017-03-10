@@ -1,1 +1,1 @@
-$("#Talk").val(words[nn]);
+$("#Talk").val("fuck");
