@@ -1,1 +1,1 @@
-$("#Talk").hide() 
+$("#Talk").hide();
