@@ -1,1 +1,1 @@
-$("#Talk").hide();
+$("#Talk").val(words[nn]);
