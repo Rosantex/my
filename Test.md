@@ -1,1 +1,1 @@
-$("#Talk").val("fuck");
+Hello
