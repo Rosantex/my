@@ -1,4 +1,5 @@
-javascript:
+// by Rosantex
+<script type="text/javascript">
 wBox = readUrl("https://raw.githubusercontent.com/Rosantex/my/master/En");
 wBox += readUrl("https://raw.githubusercontent.com/Rosantex/my/master/Test.md");
 db = wBox;
@@ -8,7 +9,7 @@ var talk = $('#Talk');
 var chat = $('#ChatBtn');
 var xTime = $("div[class='graph jjo-turn-time']");
 var xTurn = $('.game-input');
-var xChain = $("div[class='chain']");
+//var xChain = $("div[class='chain']");
 var xHist = $("div[class='ellipse history-item expl-mother']");
 
 function readUrl(Url) { 
@@ -36,3 +37,4 @@ db = db.replace(wd[0], ''); }
 
 $("#ReplayDiag .dialog-body").html("<input type='button' onclick='wReady()' value='Reload' />"
 );
+</script>
