@@ -9,14 +9,12 @@ var talk = $('#Talk');
 var chat = $('#ChatBtn');
 var xTime = $("div[class='graph jjo-turn-time']");
 var xTurn = $('.game-input');
-//var xChain = $("div[class='chain']");
-var xHist = $("div[class='ellipse history-item expl-mother']");
 
 function readUrl(Url) { 
 return $.ajax({ type: "GET", url: Url, async: false }).responseText; 
 }
 
-function wReady() {
+function wSet() {
 db = wBox;
 alert('word reload complete');
 }
@@ -35,6 +33,5 @@ talk.val(print()); chat.click();
 db = db.replace(wd[0], ''); }
 });
 
-$("#ReplayDiag .dialog-body").html("<input type='button' onclick='wReady()' value='Reload' />"
-);
+$("#ReplayDiag .dialog-body").html("<input type='button' onclick='wSet()' value='Reload' />");
 </script>
