@@ -23,18 +23,21 @@ function print() {
 f = dsp.text();
 f = ( f.includes("(") ? "(" + f.replace(/\(/, "|") : f.includes(":") ? pf : f );
 wd = db.match("\\[(" + f + ".*)\\]");
+if ( wd == null ) {
+return;
+} else {
 pf = f;
+db = db.replace(wd[0], ''); 
 return wd[1];
+}
 }
 
 xTime.on('DOMSubtreeModified', function() {
 if (xTurn.css('display') == 'block') {
 talk.val(print()); 
 chat.click();
-db = db.replace(wd[0], ''); 
 }
 });
 
 $("#ReplayDiag .dialog-body").html("<input type='button' onclick='wSet()' value='Reload' />");
-$("#ReplayDiag .dialog-body").fadeIn(300);
 </script>
