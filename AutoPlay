@@ -4,11 +4,11 @@ wBox = readUrl("https://raw.githubusercontent.com/Rosantex/my/master/En");
 wBox += readUrl("https://raw.githubusercontent.com/Rosantex/my/master/Ko");
 db = wBox;
 
-var dsp = $("div[class='jjo-display ellipse']"); 
-var talk = $('#Talk');
-var chat = $('#ChatBtn');
-var xTime = $("div[class='graph jjo-turn-time']");
-var xTurn = $('.game-input');
+var dsp = $("div[class='jjo-display ellipse']"),
+   talk = $('#Talk'),
+   chat = $('#ChatBtn'),
+  xTime = $("div[class='graph jjo-turn-time']"),
+  xTurn = $('.game-input');
 
 function readUrl(Url) { 
 return $.ajax({ type: "GET", url: Url, async: false }).responseText; 
