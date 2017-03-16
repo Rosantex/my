@@ -1,42 +1,41 @@
 // by Rosantex
 <script type="text/javascript">
 var Url = "https://raw.githubusercontent.com/Rosantex/my/master/";
-var wBox = readUrl(Url+'En')+readUrl(Url+'Ko');
+var wBox = readUrl(Url+'En') + readUrl(Url+'Ko');
 db = wBox;
 
 var dsp = $("div[class='jjo-display ellipse']"),
    talk = $('#Talk'),
-   chat = $('#ChatBtn'),
+   take = $('#ChatBtn'),
   xTime = $("div[class='graph jjo-turn-time']"),
   xTurn = $('.game-input');
 
-function readUrl(Url) { 
-return $.ajax({ type: "GET", url: Url, async: false }).responseText; 
+function readUrl(Url) {
+	return $.ajax({ type: "GET", url: Url, async: false }).responseText; 
 }
 
 function wSet() {
-db = wBox;
-alert('word reload complete');
+	db = wBox;
+	alert('word reload complete');
 }
 
 function print() { 
-f = dsp.text();
-f = ( f.includes("(") ? "(" + f.replace(/\(/, "|") : f.includes(":") ? pf : f );
-wd = db.match("\\[(" + f + ".*)\\]");
-if ( wd == null ) {
-return;
-} else {
-pf = f;
-db = db.replace(wd[0], ''); 
-return wd[1];
-}
+	f = dsp.text();
+	f = ( f.includes("(") ? "(" + f.replace(/\(/, "|") : f.includes(":") ? pf : f );
+	wd = db.match("\\[(" + f + ".*)\\]");
+	if ( wd == null ) {
+		return;
+	} 
+	pf = f;
+	db = db.replace(wd[0], '');
+	return wd[1];
 }
 
 xTime.on('DOMSubtreeModified', function() {
-if (xTurn.css('display') == 'block') {
-talk.val(print()); 
-chat.click();
-}
+	if (xTurn.css('display') == 'block') {
+		talk.val(print()); 
+		take.click();
+		}
 });
 
 $("#ReplayDiag .dialog-body").html("<input type='button' onclick='wSet()' value='Reload' />");
