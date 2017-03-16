@@ -35,7 +35,7 @@ xTime.on('DOMSubtreeModified', function() {
 	if (xTurn.css('display') == 'block') {
 		talk.val(print()); 
 		take.click();
-		}
+	}
 });
 
 $("#ReplayDiag .dialog-body").html("<input type='button' onclick='wSet()' value='Reload' />");
