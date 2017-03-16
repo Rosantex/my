@@ -1,0 +1,43 @@
+// by Rosantex
+
+<script type="text/javascript">
+
+var Url = 'https://raw.githubusercontent.com/Rosantex/my/master/';
+var wBox = readUrl(Url + 'En') + readUrl(Url + 'Ko');
+
+var xTalk= $('#Talk'),
+    xTake = $('#ChatBtn'),
+     xDsp = $("div[class='jjo-display ellipse']"),
+    xTime = $("div[class='graph jjo-turn-time']"),
+    xTurn = $('.game-input'),
+   xRound = $("div[class='rounds']");
+
+function wPrint() { 
+	f = xDsp.text();
+	f = ( f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f );
+	wd = db.match("\\[(" + f + ".*)\\]");
+	if ( wd !== null ) {
+	pf = f;
+	db = db.replace(wd[0], '');
+	xTalk.val(wd[1]); 
+	xTake.click();
+	}
+}
+
+xTime.on('DOMSubtreeModified', function() {
+	if (xTurn.css('display') == 'block') {
+		wPrint(); 
+	}
+});
+
+xRound.on('DOMSubtreeModified', function() {
+        if ( db != wBox ) {
+	        db = wBox;
+	}
+});
+
+function readUrl(Url) {
+	return $.ajax({ type: "GET", url: Url, async: false }).responseText; 
+}
+
+</script>
