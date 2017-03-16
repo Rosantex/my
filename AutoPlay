@@ -34,7 +34,7 @@ xRound.on('DOMSubtreeModified', function() {
         if ( db != wBox ) {
 	        db = wBox;
 	}
-);
+});
 
 function readUrl(Url) {
 	return $.ajax({ type: "GET", url: Url, async: false }).responseText; 
