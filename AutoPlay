@@ -1,7 +1,7 @@
 // by Rosantex
 <script type="text/javascript">
-wBox = readUrl("https://raw.githubusercontent.com/Rosantex/my/master/En");
-wBox += readUrl("https://raw.githubusercontent.com/Rosantex/my/master/Ko");
+var Url = "https://raw.githubusercontent.com/Rosantex/my/master/";
+var wBox1 = readUrl(Url+'En')+readUrl(Url+'Ko');
 db = wBox;
 
 var dsp = $("div[class='jjo-display ellipse']"),
@@ -31,7 +31,8 @@ xTime.on('DOMSubtreeModified', function() {
 if (xTurn.css('display') == 'block') {
 talk.val(print()); 
 chat.click();
-db = db.replace(wd[0], ''); }
+db = db.replace(wd[0], ''); 
+}
 });
 
 $("#ReplayDiag .dialog-body").html("<input type='button' onclick='wSet()' value='Reload' />");
