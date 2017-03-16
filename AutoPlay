@@ -1,20 +1,23 @@
 // by Rosantex
 <script type="text/javascript">
 var Url = "https://raw.githubusercontent.com/Rosantex/my/master/";
-var wBox = readUrl(Url+'En') + readUrl(Url+'Ko');
-db = wBox;
+var db = ( wBox = readUrl(Url+'En') + readUrl(Url+'Ko') );
 
 var dsp = $("div[class='jjo-display ellipse']"),
    talk = $('#Talk'),
    take = $('#ChatBtn'),
   xTime = $("div[class='graph jjo-turn-time']"),
   xTurn = $('.game-input');
+  xRound = $("div[class='rounds']");
 
 function readUrl(Url) {
 	return $.ajax({ type: "GET", url: Url, async: false }).responseText; 
 }
 
 function wSet() {
+        if ( db == wBox ) {
+	        return;
+	}
 	db = wBox;
 	alert('word reload complete');
 }
@@ -38,5 +41,5 @@ xTime.on('DOMSubtreeModified', function() {
 	}
 });
 
-$("#ReplayDiag .dialog-body").html("<input type='button' onclick='wSet()' value='Reload' />");
+xRound.on('DOMSubtreeModified', wSet);
 </script>
