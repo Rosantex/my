@@ -3,7 +3,8 @@
 <script type="text/javascript">
 
 var Url = 'https://raw.githubusercontent.com/Rosantex/my/master/';
-var db = ( wBox = readUrl(Url + 'En') + readUrl(Url + 'Ko') );
+var wBox = readUrl(Url + 'En') + readUrl(Url + 'Ko');
+var db;
 
 var xTalk= $('#Talk'),
     xTake = $('#ChatBtn'),
