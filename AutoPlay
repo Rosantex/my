@@ -1,8 +1,9 @@
 // by Rosantex
 
 <script type="text/javascript">
+
 var Url = 'https://raw.githubusercontent.com/Rosantex/my/master/';
-var db = ( wBox = readUrl(Url + 'En') + readUrl(Url + 'Ko') );
+var wBox = readUrl(Url + 'En') + readUrl(Url + 'Ko');
 
 var xTalk= $('#Talk'),
     xTake = $('#ChatBtn'),
@@ -11,23 +12,16 @@ var xTalk= $('#Talk'),
     xTurn = $('.game-input'),
    xRound = $("div[class='rounds']");
 
-function wSet() {
-        if ( db != wBox ) {
-	        db = wBox;
-	}
-}
-
 function wPrint() { 
 	f = xDsp.text();
 	f = ( f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f );
 	wd = db.match("\\[(" + f + ".*)\\]");
-	if ( wd == null ) {
-		return;
-	} 
+	if ( wd !== null ) {
 	pf = f;
 	db = db.replace(wd[0], '');
 	xTalk.val(wd[1]); 
 	xTake.click();
+	}
 }
 
 xTime.on('DOMSubtreeModified', function() {
@@ -36,9 +30,14 @@ xTime.on('DOMSubtreeModified', function() {
 	}
 });
 
+xRound.on('DOMSubtreeModified', function() {
+        if ( db != wBox ) {
+	        db = wBox;
+	}
+);
+
 function readUrl(Url) {
 	return $.ajax({ type: "GET", url: Url, async: false }).responseText; 
 }
 
-xRound.on('DOMSubtreeModified', wSet);
 </script>
