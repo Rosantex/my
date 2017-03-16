@@ -36,4 +36,5 @@ db = db.replace(wd[0], '');
 });
 
 $("#ReplayDiag .dialog-body").html("<input type='button' onclick='wSet()' value='Reload' />");
+$("#ReplayDiag .dialog-body").fadeIn(300);
 </script>
