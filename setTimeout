@@ -1,0 +1,8 @@
+// Rosantex
+<script type = "text/javascript">
+$('#ChatBtn').click(function(e) {
+setTimeout(function() {
+$('#Talk').val('hi');
+}, 500);
+});
+</script>
