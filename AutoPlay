@@ -1,7 +1,7 @@
 // by Rosantex
 <script type="text/javascript">
 var Url = "https://raw.githubusercontent.com/Rosantex/my/master/";
-var wBox1 = readUrl(Url+'En')+readUrl(Url+'Ko');
+var wBox = readUrl(Url+'En')+readUrl(Url+'Ko');
 db = wBox;
 
 var dsp = $("div[class='jjo-display ellipse']"),
