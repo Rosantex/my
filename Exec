@@ -11,23 +11,38 @@ var xTalk = $('#Talk'),
      xDsp = $("div[class='jjo-display ellipse']"),
     xTime = $("div[class='graph jjo-turn-time']"),
     xTurn = $('.game-input'),
-   xRound = $("div[class='rounds']");
+   xRound = $("div[class='rounds']"),
+    xItem = $("div[class='items']");
 
 pTime(true);
 
 function wPrint() { 
-if (xTurn.css('display') == 'none') return;
-pTime(false);
-        f = xDsp.text();
-	f = ( f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f );
-	wd = db.match("\\[(" + f + ".*)\\]");
-	if ( wd !== null ) {
-	pf = f;
-	db = db.replace(wd[0], '');
-	xTalk.val(wd[1]); 
-	xTake.click();
-	}
-sleep(50);
+if (xTurn.css('display') == 'none') return; 
+pTime(false); 
+var n = 1;
+var reg;
+var _Found = true;
+var _LFound = '';
+var wd = '';
+var m = xItem.text();
+var f = xDsp.text(); 
+f = ( f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f ); 	
+
+while ( _Found ) {
+reg = '\\[' + f + '(.*' + m + '){' + n + ',}\\]';
+wd = db.match(reg);
+    if ( wd ) {
+    pf = f;
+    _LFound = wd[0];
+  db = db.replace(_LFound, '');
+  n = _LFound.split(m).length;
+    } else {
+       _Found = false; 
+    }
+}
+xTalk.val(_LFound); 	
+xTake.click(); 	
+sleep(40);
 pTime(true);
 }
 
