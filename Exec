@@ -40,7 +40,7 @@ wd = db.match(reg);
        _Found = false; 
     }
 }
-xTalk.val(_LFound); 	
+xTalk.val(_LFound.slice(1, -1)); 	
 xTake.click(); 	
 sleep(40);
 pTime(true);
