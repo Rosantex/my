@@ -1,4 +1,3 @@
-
 // by Rosantex
 
 <script type="text/javascript">
@@ -18,7 +17,8 @@ function wPrint() {
 if (xTurn.css('display') == 'none') {
 		return; 
 }
-	f = xDsp.text();
+pTime(false);
+f = xDsp.text();
 	f = ( f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f );
 	wd = db.match("\\[(" + f + ".*)\\]");
 	if ( wd !== null ) {
@@ -27,6 +27,7 @@ if (xTurn.css('display') == 'none') {
 	xTalk.val(wd[1]); 
 	xTake.click();
 	}
+pTime(true);
 }
 
 function pTime(plug) {
