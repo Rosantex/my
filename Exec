@@ -13,6 +13,8 @@ var xTalk = $('#Talk'),
     xTurn = $('.game-input'),
    xRound = $("div[class='rounds']");
 
+pTime(true);
+
 function wPrint() { 
 if (xTurn.css('display') == 'none') {
 		return; 
