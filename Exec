@@ -16,11 +16,9 @@ var xTalk = $('#Talk'),
 pTime(true);
 
 function wPrint() { 
-if (xTurn.css('display') == 'none') {
-		return; 
-}
+if (xTurn.css('display') == 'none') return;
 pTime(false);
-f = xDsp.text();
+        f = xDsp.text();
 	f = ( f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f );
 	wd = db.match("\\[(" + f + ".*)\\]");
 	if ( wd !== null ) {
@@ -29,6 +27,7 @@ f = xDsp.text();
 	xTalk.val(wd[1]); 
 	xTake.click();
 	}
+sleep(50);
 pTime(true);
 }
 
@@ -45,6 +44,11 @@ xRound.on('DOMSubtreeModified', function() {
 
 function readUrl(Url) {
 	return $.ajax({ type: "GET", url: Url, async: false }).responseText; 
+}
+
+function sleep(delay) { 
+var start = new Date().getTime(); 
+while (new Date().getTime() < start + delay); 
 }
 
 </script>
