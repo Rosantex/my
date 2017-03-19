@@ -29,7 +29,7 @@ function wPrint() {
 	var _LFound = db.match('\\[(' + f + '.*)\\]')[0];
 
 while ( _Found ) {
-	reg = '\\[' + f + '(.*' + m + '){' + n + ',}\\]';
+	reg = '\\[' + f + '(.*' + m + '.*){' + n + ',}\\]';
 	wd = db.match(reg);
 	if ( wd ) {
 		_LFound = wd[0];
