@@ -2,8 +2,7 @@
 
 <script type="text/javascript">
 
-var Url = 'https://raw.githubusercontent.com/Rosantex/my/master/';
-var wBox = readUrl(Url + 'En') + readUrl(Url + 'Ko');
+var wBox = readUrl('En') + readUrl('Ko');
 var db;
 
 var xTalk = $('#Talk'),
@@ -11,41 +10,43 @@ var xTalk = $('#Talk'),
      xDsp = $("div[class='jjo-display ellipse']"),
     xTime = $("div[class='graph jjo-turn-time']"),
     xTurn = $('.game-input'),
-   xRound = $("div[class='rounds']"),
-    xItem = $("div[class='items']");
+	xItem = $("div[class='items']"),
+   xRound = $("div[class='rounds']");
 
 pTime(true);
 
 function wPrint() { 
-if (xTurn.css('display') == 'none') return; 
-pTime(false); 
-var n = 1;
-var reg;
-var wd = '';
-var m = xItem.text();
-var f = xDsp.text(); 
-f = ( f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f ); 
-var _Found = true;
-var _LFound = db.match("\\[(" + f + ".*)\\]")[0];
+	if (xTurn.css('display') == 'none') return; 
+	
+	pTime(false); 
+	var reg;
+	var n = 1;
+	var wd;
+	var m = xItem.text();
+	var f = xDsp.text(); 
+	f = ( f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f ); 
+	var _Found = true;
+	var _LFound = db.match('\\[(' + f + '.*)\\]')[0];
 
 while ( _Found ) {
-reg = '\\[' + f + '(.*' + m + '){' + n + ',}\\]';
-wd = db.match(reg);
-    if ( wd ) {
-    pf = f;
-    _LFound = wd[0];
-  n = _LFound.split(m).length;
-    } else {
-       return;
-    }
+	reg = '\\[' + f + '(.*' + m + '){' + n + ',}\\]';
+	wd = db.match(reg);
+	if ( wd ) {
+		_LFound = wd[0];
+		n = _LFound.split(m).length;
+	} else {
+		_Found = false;
+	}
 }
 
 if ( _LFound ) {
-xTalk.val(_LFound.slice(1, -1)); 	
-xTake.click(); 	
-db = db.replace(_LFound, '');
-sleep(40);
+	xTalk.val(_LFound.slice(1, -1)); 	
+	xTake.click(); 	
+	db = db.replace(_LFound, '');
+	pf = f;
+	sleep(60);
 }
+
 pTime(true);
 }
 
@@ -55,18 +56,16 @@ plug ? xTime.on(e, wPrint) : xTime.off(e);
 }
 
 xRound.on('DOMSubtreeModified', function() {
-        if ( db != wBox ) {
-	        db = wBox;
-	}
+        if ( db != wBox ) db = wBox;
 });
 
 function readUrl(Url) {
-	return $.ajax({ type: "GET", url: Url, async: false }).responseText; 
+	return $.ajax({ type: "GET", url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url, async: false }).responseText; 
 }
 
 function sleep(delay) { 
-var start = new Date().getTime(); 
-while (new Date().getTime() < start + delay); 
+	var start = new Date().getTime(); 
+	while ( new Date().getTime() < start + delay ); 
 }
 
 </script>
