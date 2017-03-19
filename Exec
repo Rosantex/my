@@ -19,7 +19,7 @@ pTime(true);
 function wPrint() { 
 if (xTurn.css('display') == 'none') return; 
 pTime(false); 
-var n = 1;
+var n = 0;
 var reg;
 var _Found = true;
 var _LFound = '';
@@ -35,7 +35,7 @@ wd = db.match(reg);
     pf = f;
     _LFound = wd[0];
   db = db.replace(_LFound, '');
-  n = _LFound.split(m).length;
+  n = ( n ? _LFound.split(m).length : 1 );
     } else {
        _Found = false; 
     }
