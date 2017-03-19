@@ -1,4 +1,3 @@
-
 // by Rosantex
 
 <script type="text/javascript">
@@ -20,7 +19,7 @@ pTime(true);
 function wPrint() { 
 if (xTurn.css('display') == 'none') return; 
 pTime(false); 
-var n = 0;
+var n = 1;
 var reg;
 var _Found = true;
 var _LFound = '';
@@ -33,23 +32,17 @@ while ( _Found ) {
 reg = '\\[' + f + '(.*' + m + '){' + n + ',}\\]';
 wd = db.match(reg);
     if ( wd ) {
-        if ( wd.length > 3 ) {
     pf = f;
     _LFound = wd[0];
   db = db.replace(_LFound, '');
-  n = ( n ? _LFound.split(m).length : 1 );
-  } else {
-      _Found = false; 
-  }
+  n = _LFound.split(m).length;
     } else {
        _Found = false; 
     }
 }
-if ( _LFound ) {
 xTalk.val(_LFound.slice(1, -1)); 	
 xTake.click(); 	
-}
-sleep(50);
+sleep(40);
 pTime(true);
 }
 
