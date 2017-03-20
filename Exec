@@ -12,18 +12,17 @@ var xTalk = $('#Talk'),
     xTurn = $('.game-input'),
 	xItem = $("div[class='items']"),
    xRound = $("div[class='rounds']"),
-   xBoard = $('#ReplayDiag .dialog-body'),
-    xAuto = $('#AutoBtn');
-
+   xBoard = $('#ReplayDiag .dialog-body');
+   
 var AutoMode = true;
+
+pTime(true);
 
 function Toggle_Auto() {
 AutoMode = !AutoMode;
-xAuto.val(!AutoMode);
+alert('Auto Mode: ' + AutoMode);
 pTime(AutoMode);
 }
-
-pTime(true);
 
 function wPrint() { 
 	if (xTurn.css('display') == 'none') return; 
@@ -66,7 +65,8 @@ plug ? xTime.on(e, wPrint) : xTime.off(e);
 }
 
 xRound.on('DOMSubtreeModified', function() {
-        if ( db != wBox ) db = wBox; pTime(0); pTime(1);
+        if ( db != wBox ) db = wBox;
+	if (AutoMode) pTime(0); pTime(1);
 });
 
 function readUrl(Url) {
@@ -77,7 +77,6 @@ function sleep(delay) {
 	var start = new Date().getTime(); 
 	while ( new Date().getTime() < start + delay ); 
 }
-
 
 xBoard.html("<p style='color:#000; font-size:9pt'>ㅎㅇ</p><p id='Bot_Log' style='color:#000; font-size:9pt;'>ㄹㄹ</p><input type='button' id = 'AutoBtn' onclick='Toggle_Auto()' value='false' />");
 $("#ReplayDiag").fadeIn(300);
