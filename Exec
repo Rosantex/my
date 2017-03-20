@@ -5,19 +5,20 @@
 
 var wBox = readUrl('En') + readUrl('Ko');
 var db;
-if ( confirm('wanna shuffle(randomize) words?') ) wBox = shuffle(wBox.split('\n')).join('\n');
 
-var xTalk = $('#Talk'),
-    xTake = $('#ChatBtn'),
-     xDsp = $("div[class='jjo-display ellipse']"),
-    xTime = $("div[class='graph jjo-turn-time']"),
-    xTurn = $('.game-input'),
-	xItem = $("div[class='items']"),
-   xRound = $("div[class='rounds']"),
-   xBoard = $('#ReplayDiag .dialog-body'),
-   xExit = $('#ExitBtn');
+var xDsp = $("div[class='jjo-display ellipse']"),
+   xTalk = $('#Talk'),
+   xTake = $('#ChatBtn'),
+   xExit = $('#ExitBtn'),
+   xTime = $("div[class='graph jjo-turn-time']"),
+   xTurn = $('.game-input'),
+   xItem = $("div[class='items']"),
+  xRound = $("div[class='rounds']"),
+  xBoard = $('#ReplayDiag .dialog-body');
    
 var AutoMode = true;
+
+if ( confirm('wanna shuffle(randomize) words?') ) wBox = shuffle(wBox.split('\n')).join('\n');
 
 pTime(true);
 
@@ -32,8 +33,8 @@ function wPrint() {
 	
 	pTime(false); 
 	var reg;
-	var n = 1;
 	var wd;
+	var n = 1;
 	var m = xItem.text();
 	var f = xDsp.text(); 
 	f = ( f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f ); 
@@ -63,8 +64,8 @@ function wPrint() {
 }
 
 function pTime(plug) {
-var e = 'DOMSubtreeModified';
-plug ? xTime.on(e, wPrint) : xTime.off(e);
+	var e = 'DOMSubtreeModified';
+	plug ? xTime.on(e, wPrint) : xTime.off(e);
 }
 
 xRound.on('DOMSubtreeModified', function() {
@@ -91,7 +92,7 @@ function shuffle(arr) {
 		CurIndex -= 1;
 		TempValue = arr[CurIndex];
 		arr[CurIndex] = arr[RndIndex];
-		arr[RndIndex] = TemValue;
+		arr[RndIndex] = TempValue;
 	}
 	return arr;
 }
