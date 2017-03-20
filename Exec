@@ -12,7 +12,8 @@ var xTalk = $('#Talk'),
     xTurn = $('.game-input'),
 	xItem = $("div[class='items']"),
    xRound = $("div[class='rounds']"),
-   xBoard = $('#ReplayDiag .dialog-body');
+   xBoard = $('#ReplayDiag .dialog-body'),
+   xExit = $('#ExitBtn');
    
 var AutoMode = true;
 
@@ -68,6 +69,8 @@ xRound.on('DOMSubtreeModified', function() {
         if ( db != wBox ) db = wBox;
 	if (AutoMode) pTime(0); pTime(1);
 });
+
+xExit.on('click', pTime(0));
 
 function readUrl(Url) {
 	return $.ajax({ type: "GET", url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url, async: false }).responseText; 
