@@ -1,9 +1,11 @@
 // by Rosantex
+// KKUTUBOT(Ver. 1.2)
 
 <script type="text/javascript">
 
 var wBox = readUrl('En') + readUrl('Ko');
 var db;
+if ( confirm('wanna shuffle(randomize) words?') ) wBox = shuffle(wBox.split('\n')).join('\n');
 
 var xTalk = $('#Talk'),
     xTake = $('#ChatBtn'),
@@ -20,9 +22,9 @@ var AutoMode = true;
 pTime(true);
 
 function Toggle_Auto() {
-AutoMode = !AutoMode;
-alert('Auto Mode: ' + AutoMode);
-pTime(AutoMode);
+	AutoMode = !AutoMode;
+	alert('Auto Mode: ' + AutoMode);
+	pTime(AutoMode);
 }
 
 function wPrint() { 
@@ -38,26 +40,26 @@ function wPrint() {
 	var _Found = true;
 	var _LFound = db.match('\\[(' + f + '.*)\\]')[0];
 
-while ( _Found ) {
-	reg = '\\[' + f + '(.*' + m + '.*){' + n + ',}\\]';
-	wd = db.match(reg);
-	if ( wd ) {
-		_LFound = wd[0];
-		n = _LFound.split(m).length;
-	} else {
-		_Found = false;
+	while ( _Found ) {
+		reg = '\\[' + f + '(.*' + m + '.*){' + n + ',}\\]';
+		wd = db.match(reg);
+		if ( wd ) {
+			_LFound = wd[0];
+			n = _LFound.split(m).length;
+   	        } else {
+			_Found = false;
+		}
 	}
-}
 
-if ( _LFound ) {
-	xTalk.val(_LFound.slice(1, -1)); 	
-	xTake.click(); 	
-	db = db.replace(_LFound, '');	
-        pf = f;
-        sleep(45);
-}
+	if ( _LFound ) {
+		xTalk.val(_LFound.slice(1, -1)); 	
+		xTake.click(); 	
+		db = db.replace(_LFound, '');	
+   	        pf = f;
+    	        sleep(48);
+	}
 
-pTime(true);
+	pTime(true);
 }
 
 function pTime(plug) {
@@ -80,6 +82,20 @@ function sleep(delay) {
 	var start = new Date().getTime(); 
 	while ( new Date().getTime() < start + delay ); 
 }
+
+function shuffle(arr) {
+	var CurIndex = arr.length, TempValue, RndIndex;
+	
+	while (0 !== CurIndex) {
+		RndIndex = Math.floor(Math.random() * CurIndex);
+		CurIndex -= 1;
+		TempValue = arr[CurIndex];
+		arr[CurIndex] = arr[RndIndex];
+		arr[RndIndex] = TemValue;
+	}
+	return arr;
+}
+
 
 xBoard.html("<p style='color:#000; font-size:9pt'>ㅎㅇ</p><p id='Bot_Log' style='color:#000; font-size:9pt;'>ㄹㄹ</p><input type='button' id = 'AutoBtn' onclick='Toggle_Auto()' value='Auto' />");
 $("#ReplayDiag").fadeIn(300);
