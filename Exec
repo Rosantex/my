@@ -52,9 +52,9 @@ while ( _Found ) {
 if ( _LFound ) {
 	xTalk.val(_LFound.slice(1, -1)); 	
 	xTake.click(); 	
-	db = db.replace(_LFound, '');
-	pf = f;
-	sleep(60);
+	db = db.replace(_LFound, '');	
+        pf = f;
+        sleep(45);
 }
 
 pTime(true);
@@ -81,7 +81,7 @@ function sleep(delay) {
 	while ( new Date().getTime() < start + delay ); 
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>ㅎㅇ</p><p id='Bot_Log' style='color:#000; font-size:9pt;'>ㄹㄹ</p><input type='button' id = 'AutoBtn' onclick='Toggle_Auto()' value='false' />");
+xBoard.html("<p style='color:#000; font-size:9pt'>ㅎㅇ</p><p id='Bot_Log' style='color:#000; font-size:9pt;'>ㄹㄹ</p><input type='button' id = 'AutoBtn' onclick='Toggle_Auto()' value='Auto' />");
 $("#ReplayDiag").fadeIn(300);
 
 </script>
