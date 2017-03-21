@@ -16,11 +16,11 @@ var xDsp = $("div[class='jjo-display ellipse']"),
   xRound = $("div[class='rounds']"),
   xBoard = $('#ReplayDiag .dialog-body');
    
-var AutoMode = false;
+var AutoMode = true;
 
 if ( confirm('wanna shuffle(randomize) words?') ) wBox = shuffle(wBox.split('\n')).join('\n');
 
-//pTime(true);
+pTime(true);
 
 function Toggle_Auto() {
 	AutoMode = !AutoMode;
@@ -29,7 +29,6 @@ function Toggle_Auto() {
 }
 
 function Play_KKT() { 
-	sleep(20);
 	if (xTurn.css('display') == 'none') return; 
 	
 	pTime(false); 
@@ -58,7 +57,7 @@ function Play_KKT() {
 		xTake.click(); 	
 		db = db.replace(_LFound, '');	
    	        pf = f;
-    	        sleep(35);
+    	        sleep(50);
 	}
 
 	pTime(true);
@@ -101,7 +100,7 @@ function pTime(plug) {
 }
 
 xTalk.on('keydown', function(e) {
-if ( e.keyCode == 18 ) Toggle_Auto(); 
+	if ( e.keyCode == 18 ) Toggle_Auto(); 
 });
 
 xRound.on('DOMSubtreeModified', function() {
