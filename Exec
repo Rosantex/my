@@ -1,10 +1,10 @@
 // by Rosantex
-// KKUTUBOT(Ver. 1.2)
+// KKUTUBOT(Ver. 1.25)
 
 <script type="text/javascript">
 
 var wBox = readUrl('En') + readUrl('Ko');
-var db;
+var db = wBox;
 
 var xDsp = $("div[class='jjo-display ellipse']"),
    xTalk = $('#Talk'),
@@ -28,7 +28,7 @@ function Toggle_Auto() {
 	pTime(AutoMode);
 }
 
-function wPrint() { 
+function Play_KKT() { 
 	if (xTurn.css('display') == 'none') return; 
 	
 	pTime(false); 
@@ -63,8 +63,7 @@ function wPrint() {
 	pTime(true);
 }
 
-
-function Play_ESK() {
+function Play_ESS() {
 	var s = new Date().getTime();
 	var str = xDsp.text().replace(/ /g, '');
 	var occ = []; 
@@ -97,11 +96,11 @@ function Play_ESK() {
 
 function pTime(plug) {
 	var e = 'DOMSubtreeModified';
-	plug ? xTime.on(e, wPrint) : xTime.off(e);
+	plug ? xTime.on(e, Play_KKT) : xTime.off(e);
 }
 
 xTalk.on('keydown', function(e) {
-if ( e.keyCode == 18 ) Play_ESK(); 
+if ( e.keyCode == 18 ) Play_ESS(); 
 });
 
 xRound.on('DOMSubtreeModified', function() {
