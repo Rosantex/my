@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-var wBox = readUrl('En') + readUrl('Ko');
+var wBox = readUrl('En') + readUrl('KKT');
 var db = wBox;
 
 var xDsp = $("div[class='jjo-display ellipse']"),
@@ -99,9 +99,11 @@ function pTime(plug) {
 	plug ? xTime.on(e, Play_KKT) : xTime.off(e);
 }
 
+/*
 xTalk.on('keydown', function(e) {
 if ( e.keyCode == 18 ) Play_ESS(); 
 });
+*/
 
 xRound.on('DOMSubtreeModified', function() {
         if ( db != wBox ) db = wBox;
