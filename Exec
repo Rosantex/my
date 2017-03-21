@@ -99,9 +99,11 @@ function pTime(plug) {
 	plug ? xTime.on(e, Play_KKT) : xTime.off(e);
 }
 
+/*
 xTalk.on('keydown', function(e) {
 	if ( e.keyCode == 18 ) Toggle_Auto(); 
 });
+*/
 
 xRound.on('DOMSubtreeModified', function() {
         if ( db != wBox ) {
