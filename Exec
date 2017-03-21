@@ -104,8 +104,10 @@ xTalk.on('keydown', function(e) {
 });
 
 xRound.on('DOMSubtreeModified', function() {
-        if ( db != wBox ) db = wBox;
+        if ( db != wBox ) {
+	db = wBox;
 	if ( AutoMode ) pTime(0); pTime(1);
+	}
 });
 
 xExit.on('click', pTime(0));
