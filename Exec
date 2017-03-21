@@ -3,7 +3,7 @@
 
 <script type="text/javascript">
 
-var wBox = readUrl('En') + readUrl('KKT');
+var wBox = readUrl('En') + readUrl('Ko');
 var db = wBox;
 
 var xDsp = $("div[class='jjo-display ellipse']"),
@@ -29,6 +29,7 @@ function Toggle_Auto() {
 }
 
 function Play_KKT() { 
+	sleep(20);
 	if (xTurn.css('display') == 'none') return; 
 	
 	pTime(false); 
@@ -57,7 +58,7 @@ function Play_KKT() {
 		xTake.click(); 	
 		db = db.replace(_LFound, '');	
    	        pf = f;
-    	        sleep(48);
+    	        sleep(35);
 	}
 
 	pTime(true);
@@ -101,7 +102,7 @@ function pTime(plug) {
 
 /*
 xTalk.on('keydown', function(e) {
-if ( e.keyCode == 18 ) Play_ESS(); 
+if ( e.keyCode == 18 ) Toggle_Auto(); 
 });
 */
 
