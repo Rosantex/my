@@ -29,9 +29,9 @@ function Toggle_Auto() {
 }
 
 function Play_KKT() { 
-	if (xTurn.css('display') == 'none') return; 
-	
-	pTime(false); 
+//if (xTurn.css('display') == 'none') return;
+if (!xTurn.is(':visible')) return;
+pTime(false); 
 	var reg;
 	var wd;
 	var n = 1;
