@@ -20,7 +20,7 @@ var AutoMode = true;
 
 if ( confirm('wanna shuffle(randomize) words?') ) wBox = shuffle(wBox.split('\n')).join('\n');
 
-pTime(true);
+//pTime(true);
 
 function Toggle_Auto() {
 	AutoMode = !AutoMode;
@@ -57,7 +57,7 @@ pTime(false);
 		xTake.click(); 	
 		db = db.replace(_LFound, '');	
    	        pf = f;
-    	        sleep(50);
+                sleep(20);
 	}
 
 	pTime(true);
