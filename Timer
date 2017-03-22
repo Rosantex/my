@@ -5,7 +5,7 @@ var wBox = readUrl('En') + readUrl('Ko');
 var db = wBox;
 
 var xDsp = $("div[class='jjo-display ellipse']"),
-    xTalk = $('#Talk'),
+    //xTalk = $('#Talk'),
     xTake = $('#ChatBtn'),
     xExit = $('#ExitBtn'),
     xTime = $("div[class='graph jjo-turn-time']"),
@@ -18,7 +18,8 @@ var AutoMode = true;
 var Tmr1, Tmr2;
 
 function gPlay() {
-    if (xTurn.css('display') == 'none') return;
+    //if (xTurn.css('display') == 'none') return;
+    if( $stage.game.here.is(":visible") || $data._relay) {
     
     KILLTMR();
     var s = new Date().getTime();
@@ -41,16 +42,29 @@ function gPlay() {
             _Found = false;
         }
     }
-
-    if (_LFound) {
+/*
+    if (_LFound && xTurn.css('display') == 'block') {
         xTalk.val(_LFound.slice(1, -1));
         xTake.click();
         db = db.replace(_LFound, '');
         pf = f;
         console.log(new Date().getTime() - s);
     }
+*/
+
+var xVar = _LFound.slice(1, -1);
+var qw = { value: xVar };
+if(!value) return;
+if($stage.game.here.is(":visible") || $data._relay){
+qw.relay = true;
+}
+send('talk', qw);
+db = db.replace(_LFound, '');
+pf = f;
+console.log(new Date().getTime() - s);
 
     SETTMR();
+}
 }
 
 function SETTMR() {
@@ -65,8 +79,7 @@ xRound.on('DOMSubtreeModified', function() {
     KILLTMR();
     if (db != wBox) {
         db = wBox;
-        if (AutoMode)
-           SETTMR();
+        if (AutoMode) SETTMR();
     }
 });
 
