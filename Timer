@@ -52,13 +52,13 @@ function gPlay() {
     }
 */
 
-var xVar = _LFound.slice(1, -1);
-var qw = { value: xVar };
+var value = _LFound.slice(1, -1);
+var o = { value: value };
 if(!value) return;
 if($stage.game.here.is(":visible") || $data._relay){
-qw.relay = true;
+o.relay = true;
 }
-send('talk', qw);
+send('talk', o);
 db = db.replace(_LFound, '');
 pf = f;
 console.log(new Date().getTime() - s);
