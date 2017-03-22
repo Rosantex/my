@@ -1,0 +1,136 @@
+// by Rosantex
+<
+script type = "text/javascript" >
+
+    var wBox = readUrl('En') + readUrl('Ko');
+var db = wBox;
+
+var xDsp = $("div[class='jjo-display ellipse']"),
+    xTalk = $('#Talk'),
+    xTake = $('#ChatBtn'),
+    xExit = $('#ExitBtn'),
+    xTime = $("div[class='graph jjo-turn-time']"),
+    xTurn = $('.game-input'),
+    xItem = $("div[class='items']"),
+    xRound = $("div[class='rounds']"),
+    xBoard = $('#ReplayDiag .dialog-body');
+
+var AutoMode = false;
+
+//if ( confirm('wanna shuffle(randomize) words?') ) wBox = shuffle(wBox.split('\n')).join('\n');
+
+function Toggle_Auto() {
+    AutoMode = !AutoMode;
+    alert('Auto Mode: ' + AutoMode);
+    pTime(AutoMode);
+}
+
+function Play_KKT() {
+    if (xTurn.css('display') == 'none') return;
+    pTime(false);
+    var reg;
+    var wd;
+    var n = 1;
+    var m = xItem.text();
+    var f = xDsp.text();
+    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+    var _Found = true;
+    var _LFound = db.match('\\[(' + f + '.*)\\]')[0];
+
+    while (_Found) {
+        reg = '\\[' + f + '(.*' + m + '.*){' + n + ',}\\]';
+        wd = db.match(reg);
+        if (wd) {
+            _LFound = wd[0];
+            n = _LFound.split(m).length;
+        } else {
+            _Found = false;
+        }
+    }
+
+    if (_LFound) {
+        xTalk.val(_LFound.slice(1, -1));
+        xTake.click();
+        db = db.replace(_LFound, '');
+        pf = f;
+        sleep(20);
+    }
+
+    pTime(true);
+}
+
+function Play_ESS() {
+    var s = new Date().getTime();
+    var str = xDsp.text().replace(/ /g, '');
+    var occ = [];
+    var xreg = [];
+    var ignore = '';
+    var w, n;
+
+    for (var i = 0; i < 25; i++) {
+        w = String.fromCharCode(97 + i);
+        n = (str.match(new RegExp(w, 'g'), '') || []).length;
+        n ? occ[w] = n : ignore += w;
+    }
+
+    xreg.push('\\[.*[' + ignore + '].*\\]');
+
+    for (var i in occ) {
+        xreg.push('\\[(.*' + i + '.*){' + (occ[i]++) + ',}\\]');
+    }
+
+    var reg = new RegExp(xreg.join('|'), 'g');
+    var reg2 = new RegExp('\\[.+\\]', 'g');
+    var wd = db.replace(reg, '').match(reg2);
+
+    console.log(new Date().getTime() - s);
+    if (wd) {
+        xTalk.val(wd[0].slice(1, -1));
+        xTake.click();
+    }
+}
+
+function pTime(plug) {
+    var e = 'DOMSubtreeModified';
+    plug ? xTime.on(e, Play_KKT) : xTime.off(e);
+}
+
+xRound.on('DOMSubtreeModified', function() {
+    if (db != wBox) {
+        db = wBox;
+        if (AutoMode) pTime(0);
+        pTime(1);
+    }
+});
+
+xExit.on('click', pTime(0));
+
+function readUrl(Url) {
+    return $.ajax({
+        type: "GET",
+        url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url,
+        async: false
+    }).responseText;
+}
+
+function shuffle(arr) {
+    var CurIndex = arr.length,
+        TempValue, RndIndex;
+
+    while (0 !== CurIndex) {
+        RndIndex = Math.floor(Math.random() * CurIndex);
+        CurIndex -= 1;
+        TempValue = arr[CurIndex];
+        arr[CurIndex] = arr[RndIndex];
+        arr[RndIndex] = TempValue;
+    }
+    return arr;
+}
+
+
+xBoard.html("<p style='color:#000; font-size:9pt'>ㅎㅇ</p><p id='Bot_Log' style='color:#000; font-size:9pt;'>ㄹㄹ</p><input type='button' id = 'AutoBtn' onclick='Toggle_Auto()' value='Auto' />");
+
+$("#ReplayDiag").fadeIn(300);
+
+<
+/script>
