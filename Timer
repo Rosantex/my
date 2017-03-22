@@ -5,11 +5,8 @@ var wBox = readUrl('En') + readUrl('Ko');
 var db = wBox;
 
 var xDsp = $("div[class='jjo-display ellipse']"),
-    //xTalk = $('#Talk'),
-    xTake = $('#ChatBtn'),
     xExit = $('#ExitBtn'),
     xTime = $("div[class='graph jjo-turn-time']"),
-    xTurn = $('.game-input'),
     xItem = $("div[class='items']"),
     xRound = $("div[class='rounds']"),
     xBoard = $('#ReplayDiag .dialog-body');
@@ -18,7 +15,6 @@ var AutoMode = true;
 var Tmr1, Tmr2;
 
 function gPlay() {
-    //if (xTurn.css('display') == 'none') return;
     if( $stage.game.here.is(":visible") || $data._relay) {
     
     KILLTMR();
@@ -42,33 +38,22 @@ function gPlay() {
             _Found = false;
         }
     }
-/*
-    if (_LFound && xTurn.css('display') == 'block') {
-        xTalk.val(_LFound.slice(1, -1));
-        xTake.click();
-        db = db.replace(_LFound, '');
-        pf = f;
-        console.log(new Date().getTime() - s);
-    }
-*/
 
-var value = _LFound.slice(1, -1);
-var o = { value: value };
-if(!value) return;
-if($stage.game.here.is(":visible") || $data._relay){
-o.relay = true;
-}
-send('talk', o);
-db = db.replace(_LFound, '');
-pf = f;
-console.log(new Date().getTime() - s);
+    var value = _LFound.slice(1, -1);
+    var o = { value: value };
+    if (!value) return;
+    if ($stage.game.here.is(":visible") || $data._relay) o.relay = true;
+    send('talk', o);
+    db = db.replace(_LFound, '');
+    pf = f;
+    console.log(new Date().getTime() - s);
 
     SETTMR();
 }
 }
 
 function SETTMR() {
-   Tmr1 = _setInterval(gPlay, 50);
+   Tmr1 = _setInterval(gPlay, 20);
 }
 
 function KILLTMR() {
