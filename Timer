@@ -16,14 +16,12 @@ var Tmr1, Tmr2;
 function gPlay() {
     if (getOnly() == "for-lobby") KILLTMR(); 
     if (!IsMyturn()) return;
-    
+
     KILLTMR();
-    var s = new Date().getTime();
-    var n = 1;
     var m = $stage.game.items.text();
     var f = xDsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-    var _Found = db.match('\\[' + f + '(.*' + m + '.*){' + 1 + ',}\\]');
+    var _Found = db.match('\\[' + f + '(.*' + m + '.*){1,}\\]');
     var _LFound;
 
     if (_Found) {
@@ -36,21 +34,20 @@ function gPlay() {
     }
     
     if (IsMyturn() && _LFound) {
-        var o = { value: _LFound.slice(1, -1), relay: true };
-        send('talk', o);
+        //var o = { value: _LFound.slice(1, -1), relay: true };
+        send('talk', _LFound.slice(1, -1));
         db = db.replace(_LFound, '');
         pf = f;
-        console.log(new Date().getTime() - s);
     }
     SETTMR();
 }
 
 function IsMyturn() {
-    return ($stage.game.here.is(":visible") || $data._relay) ? 1 : 0;
+    return ($stage.game.here.is(":visible") || $data._relay) ? true : false;
 }
 
 function SETTMR() {
-   Tmr1 = _setInterval(gPlay, 40);
+   Tmr1 = _setInterval(gPlay, 45);
 }
 
 function KILLTMR() {
