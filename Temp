@@ -22,7 +22,8 @@ function gPlay() {
     KILLTMR();
     var m = $stage.game.items.text();
     var f = xDsp.text();
-    f = (f.includes('(') ? '(' + f.replace('(3)','').replace('(', '|') : f.includes(':') ? pf : f);
+    f = f.replace('(3)','');
+    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     var _Found = db.match('\\[' + f + '(.*' + m + '.*){1,}\\]');
     var _LFound;
 
