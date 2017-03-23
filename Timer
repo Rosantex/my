@@ -2,7 +2,7 @@
 // AlphaKKU (ver 1.40)
 <script type ="text/javascript">
 
-var wBox = readUrl('En') + readUrl('KKT);
+var wBox = readUrl('En') + readUrl('KKT');
 var db = wBox;
 
 var xDsp = $("div[class='jjo-display ellipse']"),
@@ -68,8 +68,6 @@ xRound.on('DOMSubtreeModified', function() {
         }
     }
 });
-
-//$stage.menu.exit.on('click', KILLTMR);
 
 function readUrl(Url) {
     return $.ajax({
