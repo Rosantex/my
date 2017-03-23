@@ -6,17 +6,19 @@ var wBox = readUrl('En') + readUrl('Ko');
 var db = wBox;
 
 var xDsp = $("div[class='jjo-display ellipse']"),
-    xTime = $("div[class='graph jjo-turn-time']"),
     xRound = $("div[class='rounds']"),
     xBoard = $('#ReplayDiag .dialog-body');
 
 var AutoMode = true;
-var Tmr1, Tmr2;
+var Tmr1;
 
 function gPlay() {
-    if (getOnly() == "for-lobby") KILLTMR(); 
+    if (!$data.room.gaming) {
+        KILLTMR();
+        return;
+    }
     if (!IsMyturn()) return;
-
+    var s = new Date().getTime();
     KILLTMR();
     var m = $stage.game.items.text();
     var f = xDsp.text();
@@ -34,10 +36,11 @@ function gPlay() {
     }
     
     if (IsMyturn() && _LFound) {
-        //var o = { value: _LFound.slice(1, -1), relay: true };
-        send('talk', _LFound.slice(1, -1));
+        var o = { value: _LFound.slice(1, -1), relay: true };
+        send('talk', o);
         db = db.replace(_LFound, '');
         pf = f;
+        console.log(new Date().getTime() - s);
     }
     SETTMR();
 }
@@ -47,11 +50,13 @@ function IsMyturn() {
 }
 
 function SETTMR() {
-   Tmr1 = _setInterval(gPlay, 45);
+   Tmr1 = _setInterval(gPlay, 40);
+   console.log('set');
 }
 
 function KILLTMR() {
    clearInterval(Tmr1);
+   console.log('kill');
 }
 
 xRound.on('DOMSubtreeModified', function() {
@@ -74,6 +79,6 @@ function readUrl(Url) {
 
 xBoard.html("<p style='color:#000; font-size:9pt'>ㅎ</p><p id='My_Log' style='color:#000; font-size:9pt;'>ㄹ</p><input type='button' onclick='SETTMR()' value='Auto' />");
 
-$("#ReplayDiag").fadeIn(300);
+$("#ReplayDiag").fadeIn(200);
 
 </script>
