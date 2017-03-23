@@ -46,7 +46,7 @@ function gPlay() {
 }
 
 function IsMyturn() {
-    return $stage.game.here.is(":visible") || $data._relay ? 1 : 0;
+    return ($stage.game.here.is(":visible") || $data._relay) ? 1 : 0;
 }
 
 function SETTMR() {
