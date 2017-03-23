@@ -1,4 +1,5 @@
 // by Rosantex
+// AlphaKKU (ver 1.32)
 <script type ="text/javascript">
 
 var wBox = readUrl('En') + readUrl('Ko');
@@ -15,7 +16,7 @@ var AutoMode = true;
 var Tmr1, Tmr2;
 
 function gPlay() {
-    if( $stage.game.here.is(":visible") || $data._relay) {
+    if(IsMyturn()) {
     
     KILLTMR();
     var s = new Date().getTime();
@@ -38,22 +39,24 @@ function gPlay() {
             _Found = false;
         }
     }
-
-    var value = _LFound.slice(1, -1);
-    var o = { value: value };
-    if (!value) return;
-    if ($stage.game.here.is(":visible") || $data._relay) o.relay = true;
+    
+if (_LFound && IsMyturn()) {
+    var o = { value: _LFound.slice(1, -1), relay: true };
     send('talk', o);
     db = db.replace(_LFound, '');
     pf = f;
     console.log(new Date().getTime() - s);
-
+}
     SETTMR();
 }
 }
 
+function IsMyturn() {
+return ($stage.game.here.is(":visible") || $data._relay) ? 1 : 0;
+}
+
 function SETTMR() {
-   Tmr1 = _setInterval(gPlay, 20);
+   Tmr1 = _setInterval(gPlay, 10);
 }
 
 function KILLTMR() {
@@ -61,10 +64,9 @@ function KILLTMR() {
 }
 
 xRound.on('DOMSubtreeModified', function() {
-    KILLTMR();
-    if (db != wBox) {
-        db = wBox;
-        if (AutoMode) SETTMR();
+    if (db != wBox) db = wBox;
+    if (AutoMode) { 
+    KILLTMR(); SETTMR();
     }
 });
 
