@@ -42,9 +42,9 @@ function gPlay() {
         pf = f;
         console.log(new Date().getTime() - s);
     }
+    sleep(25);
     pTime(true);
 }
-
 
 function pTime(plug) {
     var e = 'DOMSubtreeModified';
@@ -66,6 +66,11 @@ xRound.on('DOMSubtreeModified', function() {
         }
     }
 });
+
+function sleep(delay) { 
+	var start = new Date().getTime(); 
+	while ( new Date().getTime() < start + delay ); 
+}
 
 function readUrl(Url) {
     return $.ajax({
