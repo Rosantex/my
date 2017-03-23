@@ -25,6 +25,7 @@ function gPlay() {
     var f = xDsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     var _Found = db.match('\\[' + f + '(.*' + m + '.*){' + 1 + ',}\\]');
+    var _LFound;
 
     if (_Found) {
         while (_Found) {
