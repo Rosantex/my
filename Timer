@@ -13,7 +13,7 @@ var AutoMode = true;
 var Tmr1;
 
 function gPlay() {
-    if (!$data.room.gaming) {
+    if (getOnly() == "for-lobby" || !$data.room.gaming) {
         KILLTMR();
         return;
     }
@@ -38,6 +38,7 @@ function gPlay() {
     if (IsMyturn() && _LFound) {
         var o = { value: _LFound.slice(1, -1), relay: true };
         send('talk', o);
+        if (spamCount > 0) spamCount = 0;
         db = db.replace(_LFound, '');
         pf = f;
         console.log(new Date().getTime() - s);
@@ -50,8 +51,7 @@ function IsMyturn() {
 }
 
 function SETTMR() {
-   Tmr1 = _setInterval(gPlay, 40);
-   console.log('set');
+   Tmr1 = _setInterval(gPlay, 30);
 }
 
 function KILLTMR() {
@@ -60,10 +60,12 @@ function KILLTMR() {
 }
 
 xRound.on('DOMSubtreeModified', function() {
-    if (db != wBox) db = wBox;
-    if (AutoMode) { 
-         KILLTMR(); 
-         SETTMR();
+    if (db != wBox) { 
+        db = wBox;
+        if (AutoMode) { 
+            KILLTMR(); 
+            SETTMR();
+        }
     }
 });
 
