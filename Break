@@ -16,11 +16,7 @@ var xDsp = $("div[class='jjo-display ellipse']"),
 var AutoMode = true;
 
 function gPlay() {
-    if (!$data.room.gaming) {
-        pTime(0);
-        return;
-    }
-    if (!IsMyturn()) return;
+    if (!xTurn.is(":visible")) return;
     var s = new Date().getTime();
     var m = xItem.text();
     var f = xDsp.text().replace('(3)','');
@@ -37,7 +33,7 @@ function gPlay() {
         _LFound = (db.match('\\[(' + f + '.*)\\]')||['0'])[0];
     }
     
-    if (IsMyturn() && _LFound) {
+    if (xTurn.is(":visible") && _LFound) {
         xTalk.val(_LFound.slice(1, -1));
       	xTake.click();
         db = db.replace(_LFound, '');
@@ -47,9 +43,6 @@ function gPlay() {
     pTime(1);
 }
 
-function IsMyturn() {
-    return (xTurn.is(":visible") || $data._relay) ? true : false;
-}
 
 function pTime(plug) {
 	var e = 'DOMSubtreeModified';
@@ -80,7 +73,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.45) (쿵쿵따모드추가)</p><input type='button' onclick='pTime(1)' value='Auto' />");
+xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.48) (쿵쿵따 모드 추가)</p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(150);
 
