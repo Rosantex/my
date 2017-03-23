@@ -21,24 +21,19 @@ spamCount = ( spamWarning = 0 );
     
     KILLTMR();
     var s = new Date().getTime();
-    var reg;
-    var wd;
     var n = 1;
     var m = xItem.text();
     var f = xDsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-    var _Found = true;
-    var _LFound = db.match('\\[(' + f + '.*)\\]')[0];
+    var _Found = db.match('\\[' + f + '(.*' + m + '.*){' + 1 + ',}\\]');
 
+    if (_Found) {
     while (_Found) {
-        reg = '\\[' + f + '(.*' + m + '.*){' + n + ',}\\]';
-        wd = db.match(reg);
-        if (wd) {
-            _LFound = wd[0];
-            n = _LFound.split(m).length;
-        } else {
-            _Found = false;
-        }
+        _LFound = _Found[0];
+        _Found = db.match('\\[' + f + '(.*' + m + '.*){' + _LFound.split(m).length; + ',}\\]');
+    }
+    } else {
+        _LFound = db.match('\\[(' + f + '.*)\\]')[0];
     }
     
 if (_LFound && IsMyturn()) {
@@ -52,11 +47,11 @@ if (_LFound && IsMyturn()) {
 }
 
 function IsMyturn() {
-return ($stage.game.here.is(":visible") || $data._relay) ? 1 : 0;
+return $stage.game.here.is(":visible") || $data._relay ? 1 : 0;
 }
 
 function SETTMR() {
-   Tmr1 = _setInterval(gPlay, 25);
+   Tmr1 = _setInterval(gPlay, 20);
 }
 
 function KILLTMR() {
