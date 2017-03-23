@@ -6,9 +6,7 @@ var wBox = readUrl('En') + readUrl('Ko');
 var db = wBox;
 
 var xDsp = $("div[class='jjo-display ellipse']"),
-    xExit = $('#ExitBtn'),
     xTime = $("div[class='graph jjo-turn-time']"),
-    xItem = $("div[class='items']"),
     xRound = $("div[class='rounds']"),
     xBoard = $('#ReplayDiag .dialog-body');
 
@@ -21,7 +19,7 @@ function gPlay() {
     KILLTMR();
     var s = new Date().getTime();
     var n = 1;
-    var m = xItem.text();
+    var m = $stage.game.items.text();
     var f = xDsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     var _Found = db.match('\\[' + f + '(.*' + m + '.*){' + 1 + ',}\\]');
@@ -30,7 +28,7 @@ function gPlay() {
     if (_Found) {
         while (_Found) {
              _LFound = _Found[0];
-             _Found = db.match('\\[' + f + '(.*' + m + '.*){' + _LFound.split(m).length; + ',}\\]');
+             _Found = db.match('\\[' + f + '(.*' + m + '.*){' + _LFound.split(m).length + ',}\\]');
         }
     } else {
         _LFound = db.match('\\[(' + f + '.*)\\]')[0];
@@ -66,7 +64,7 @@ xRound.on('DOMSubtreeModified', function() {
     }
 });
 
-xExit.on('click', KILLTMR);
+exit.on('click', KILLTMR);
 
 function readUrl(Url) {
     return $.ajax({
@@ -76,7 +74,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>ㅎ</p><p id='My_Log' style='color:#000; font-size:9pt;'>ㄹ</p><input type='button' id = 'AutoBtn' onclick='SETTMR()' value='Auto' />");
+xBoard.html("<p style='color:#000; font-size:9pt'>ㅎ</p><p id='My_Log' style='color:#000; font-size:9pt;'>ㄹ</p><input type='button' onclick='SETTMR()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(300);
 
