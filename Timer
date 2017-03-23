@@ -35,7 +35,7 @@ function gPlay() {
         _LFound = db.match('\\[(' + f + '.*)\\]')[0];
     }
     
-    if (_LFound && IsMyturn()) {
+    if (IsMyturn() && _LFound) {
         var o = { value: _LFound.slice(1, -1), relay: true };
         send('talk', o);
         db = db.replace(_LFound, '');
@@ -50,7 +50,7 @@ function IsMyturn() {
 }
 
 function SETTMR() {
-   Tmr1 = _setInterval(gPlay, 20);
+   Tmr1 = _setInterval(gPlay, 40);
 }
 
 function KILLTMR() {
