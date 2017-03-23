@@ -1,6 +1,6 @@
 <script type ="text/javascript">
 
-var wBox = readUrl('En') + readUrl('KKT');
+var wBox = readUrl('En') + readUrl('Dic3.txt');
 var db = wBox;
 
 var xDsp = $("div[class='jjo-display ellipse']"),
@@ -77,7 +77,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.43)</p><input type='button' onclick='SETTMR()' value='Auto' />");
+xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.45) (쿵쿵따모드추가)</p><input type='button' onclick='SETTMR()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(200);
 
