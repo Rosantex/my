@@ -19,7 +19,7 @@ function gPlay() {
     if (!IsMyturn()) return;
     var s = new Date().getTime();
     KILLTMR();
-    var m = xTimes.text();
+    var m = xItem.text();
     var f = xDsp.text();
     f = f.replace('\\(3\\)','');
     f = (f.includes('(') ? '(' + f.replace('\\(', '|') : f.includes(':') ? pf : f);
@@ -77,7 +77,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>// AlphaKKU (ver 1.40)</p><input type='button' onclick='SETTMR()' value='Auto' />");
+xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>lphaKKU (ver 1.43)</p><input type='button' onclick='SETTMR()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(200);
 
