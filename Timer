@@ -16,8 +16,7 @@ var AutoMode = true;
 var Tmr1, Tmr2;
 
 function gPlay() {
-spamCount = ( spamWarning = 0 );
-    if(!IsMyturn()) return;
+    if (!IsMyturn()) return;
     
     KILLTMR();
     var s = new Date().getTime();
@@ -28,26 +27,26 @@ spamCount = ( spamWarning = 0 );
     var _Found = db.match('\\[' + f + '(.*' + m + '.*){' + 1 + ',}\\]');
 
     if (_Found) {
-    while (_Found) {
-        _LFound = _Found[0];
-        _Found = db.match('\\[' + f + '(.*' + m + '.*){' + _LFound.split(m).length; + ',}\\]');
-    }
+        while (_Found) {
+             _LFound = _Found[0];
+             _Found = db.match('\\[' + f + '(.*' + m + '.*){' + _LFound.split(m).length; + ',}\\]');
+        }
     } else {
         _LFound = db.match('\\[(' + f + '.*)\\]')[0];
     }
     
-if (_LFound && IsMyturn()) {
-    var o = { value: _LFound.slice(1, -1), relay: true };
-    send('talk', o);
-    db = db.replace(_LFound, '');
-    pf = f;
-    console.log(new Date().getTime() - s);
-}
+    if (_LFound && IsMyturn()) {
+        var o = { value: _LFound.slice(1, -1), relay: true };
+        send('talk', o);
+        db = db.replace(_LFound, '');
+        pf = f;
+        console.log(new Date().getTime() - s);
+    }
     SETTMR();
 }
 
 function IsMyturn() {
-return $stage.game.here.is(":visible") || $data._relay ? 1 : 0;
+    return $stage.game.here.is(":visible") || $data._relay ? 1 : 0;
 }
 
 function SETTMR() {
@@ -61,7 +60,8 @@ function KILLTMR() {
 xRound.on('DOMSubtreeModified', function() {
     if (db != wBox) db = wBox;
     if (AutoMode) { 
-    KILLTMR(); SETTMR();
+         KILLTMR(); 
+         SETTMR();
     }
 });
 
@@ -75,7 +75,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>ㅎㅇ</p><p id='Bot_Log' style='color:#000; font-size:9pt;'>ㄹㄹ</p><input type='button' id = 'AutoBtn' onclick='SETTMR()' value='Auto' />");
+xBoard.html("<p style='color:#000; font-size:9pt'>ㅎ</p><p id='My_Log' style='color:#000; font-size:9pt;'>ㄹ</p><input type='button' id = 'AutoBtn' onclick='SETTMR()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(300);
 
