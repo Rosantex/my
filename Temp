@@ -1,0 +1,85 @@
+// by Rosantex
+// AlphaKKU (ver 1.40)
+<script type ="text/javascript">
+
+var wBox = readUrl('En') + readUrl('KKT');
+var db = wBox;
+
+var xDsp = $("div[class='jjo-display ellipse']"),
+    xRound = $("div[class='rounds']"),
+    xBoard = $('#ReplayDiag .dialog-body');
+
+var AutoMode = true;
+var Tmr1;
+
+function gPlay() {
+    if (getOnly() == "for-lobby" || !$data.room.gaming) {
+        KILLTMR();
+        return;
+    }
+    if (!IsMyturn()) return;
+    var s = new Date().getTime();
+    KILLTMR();
+    var m = $stage.game.items.text();
+    var f = xDsp.text();
+    f = f.replace('(3)','');
+    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+    var _Found = db.match('\\[' + f + '(.*' + m + '.*){1,}\\]');
+    var _LFound;
+
+    if (_Found) {
+        while (_Found) {
+             _LFound = _Found[0];
+             _Found = db.match('\\[' + f + '(.*' + m + '.*){' + _LFound.split(m).length + ',}\\]');
+        }
+    } else {
+        _LFound = db.match('\\[(' + f + '.*)\\]')[0];
+    }
+    
+    if (IsMyturn() && _LFound) {
+        var o = { value: _LFound.slice(1, -1), relay: true };
+        send('talk', o);
+        if (spamCount > 0) spamCount = 0;
+        db = db.replace(_LFound, '');
+        pf = f;
+        console.log(new Date().getTime() - s);
+    }
+    SETTMR();
+}
+
+function IsMyturn() {
+    return ($stage.game.here.is(":visible") || $data._relay) ? true : false;
+}
+
+function SETTMR() {
+   Tmr1 = _setInterval(gPlay, 30);
+}
+
+function KILLTMR() {
+   clearInterval(Tmr1);
+   console.log('kill');
+}
+
+xRound.on('DOMSubtreeModified', function() {
+    if (db != wBox) { 
+        db = wBox;
+        if (AutoMode) { 
+            KILLTMR(); 
+            SETTMR();
+        }
+    }
+});
+
+function readUrl(Url) {
+    return $.ajax({
+        type: "GET",
+        url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url,
+        async: false
+    }).responseText;
+}
+
+xBoard.html("<p style='color:#000; font-size:9pt'>ㅎ</p><p id='My_Log' style='color:#000; font-size:9pt;'>ㄹ</p><input type='button' onclick='SETTMR()' value='Auto' />");
+
+$("#ReplayDiag").fadeIn(200);
+
+</script>
