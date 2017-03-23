@@ -53,17 +53,18 @@ function pTime(plug) {
 
 function Toggle_Auto() {
     AutoMode = !AutoMode;
-    console.log('AutoMode: ' + AutoMode);
     pTime(AutoMode);
+    console.log('AutoMode: ' + AutoMode);
 }
 
 xRound.on('DOMSubtreeModified', function() {
     if (db != wBox) { 
         db = wBox;
         if (AutoMode) { 
+	    pTime(false);
             pTime(true);
-            pTime(false);
         }
+	console.log('DB Set: Complete');
     }
 });
 
@@ -80,7 +81,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.487) (쿵쿵따 모드 추가)</p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.49) (코리아섭 처리 완료 </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(150);
 
