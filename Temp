@@ -9,6 +9,7 @@ var xDsp = $("div[class='jjo-display ellipse']"),
     xBoard = $('#ReplayDiag .dialog-body');
 
 var AutoMode = true;
+var _Kill = false;
 var Tmr1;
 
 function gPlay() {
@@ -41,7 +42,7 @@ function gPlay() {
         if (spamCount > 0) spamCount = 0;
         db = db.replace(_LFound, '');
         pf = f;
-        console.log('SearchTime: ' + new Date().getTime() - s);
+        console.log(new Date().getTime() - s);
     }
     SETTMR();
 }
@@ -52,11 +53,14 @@ function IsMyturn() {
 
 function SETTMR() {
    Tmr1 = _setInterval(gPlay, 30);
+   _Kill = false;
 }
 
 function KILLTMR() {
+   if (_Kill) return;
    clearInterval(Tmr1);
    console.log('AutoMode: kill');
+   _Kill = true;
 }
 
 xRound.on('DOMSubtreeModified', function() {
