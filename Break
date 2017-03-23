@@ -17,6 +17,8 @@ var AutoMode = true;
 
 function gPlay() {
     if (!xTurn.is(":visible")) return;
+    
+    pTime(false);
     var s = new Date().getTime();
     var m = xItem.text();
     var f = xDsp.text().replace('(3)','');
@@ -40,27 +42,27 @@ function gPlay() {
         pf = f;
         console.log(new Date().getTime() - s);
     }
-    pTime(1);
+    pTime(true);
 }
 
 
 function pTime(plug) {
-	var e = 'DOMSubtreeModified';
-	plug ? xTime.on(e, gPlay) : xTime.off(e);
+    var e = 'DOMSubtreeModified';
+    plug ? xTime.on(e, gPlay) : xTime.off(e);
 }
 
 function Toggle_Auto() {
-	AutoMode = !AutoMode;
+    AutoMode = !AutoMode;
     console.log('AutoMode: ' + AutoMode);
-	pTime(AutoMode);
+    pTime(AutoMode);
 }
 
 xRound.on('DOMSubtreeModified', function() {
     if (db != wBox) { 
         db = wBox;
         if (AutoMode) { 
-            pTime(0);
-            pTime(1);
+            pTime(true);
+            pTime(false);
         }
     }
 });
@@ -73,7 +75,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.48) (쿵쿵따 모드 추가)</p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.487) (쿵쿵따 모드 추가)</p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(150);
 
