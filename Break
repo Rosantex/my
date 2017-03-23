@@ -16,7 +16,7 @@ var xDsp = $("div[class='jjo-display ellipse']"),
 var AutoMode = true;
 
 function gPlay() {
-    if (getOnly() == "for-lobby" || !$data.room.gaming) {
+    if (!$data.room.gaming) {
         pTime(0);
         return;
     }
