@@ -14,19 +14,16 @@ var xDsp = $("div[class='jjo-display ellipse']"),
     xBoard = $('#ReplayDiag .dialog-body');
 
 var AutoMode = true;
-var _Kill = false;
 
 function gPlay() {
     if (getOnly() == "for-lobby" || !$data.room.gaming) {
-        KILLTMR();
+        pTime(0);
         return;
     }
     if (!IsMyturn()) return;
     var s = new Date().getTime();
-    KILLTMR();
     var m = xItem.text();
-    var f = xDsp.text();
-    f = f.replace('(3)','');
+    var f = xDsp.text().replace('(3)','');
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log(f);
     var _Found = db.match('\\[' + f + '(.*' + m + '.*){1,}\\]');
@@ -41,38 +38,36 @@ function gPlay() {
     }
     
     if (IsMyturn() && _LFound) {
-        var o = { value: _LFound.slice(1, -1), relay: true };
-        send('talk', o);
-        if (spamCount > 0) spamCount = 0;
+        xTalk.val(_LFound.slice(1, -1));
+      	xTake.click();
         db = db.replace(_LFound, '');
         pf = f;
         console.log(new Date().getTime() - s);
     }
-    SETTMR();
+    pTime(1);
 }
 
 function IsMyturn() {
-    return ($(".game-input").is(":visible") || $data._relay) ? true : false;
+    return (xTurn.is(":visible") || $data._relay) ? true : false;
 }
 
-function SETTMR() {
-   var Tmr1 = _setInterval(gPlay, 30);
-   _Kill = false;
+function pTime(plug) {
+	var e = 'DOMSubtreeModified';
+	plug ? xTime.on(e, gPlay) : xTime.off(e);
 }
 
-function KILLTMR() {
-   if (_Kill) return;
-   clearInterval(Tmr1);
-   console.log('AutoMode: kill');
-   _Kill = true;
+function Toggle_Auto() {
+	AutoMode = !AutoMode;
+    console.log('AutoMode: ' + AutoMode);
+	pTime(AutoMode);
 }
 
 xRound.on('DOMSubtreeModified', function() {
     if (db != wBox) { 
         db = wBox;
         if (AutoMode) { 
-            KILLTMR(); 
-            SETTMR();
+            pTime(0);
+            pTime(1);
         }
     }
 });
@@ -85,8 +80,8 @@ function readUrl(Url) {
     }).responseText;
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.45) (쿵쿵따모드추가)</p><input type='button' onclick='SETTMR()' value='Auto' />");
+xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.45) (쿵쿵따모드추가)</p><input type='button' onclick='pTime(1)' value='Auto' />");
 
-$("#ReplayDiag").fadeIn(200);
+$("#ReplayDiag").fadeIn(150);
 
 </script>
