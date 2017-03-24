@@ -1,20 +1,29 @@
 <script type ="text/javascript">
+
 var db = rUrl('Ko.txt').split('\n').join('');
 var $Dsp = $("div[class='jjo-display ellipse']"), 
 $Talk = $('#Talk'), 
 $Take = $('#ChatBtn'),
+$Turn = $('.game-input'),
 $Board = $('#ReplayDiag .dialog-body');
+
 function Jaum() {
+if (!$Turn.is(":visible")) return;
 var s = new Date().getTime();
 var f = $Dsp.text();
 var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { var a = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'.search($1) * 588 + 44032;
    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';});
 var _Found = db.match(new RegExp('\\['+res+'\\]','g'));
-$Talk.val(_Found[Math.floor(Math.random()*_Found.length)]);
+$Talk.val(_Found[Math.floor(Math.random()*_Found.length)].slice(1,-1));
 $Take.click();
 console.log('<'+f+'>\n'+_Found+'\nTime: '+(new Date().getTime()-s).toString());
 }
+
 $Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><input type='button' onclick='Jaum()' value='PLAY' />"); 
 $('#ReplayDiag').fadeIn(150);
-function rUrl(Url) {return $.ajax({ type: "GET", url: "https://raw.githubusercontent.com/Rosantex/my/master/"+Url, async: false }).responseText;}
+
+function rUrl(Url) {
+return $.ajax({ type: "GET", url: "https://raw.githubusercontent.com/Rosantex/my/master/"+Url, async: false }).responseText;
+}
+
 </script>
