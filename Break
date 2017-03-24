@@ -1,6 +1,6 @@
 <script type ="text/javascript">
 
-var wBox = readUrl('En') + readUrl('Dic3.txt');
+var wBox = readUrl('En') + shuffle(readUrl('Dic3.txt').split('\n')).join('\n');
 var db;
 
 var xDsp = $("div[class='jjo-display ellipse']"),
@@ -73,6 +73,19 @@ function sleep(delay) {
 	while ( new Date().getTime() < start + delay ); 
 }
 
+function shuffle(arr) {
+	var CurIndex = arr.length, TempValue, RndIndex;
+	
+	while (0 !== CurIndex) {
+		RndIndex = Math.floor(Math.random() * CurIndex);
+		CurIndex -= 1;
+		TempValue = arr[CurIndex];
+		arr[CurIndex] = arr[RndIndex];
+		arr[RndIndex] = TempValue;
+	}
+	return arr;
+}
+
 function readUrl(Url) {
     return $.ajax({
         type: "GET",
@@ -81,7 +94,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.49) (코리아섭 처리 완료 </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.52) (+shuffle </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(150);
 
