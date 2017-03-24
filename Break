@@ -10,10 +10,12 @@ var xDsp = $("div[class='jjo-display ellipse']"),
     xTime = $("div[class='graph jjo-turn-time']"),
     xTurn = $('.game-input'),
     xItem = $("div[class='items']"),
+    xMode = $("h5.room-head-mode"),
     xRound = $("div[class='rounds']"),
     xBoard = $('#ReplayDiag .dialog-body');
 
 var AutoMode = true;
+var _State;
 
 function gPlay() {
     if (!xTurn.is(":visible")) return;
@@ -41,6 +43,7 @@ function gPlay() {
         db = db.replace(_LFound, '');
         pf = f;
         console.log(new Date().getTime() - s);
+	if (_State) _State = false; 
     }
     sleep(25);
     pTime(true);
@@ -58,14 +61,16 @@ function Toggle_Auto() {
 }
 
 xRound.on('DOMSubtreeModified', function() {
-    if (db != wBox) { 
+    if (_State) return;
+    var option = xMode.html().split(' / ');
+    var mode = option.splice(0, 1);
         db = wBox;
         if (AutoMode) { 
 	    pTime(false);
             pTime(true);
+	    console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
         }
-	console.log('DB Set: Complete');
-    }
+    _State = true;
 });
 
 function sleep(delay) { 
