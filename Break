@@ -1,29 +1,28 @@
 <script type ="text/javascript">
 
-var wBox = readUrl('En') + shuffle(readUrl('Dic3.txt').split('\n')).join('\n');
+var wBox = readUrl('En') + shuffle(readUrl('Dic4.txt').split('\n')).join('\n');
 var db;
 
-var xDsp = $("div[class='jjo-display ellipse']"),
-    xTalk = $('#Talk'),
-    xTake = $('#ChatBtn'),
-    xExit = $('#ExitBtn'),
-    xTime = $("div[class='graph jjo-turn-time']"),
-    xTurn = $('.game-input'),
-    xItem = $("div[class='items']"),
-    xMode = $("h5.room-head-mode"),
-    xRound = $("div[class='rounds']"),
-    xBoard = $('#ReplayDiag .dialog-body');
+var $Dsp = $("div[class='jjo-display ellipse']"),
+    $Talk = $('#Talk'),
+    $Take = $('#ChatBtn'),
+    $Exit = $('#ExitBtn'),
+    $Time = $("div[class='graph jjo-turn-time']"),
+    $Turn = $('.game-input'),
+    $Item = $("div[class='items']"),
+    $Round = $("div[class='rounds']"),
+    $Board = $('#ReplayDiag .dialog-body');
 
 var AutoMode = true;
 var _State;
 
 function gPlay() {
-    if (!xTurn.is(":visible")) return;
+    if (!$Turn.is(":visible")) return;
     
     pTime(false);
     var s = new Date().getTime();
-    var m = xItem.text();
-    var f = xDsp.text().replace('(3)','');
+    var m = $Item.text();
+    var f = $Dsp.text().replace('(3)','');
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log(f);
     var _Found = db.match('\\[' + f + '(.*' + m + '.*){1,}\\]');
@@ -37,9 +36,9 @@ function gPlay() {
         _LFound = (db.match('\\[(' + f + '.*)\\]')||['0'])[0];
     }
     
-    if (xTurn.is(":visible") && _LFound) {
-        xTalk.val(_LFound.slice(1, -1));
-      	xTake.click();
+    if ($Turn.is(":visible") && _LFound) {
+        $Talk.val(_LFound.slice(1, -1));
+      	$Take.click();
         db = db.replace(_LFound, '');
         pf = f;
         console.log(new Date().getTime() - s);
@@ -51,7 +50,7 @@ function gPlay() {
 
 function pTime(plug) {
     var e = 'DOMSubtreeModified';
-    plug ? xTime.on(e, gPlay) : xTime.off(e);
+    plug ? $Time.on(e, gPlay) : $Time.off(e);
 }
 
 function Toggle_Auto() {
@@ -60,16 +59,17 @@ function Toggle_Auto() {
     console.log('AutoMode: ' + AutoMode);
 }
 
-xRound.on('DOMSubtreeModified', function() {
+$Round.on('DOMSubtreeModified', function() {
     if (_State) return;
-    var option = xMode.html().split(' / ');
+    var $Mode = $("h5.room-head-mode");
+    var option = $Mode.html().split(' / ');
     var mode = option.splice(0, 1);
         db = wBox;
         if (AutoMode) { 
 	    pTime(false);
             pTime(true);
-	    console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
         }
+    console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
     _State = true;
 });
 
@@ -99,7 +99,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.52) (+shuffle </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.52) (+shuffle) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(150);
 
