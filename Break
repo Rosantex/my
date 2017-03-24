@@ -1,6 +1,6 @@
 <script type ="text/javascript">
 
-var wBox = readUrl('En') + shuffle(readUrl('Dic4.txt').split('\n')).join('\n');
+var wBox = readUrl('En') + readUrl('Ko.txt');
 var db;
 
 var $Dsp = $("div[class='jjo-display ellipse']"),
@@ -99,7 +99,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.52) (+shuffle) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.60) (+ko DB) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(150);
 
