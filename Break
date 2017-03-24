@@ -1,7 +1,7 @@
 <script type ="text/javascript">
 
 var wBox = readUrl('En') + readUrl('Dic3.txt');
-var db = wBox;
+var db;
 
 var xDsp = $("div[class='jjo-display ellipse']"),
     xTalk = $('#Talk'),
