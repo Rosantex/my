@@ -11,11 +11,9 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Round = $("div[class='rounds']"),
     $Board = $('#ReplayDiag .dialog-body');
     
-var mode, option, _State;
 var AutoMode = true;
 
 function gPlay() {
-    if (_State) _State = false; 
     if (!$Turn.is(":visible")) return;
     pTime(false);
     var s = new Date().getTime();
@@ -25,12 +23,11 @@ function gPlay() {
     console.log('Time: ' + (new Date().getTime()-s).toString());
     
     for (var i = 0, x = _Found.length; i < x; i++) {
-        if (!$Turn.is(":visible")) return;
+       if (!$Turn.is(":visible")) return;
        $Talk.val(_Found[i].slice(1, -1));
        $Take.click();
-       sleep(400)
+       sleep(80)
     }
-    console.log('Time: ' + (new Date().getTime()-s).toString());
     pTime(true);
 }
 
@@ -47,16 +44,10 @@ function Toggle_Auto() {
 }
 
 $Round.on('DOMSubtreeModified', function() {
-    if (_State) return;
-    var $Mode = $("h5.room-head-mode");
-    option = $Mode.html().split(' / ');
-    mode = option.splice(0, 1);
         if (AutoMode) { 
 	    pTime(false);
             pTime(true);
         }
-    console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
-    _State = true;
 });
 
 function sleep(delay) { 
