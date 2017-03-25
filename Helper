@@ -15,6 +15,7 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Board = $('#ReplayDiag .dialog-body');
     
 $Talk.on('keydown', function(e) {
+if (!$Turn.is(":visible")) return;
 if (e.keyCode == 113) wPrint();
 });
 
@@ -38,7 +39,6 @@ if (_State) return;
 
 function shuffle(arr) {
 	var CurIndex = arr.length, TempValue, RndIndex;
-	
 	while (0 !== CurIndex) {
 		RndIndex = Math.floor(Math.random() * CurIndex);
 		CurIndex -= 1;
@@ -58,7 +58,6 @@ function readUrl(Url) {
 }
 
 $Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU(+ ko) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
-
 $("#ReplayDiag").fadeIn(150);
 
 </script>
