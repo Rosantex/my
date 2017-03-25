@@ -13,22 +13,13 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Round = $("div[class='rounds']"),
     $Board = $('#ReplayDiag .dialog-body');
     
-var classes = {'한국어 타자 대결': 'Typing', '영어 타자 대결': 'Typing', '한국어 끝말잇기': 'Classic', '영어 끄투': 'Classic', '영어 끝말잇기': 'Classic' };
+var classes = {한국어 타자 대결: 'Typing', 영어 타자 대결: 'Typing', 한국어 끝말잇기: 'Classic', '영어 끄투': 'Classic', 영어 끝말잇기: 'Classic' };
 var Tactic = [];
 
 var AutoMode = true;
-var mode, option;
+var mode, option, _class;
 var _State;
-
 var pf;
-
-function gPlay() {
-   if (_State) _State = false; 
-   if (!$Turn.is(":visible")) return;
-   pTime(false);
-   Tactic[mode]();
-   pTime(true);
-}
 
 Tactic['Typing'] = function() {
    var f = $Dsp.text();
@@ -66,9 +57,18 @@ Tactic['Classic'] = function() {
     sleep(25);
 }
 
+function gPlay() {
+   if (_State) _State = false; 
+   if (!$Turn.is(":visible")) return;
+   pTime(false);
+   Tactic[_class]();
+   pTime(true);
+}
+
 function pTime(plug) {
     var e = 'DOMSubtreeModified';
     plug ? $Time.on(e, gPlay) : $Time.off(e);
+    console.log('pTime: ' + plug);
 }
 
 function Toggle_Auto() {
@@ -88,7 +88,8 @@ $Round.on('DOMSubtreeModified', function() {
             pTime(true);
         }
     console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
-    mode = classes[mode];
+    _class = classes[mode];
+    console.log('class: ' + mode);
     _State = true;
 });
 
@@ -118,7 +119,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.65) (+ ko) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.70) (+ ko) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(150);
 
