@@ -13,7 +13,19 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Round = $("div[class='rounds']"),
     $Board = $('#ReplayDiag .dialog-body');
     
-var classes = {한국어 타자 대결: 'Typing', 영어 타자 대결: 'Typing', 한국어 끝말잇기: 'Classic', '영어 끄투': 'Classic', 영어 끝말잇기: 'Classic' };
+var classes = {
+                    한국어 타자 대결: 'Typing', 
+	            영어 타자 대결: 'Typing', 
+	            한국어 끝말잇기: 'Classic', 
+	            영어 끄투: 'Classic', 
+	            영어 끝말잇기: 'Classic' 
+		    자음퀴즈: 'Jaum', 
+		    훈민정음: 'Jaum', 
+		    한국어 단어 대결: 'Word', 
+		    영어 단어 대결: 'Word',
+                    한국어 솎솎: 'Puzzle',
+                    영어 솎솎: 'Puzzle'		     	
+              };
 var Tactic = [];
 
 var AutoMode = true;
