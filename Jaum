@@ -1,28 +1,67 @@
 <script type ="text/javascript">
 
-var db = rUrl('Ko.txt').split('\n').join('');
-var $Dsp = $("div[class='jjo-display ellipse']"), 
-$Talk = $('#Talk'), 
-$Take = $('#ChatBtn'),
-$Turn = $('.game-input'),
-$Board = $('#ReplayDiag .dialog-body');
+var db = readUrl('Ko.txt').split('\n').join('');
+var $Dsp = $("div[class='jjo-display ellipse']"),
+    $Talk = $('#Talk'),
+    $Take = $('#ChatBtn'),
+    $Exit = $('#ExitBtn'),
+    $Time = $("div[class='graph jjo-turn-time']"),
+    $Turn = $('.game-input'),
+    $Item = $("div[class='items']"),
+    $Round = $("div[class='rounds']"),
+    $Board = $('#ReplayDiag .dialog-body');
+    
+var mode, option, _State;
+var AutoMode = true;
 
-function Jaum() {
-if (!$Turn.is(":visible")) return;
-var s = new Date().getTime();
-var f = $Dsp.text();
-var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { var a = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'.search($1) * 588 + 44032;
-   return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';});
-var _Found = db.match(new RegExp('\\['+res+'\\]','g'));
-$Talk.val(_Found[Math.floor(Math.random()*_Found.length)].slice(1,-1));
-$Take.click();
-console.log('<'+f+'>\n'+_Found+'\nTime: '+(new Date().getTime()-s).toString());
+function gPlay() {
+    if (_State) _State = false; 
+    if (!$Turn.is(":visible")) return;
+    pTime(false);
+    var s = new Date().getTime();
+    var f = $Dsp.text();
+    var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { var a = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'.search($1) * 588 + 44032; return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';});
+    var _Found = db.match(new RegExp('\\['+res+'\\]','g'));
+
+    for (var i = 0, x = _Found.length; i < x, i++) {
+       $Talk.val(_Found[i].slice(1, -1));
+       $Take.click();
+       sleep(500)
+    }
+    console.log('Time: ' + (new Date().getTime()-s).toString());
+    pTime(true);
 }
 
-$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><input type='button' onclick='Jaum()' value='PLAY' />"); 
+function pTime(plug) {
+    var e = 'DOMSubtreeModified';
+    plug ? $Time.on(e, gPlay) : $Time.off(e);
+    console.log('pTime: ' + plug);
+}
+
+function Toggle_Auto() {
+    AutoMode = !AutoMode;
+    pTime(AutoMode);
+    console.log('AutoMode: ' + AutoMode);
+}
+
+$Round.on('DOMSubtreeModified', function() {
+    if (_State) return;
+    var $Mode = $("h5.room-head-mode");
+    option = $Mode.html().split(' / ');
+    mode = option.splice(0, 1);
+        if (AutoMode) { 
+	         pTime(false);
+            pTime(true);
+        }
+    console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
+    _State = true;
+});
+
+
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><input type='button' onclick='gPlay()' value='PLAY' />"); 
 $('#ReplayDiag').fadeIn(150);
 
-function rUrl(Url) {
+function readUrl(Url) {
 return $.ajax({ type: "GET", url: "https://raw.githubusercontent.com/Rosantex/my/master/"+Url, async: false }).responseText;
 }
 
