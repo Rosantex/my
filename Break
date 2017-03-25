@@ -14,6 +14,7 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Board = $('#ReplayDiag .dialog-body');
 
 var AutoMode = true;
+var mode, option;
 var _State;
 
 function gPlay() {
@@ -24,7 +25,7 @@ function gPlay() {
     var m = $Item.text();
     var f = $Dsp.text().replace('(3)','');
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-    console.log(f);
+    console.log('Search: ' + f);
     var _Found = db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]');
     var _LFound;
     if (_Found) {
@@ -62,8 +63,8 @@ function Toggle_Auto() {
 $Round.on('DOMSubtreeModified', function() {
     if (_State) return;
     var $Mode = $("h5.room-head-mode");
-    var option = $Mode.html().split(' / ');
-    var mode = option.splice(0, 1);
+    option = $Mode.html().split(' / ');
+    mode = option.splice(0, 1);
         db = wBox;
         if (AutoMode) { 
 	    pTime(false);
@@ -99,7 +100,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.60) (+ko DB) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.65) (+ ko) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(150);
 
