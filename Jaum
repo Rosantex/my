@@ -23,10 +23,10 @@ function gPlay() {
     var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { var a = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'.search($1) * 588 + 44032; return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';});
     var _Found = db.match(new RegExp('\\['+res+'\\]','g'));
 
-    for (var i = 0, x = _Found.length; i < x, i++) {
+    for (var i = 0, x = _Found.length; i < x; i++) {
        $Talk.val(_Found[i].slice(1, -1));
        $Take.click();
-       sleep(500)
+       sleep(400)
     }
     console.log('Time: ' + (new Date().getTime()-s).toString());
     pTime(true);
@@ -50,7 +50,7 @@ $Round.on('DOMSubtreeModified', function() {
     option = $Mode.html().split(' / ');
     mode = option.splice(0, 1);
         if (AutoMode) { 
-	         pTime(false);
+	    pTime(false);
             pTime(true);
         }
     console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
