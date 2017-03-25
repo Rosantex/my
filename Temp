@@ -9,6 +9,8 @@ var xDsp = $("div[class='jjo-display ellipse']"),
     xBoard = $('#ReplayDiag .dialog-body');
 
 var AutoMode = true;
+var _State;
+var mode, option;
 var _Kill = false;
 var Tmr1;
 
@@ -24,7 +26,7 @@ function gPlay() {
     var f = xDsp.text();
     f = f.replace('(3)','');
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-    console.log(f);
+    console.log('Search: ' + f);
     var _Found = db.match('\\[' + f + '(.*' + m + '.*){1,}\\]');
     var _LFound;
     if (_Found) {
@@ -42,7 +44,7 @@ function gPlay() {
         if (spamCount > 0) spamCount = 0;
         db = db.replace(_LFound, '');
         pf = f;
-        console.log(new Date().getTime() - s);
+        console.log('Time: ' + (new Date().getTime() - s).toString());
     }
     SETTMR();
 }
@@ -53,25 +55,31 @@ function IsMyturn() {
 
 function SETTMR() {
    Tmr1 = _setInterval(gPlay, 30);
+   console.log('AutoMode: Set');
    _Kill = false;
 }
 
 function KILLTMR() {
    if (_Kill) return;
    clearInterval(Tmr1);
-   console.log('AutoMode: kill');
+   console.log('AutoMode: Kill');
    _Kill = true;
 }
 
-xRound.on('DOMSubtreeModified', function() {
-    if (db != wBox) { 
+$Round.on('DOMSubtreeModified', function() {
+    if (_State) return;
+    var $Mode = $("h5.room-head-mode");
+    option = $Mode.html().split(' / ');
+    mode = option.splice(0, 1);
         db = wBox;
         if (AutoMode) { 
             KILLTMR(); 
             SETTMR();
         }
-    }
-});
+    console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
+    _State = true;
+})
+
 
 function shuffle(arr) {
 	var CurIndex = arr.length, TempValue, RndIndex;
@@ -94,7 +102,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.52) (셔플기능추가)</p><input type='button' onclick='SETTMR()' value='Auto' />");
+xBoard.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.60) (셔플기능추가)</p><input type='button' onclick='SETTMR()' value='Auto' />");
 
 $("#ReplayDiag").fadeIn(200);
 
