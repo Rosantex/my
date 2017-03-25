@@ -12,12 +12,29 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Item = $("div[class='items']"),
     $Round = $("div[class='rounds']"),
     $Board = $('#ReplayDiag .dialog-body');
-
+    
+var Modes = {'한국어 타자 대결': 'Typing', '영어 타자 대결': 'Typing', '영어 끄투': 'Classic'}
+var Tactic = [];
 var AutoMode = true;
 var mode, option;
 var _State;
 
+
 function gPlay() {
+   Tactic[mode]();
+}
+
+Tactic['Typing'] = function() {
+if (!$Turn.is(":visible")) return;
+pTime(false);
+var f = $Dsp.text();
+$Talk.val( option.includes('속담') ? f : f.split(' ')[0]);
+$Take.click();
+sleep(40);
+pTime(true);
+}
+
+Tactic['Classic'] = function() {
     if (!$Turn.is(":visible")) return;
     
     pTime(false);
@@ -71,6 +88,7 @@ $Round.on('DOMSubtreeModified', function() {
             pTime(true);
         }
     console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
+    mode = ('한국어 타자 연습' )
     _State = true;
 });
 
