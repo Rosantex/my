@@ -1,0 +1,106 @@
+<script type ="text/javascript">
+
+var wBox = readUrl('En') + readUrl('Ko.txt');
+var db;
+
+var $Dsp = $("div[class='jjo-display ellipse']"),
+    $Talk = $('#Talk'),
+    $Take = $('#ChatBtn'),
+    $Exit = $('#ExitBtn'),
+    $Time = $("div[class='graph jjo-turn-time']"),
+    $Turn = $('.game-input'),
+    $Item = $("div[class='items']"),
+    $Round = $("div[class='rounds']"),
+    $Board = $('#ReplayDiag .dialog-body');
+
+var AutoMode = true;
+var _State;
+
+function gPlay() {
+    if (!$Turn.is(":visible")) return;
+    
+    pTime(false);
+    var s = new Date().getTime();
+    var m = $Item.text();
+    var f = $Dsp.text().replace('(3)','');
+    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+    console.log(f);
+    var _Found = db.match('\\[' + f + '(.*' + m + '.*){1,}\\]');
+    var _LFound;
+    if (_Found) {
+        while (_Found) {
+             _LFound = _Found[0];
+             _Found = db.match('\\[' + f + '(.*' + m + '.*){' + _LFound.split(m).length + ',}\\]');
+        }
+    } else {
+        _LFound = (db.match('\\[(' + f + '.*)\\]')||['0'])[0];
+    }
+    
+    if ($Turn.is(":visible") && _LFound) {
+        $Talk.val(_LFound.slice(1, -1));
+      	$Take.click();
+        db = db.replace(_LFound, '');
+        pf = f;
+        console.log(new Date().getTime() - s);
+	if (_State) _State = false; 
+    }
+    sleep(25);
+    pTime(true);
+}
+
+function pTime(plug) {
+    var e = 'DOMSubtreeModified';
+    plug ? $Time.on(e, gPlay) : $Time.off(e);
+}
+
+function Toggle_Auto() {
+    AutoMode = !AutoMode;
+    pTime(AutoMode);
+    console.log('AutoMode: ' + AutoMode);
+}
+
+$Round.on('DOMSubtreeModified', function() {
+    if (_State) return;
+    var $Mode = $("h5.room-head-mode");
+    var option = $Mode.html().split(' / ');
+    var mode = option.splice(0, 1);
+        db = wBox;
+        if (AutoMode) { 
+	    pTime(false);
+            pTime(true);
+        }
+    console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
+    _State = true;
+});
+
+function sleep(delay) { 
+	var start = new Date().getTime(); 
+	while ( new Date().getTime() < start + delay ); 
+}
+
+function shuffle(arr) {
+	var CurIndex = arr.length, TempValue, RndIndex;
+	
+	while (0 !== CurIndex) {
+		RndIndex = Math.floor(Math.random() * CurIndex);
+		CurIndex -= 1;
+		TempValue = arr[CurIndex];
+		arr[CurIndex] = arr[RndIndex];
+		arr[RndIndex] = TempValue;
+	}
+	return arr;
+}
+
+function readUrl(Url) {
+    return $.ajax({
+        type: "GET",
+        url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url,
+        async: false
+    }).responseText;
+}
+
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.60) (+ko DB) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+
+$("#ReplayDiag").fadeIn(150);
+
+</script>
