@@ -44,7 +44,7 @@ function gPlay() {
         console.log(new Date().getTime() - s);
 	if (_State) _State = false; 
     }
-    sleep(50);
+    sleep(100);
     pTime(true);
 }
 
@@ -79,8 +79,7 @@ function sleep(delay) {
 }
 
 function shuffle(arr) {
-	var CurIndex = arr.length, TempValue, RndIndex;
-	
+	var CurIndex = arr.length, TempValue, RndIndex;	
 	while (0 !== CurIndex) {
 		RndIndex = Math.floor(Math.random() * CurIndex);
 		CurIndex -= 1;
@@ -99,8 +98,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.60) (+ko DB) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
-
-$("#ReplayDiag").fadeIn(150);
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.60) (+ko DB) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+$("#ReplayDiag").fadeIn(250);
 
 </script>
