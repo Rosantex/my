@@ -15,9 +15,11 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Board = $('#ReplayDiag .dialog-body');
    
    
-$(window).keypress(function(e) {
+$(window).on('keydown', function(e) {
 if (!$Turn.is(":visible")) return;
-if (e.keyCode == 48) wPrint();
+if (e.keyCode == 48) {
+wPrint();
+}
 });
 
 function wPrint() {
@@ -28,6 +30,7 @@ function wPrint() {
     var _Found = (db.match('\\[(' + f + '.*[^다])\\]')[0] || '');
         $Talk.val(_Found.slice(1, -1));
       	$Take.click();
+	$Talk.val('');
         db = db.replace(_Found, '');
         pf = f;
 }
