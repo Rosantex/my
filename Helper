@@ -57,7 +57,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU(+ ko) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU(+ ko)");
 $("#ReplayDiag").fadeIn(150);
 
 </script>
