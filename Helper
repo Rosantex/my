@@ -33,7 +33,7 @@ function wPrint() {
 
 $Round.on('DOMSubtreeModified', function() {
 if (_State) return;
-        db = wBox;
+        db = shuffle(wBox.split('\n')).join('\n');
         _State = true;
 })
 
