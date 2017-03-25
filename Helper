@@ -13,10 +13,11 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Item = $("div[class='items']"),
     $Round = $("div[class='rounds']"),
     $Board = $('#ReplayDiag .dialog-body');
-    
-$Talk.on('keydown', function(e) {
+   
+   
+$(window).keypress(function(e) {
 if (!$Turn.is(":visible")) return;
-if (e.keyCode == 113) wPrint();
+if (e.keyCode == 48) wPrint();
 });
 
 function wPrint() {
