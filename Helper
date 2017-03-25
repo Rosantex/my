@@ -27,7 +27,7 @@ function wPrint() {
     var _Found = (db.match('\\[(' + f + '.*[^다])\\]')[0] || '');
         $Talk.val(_Found.slice(1, -1));
       	$Take.click();
-        db = db.replace(_LFound, '');
+        db = db.replace(_Found, '');
         pf = f;
 }
 
