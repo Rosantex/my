@@ -1,0 +1,65 @@
+<script type ="text/javascript">
+
+var wBox = readUrl('En') + readUrl('Ko.txt').split('\n');
+var db;
+var _State;
+
+var $Dsp = $("div[class='jjo-display ellipse']"),
+    $Talk = $('#Talk'),
+    $Take = $('#ChatBtn'),
+    $Exit = $('#ExitBtn'),
+    $Time = $("div[class='graph jjo-turn-time']"),
+    $Turn = $('.game-input'),
+    $Item = $("div[class='items']"),
+    $Round = $("div[class='rounds']"),
+    $Board = $('#ReplayDiag .dialog-body');
+    
+$Talk.on('keydown', function(e) {
+if (e.keyCode == 113) wPrint();
+});
+
+function wPrint() {
+    if (_State) _State = false;
+    var f = $Dsp.text()
+    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+    console.log('Search: ' + f);
+    var _Found = (db.match('\\[(' + f + '.*[^다])\\]')[0] || '');
+        $Talk.val(_Found.slice(1, -1));
+      	$Take.click();
+        db = db.replace(_LFound, '');
+        pf = f;
+    }
+}
+
+$Round.on('DOMSubtreeModified', function() {
+if (_State) return;
+        db = shuffle(wBox).join('\n');
+        _State = true;
+})
+
+function shuffle(arr) {
+	var CurIndex = arr.length, TempValue, RndIndex;
+	
+	while (0 !== CurIndex) {
+		RndIndex = Math.floor(Math.random() * CurIndex);
+		CurIndex -= 1;
+		TempValue = arr[CurIndex];
+		arr[CurIndex] = arr[RndIndex];
+		arr[RndIndex] = TempValue;
+	}
+	return arr;
+}
+
+function readUrl(Url) {
+    return $.ajax({
+        type: "GET",
+        url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url,
+        async: false
+    }).responseText;
+}
+
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU(+ ko) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+
+$("#ReplayDiag").fadeIn(150);
+
+</script>
