@@ -3,10 +3,10 @@
 var wBox = readUrl('En') + shuffle(readUrl('Dic3.txt').split('\n')).join('\n');
 var db;
 
-var xDsp = $("div[class='jjo-display ellipse']"),
-    xItem = $("div[class='items']"),
-    xRound = $("div[class='rounds']"),
-    xBoard = $('#ReplayDiag .dialog-body');
+var $Dsp = $("div[class='jjo-display ellipse']"),
+    $Item = $("div[class='items']"),
+    $Round = $("div[class='rounds']"),
+    $Board = $('#ReplayDiag .dialog-body');
 
 var AutoMode = true;
 var _State;
