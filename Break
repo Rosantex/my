@@ -25,15 +25,15 @@ function gPlay() {
     var f = $Dsp.text().replace('(3)','');
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log(f);
-    var _Found = db.match('\\[' + f + '(.*' + m + '.*){1,}\\]');
+    var _Found = db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]');
     var _LFound;
     if (_Found) {
         while (_Found) {
              _LFound = _Found[0];
-             _Found = db.match('\\[' + f + '(.*' + m + '.*){' + _LFound.split(m).length + ',}\\]');
+             _Found = db.match('\\[' + f + '(.*' + m + '.*){' + _LFound.split(m).length + ',}[^다]\\]');
         }
     } else {
-        _LFound = (db.match('\\[(' + f + '.*)\\]')||['0'])[0];
+        _LFound = (db.match('\\[(' + f + '.*[^다])\\]')||[])[0];
     }
     
     if ($Turn.is(":visible") && _LFound) {
@@ -41,7 +41,7 @@ function gPlay() {
       	$Take.click();
         db = db.replace(_LFound, '');
         pf = f;
-        console.log(new Date().getTime() - s);
+        console.log('Time: ' + (new Date().getTime() - s).toString());
 	if (_State) _State = false; 
     }
     sleep(25);
