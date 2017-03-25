@@ -13,37 +13,39 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Round = $("div[class='rounds']"),
     $Board = $('#ReplayDiag .dialog-body');
     
-var Modes = {'한국어 타자 대결': 'Typing', '영어 타자 대결': 'Typing', '영어 끄투': 'Classic'}
+var classes = {'한국어 타자 대결': 'Typing', '영어 타자 대결': 'Typing', '한국어 끝말잇기': 'Classic', '영어 끄투': 'Classic', '영어 끝말잇기': 'Classic' };
 var Tactic = [];
+
 var AutoMode = true;
 var mode, option;
 var _State;
 
+var pf;
 
 function gPlay() {
+   if (_State) _State = false; 
+   if (!$Turn.is(":visible")) return;
+   pTime(false);
    Tactic[mode]();
+   pTime(true);
 }
 
 Tactic['Typing'] = function() {
-if (!$Turn.is(":visible")) return;
-pTime(false);
-var f = $Dsp.text();
-$Talk.val( option.includes('속담') ? f : f.split(' ')[0]);
-$Take.click();
-sleep(40);
-pTime(true);
+   var f = $Dsp.text();
+   if (f == pf) return;
+   $Talk.val( option.includes('속담') ? f : f.split(' ')[0]);
+   $Take.click();
+   pf = f;
+   sleep(40);
 }
 
-Tactic['Classic'] = function() {
-    if (!$Turn.is(":visible")) return;
-    
-    pTime(false);
+Tactic['Classic'] = function() {  
     var s = new Date().getTime();
     var m = $Item.text();
     var f = $Dsp.text().replace('(3)','');
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
-    var _Found = db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]');
+    var _Found = ( option.includes('미션') ? db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]') : false );
     var _LFound;
     if (_Found) {
         while (_Found) {
@@ -51,7 +53,7 @@ Tactic['Classic'] = function() {
              _Found = db.match('\\[' + f + '(.*' + m + '.*){' + _LFound.split(m).length + ',}[^다]\\]');
         }
     } else {
-        _LFound = (db.match('\\[(' + f + '.*[^다])\\]')||[])[0];
+        _LFound = (db.match('\\[(' + f + '.*[^다])\\]')[0] || '');
     }
     
     if ($Turn.is(":visible") && _LFound) {
@@ -60,10 +62,8 @@ Tactic['Classic'] = function() {
         db = db.replace(_LFound, '');
         pf = f;
         console.log('Time: ' + (new Date().getTime() - s).toString());
-	if (_State) _State = false; 
     }
     sleep(25);
-    pTime(true);
 }
 
 function pTime(plug) {
@@ -88,7 +88,7 @@ $Round.on('DOMSubtreeModified', function() {
             pTime(true);
         }
     console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
-    mode = ('한국어 타자 연습' )
+    mode = classes[mode];
     _State = true;
 });
 
