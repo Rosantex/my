@@ -28,7 +28,6 @@ function wPrint() {
       	$Take.click();
         db = db.replace(_LFound, '');
         pf = f;
-    }
 }
 
 $Round.on('DOMSubtreeModified', function() {
