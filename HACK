@@ -44,7 +44,7 @@ function gPlay() {
         console.log(new Date().getTime() - s);
 	if (_State) _State = false; 
     }
-    sleep(25);
+    sleep(50);
     pTime(true);
 }
 
