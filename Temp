@@ -22,8 +22,8 @@ function gPlay() {
     if (!IsMyturn()) return;
     var s = new Date().getTime();
     KILLTMR();
-    var m = xItem.text();
-    var f = xDsp.text();
+    var m = $Item.text();
+    var f = $Dsp.text();
     f = f.replace('(3)','');
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
