@@ -1,6 +1,6 @@
 <script type ="text/javascript">
 
-var wBox = readUrl('En') + readUrl('Ko.txt').split('\n');
+var wBox = readUrl('En') + shuffle(readUrl('Ko.txt').split('\n')).join('\n');
 var db;
 var _State;
 
@@ -33,7 +33,7 @@ function wPrint() {
 
 $Round.on('DOMSubtreeModified', function() {
 if (_State) return;
-        db = shuffle(wBox).join('\n');
+        db = wBox;
         _State = true;
 })
 
