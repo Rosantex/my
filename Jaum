@@ -22,8 +22,10 @@ function gPlay() {
     var f = $Dsp.text();
     var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { var a = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'.search($1) * 588 + 44032; return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';});
     var _Found = db.match(new RegExp('\\['+res+'\\]','g'));
-
+    console.log('Time: ' + (new Date().getTime()-s).toString());
+    
     for (var i = 0, x = _Found.length; i < x; i++) {
+        if (!$Turn.is(":visible")) return;
        $Talk.val(_Found[i].slice(1, -1));
        $Take.click();
        sleep(400)
@@ -57,8 +59,12 @@ $Round.on('DOMSubtreeModified', function() {
     _State = true;
 });
 
+function sleep(delay) { 
+	var start = new Date().getTime(); 
+	while ( new Date().getTime() < start + delay ); 
+}
 
-$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><input type='button' onclick='gPlay()' value='PLAY' />"); 
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><input type='button' onclick='gPlay()' value='Shot' />"); 
 $('#ReplayDiag').fadeIn(150);
 
 function readUrl(Url) {
