@@ -1,0 +1,97 @@
+<script type ="text/javascript">
+
+var wBox = readUrl('En') + readUrl('Ko.txt');
+var db;
+
+var $Dsp = $("div[class='jjo-display ellipse']"),
+    $Talk = $('#Talk'),
+    $Take = $('#ChatBtn'),
+    $Exit = $('#ExitBtn'),
+    $Time = $("div[class='graph jjo-turn-time']"),
+    $Turn = $('.game-input'),
+    $Item = $("div[class='items']"),
+    $Round = $('div.rounds'),
+    $Board = $('#ReplayDiag .dialog-body');
+
+var AutoMode = true;
+var mode, option;
+var _State;
+
+function gPlay() { 
+    if (_State) _State = false;
+    if (!$Turn.is(":visible")) return;
+    
+    pTime(false);
+    var s = new Date().getTime();
+    var f = $Dsp.text();
+    
+    switch(mode) {
+       case '한국어 타자 대결':
+       case '영어 타자 대결':
+       $Talk.val(option.includes('속담') ? f : f.split(' ')[0]);
+       $Take.click();
+       break;
+       
+       default:return;
+    }
+    console.log('Time: ' + (new Date().getTime() - s).toString());
+    sleep(40);
+    pTime(true);
+}
+
+function pTime(plug) {
+    var e = 'DOMSubtreeModified';
+    plug ? $Time.on(e, gPlay) : $Time.off(e);
+}
+
+function Toggle_Auto() {
+    AutoMode = !AutoMode;
+    pTime(AutoMode);
+    console.log('AutoMode: ' + AutoMode);
+}
+
+$Round.on('DOMSubtreeModified', function() {
+    if (_State) return;
+    var $Mode = $("h5.room-head-mode");
+    option = $Mode.html().split(' / ');
+    mode = option.splice(0, 1);
+        db = wBox;
+        if (AutoMode) { 
+	    pTime(false);
+            pTime(true);
+        }
+    console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n    ');
+    _State = true;
+});
+
+function sleep(delay) { 
+	var start = new Date().getTime(); 
+	while ( new Date().getTime() < start + delay ); 
+}
+
+function shuffle(arr) {
+	var CurIndex = arr.length, TempValue, RndIndex;
+	
+	while (0 !== CurIndex) {
+		RndIndex = Math.floor(Math.random() * CurIndex);
+		CurIndex -= 1;
+		TempValue = arr[CurIndex];
+		arr[CurIndex] = arr[RndIndex];
+		arr[RndIndex] = TempValue;
+	}
+	return arr;
+}
+
+function readUrl(Url) {
+    return $.ajax({
+        type: "GET",
+        url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url,
+        async: false
+    }).responseText;
+}
+
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.68) (+ mode control) </p><input type='button' onclick='Toggle_Auto()' value='Auto' />");
+
+$("#ReplayDiag").fadeIn(150);
+
+</script>
