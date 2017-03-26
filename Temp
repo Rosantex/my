@@ -1,6 +1,6 @@
 <script type ="text/javascript">
 
-var wBox = readUrl('En') + shuffle(readUrl('Dic3.txt').split('\n')).join('\n');
+var wBox = readUrl('En') + readUrl('Ko.txt');
 var db;
 
 var $Dsp = $("div[class='jjo-display ellipse']"),
@@ -71,7 +71,7 @@ $Round.on('DOMSubtreeModified', function() {
     var $Mode = $("h5.room-head-mode");
     option = $Mode.html().split(' / ');
     mode = option.splice(0, 1);
-        db = wBox;
+        db = shuffle(wBox);
         if (AutoMode) { 
             KILLTMR(); 
             SETTMR();
@@ -81,17 +81,18 @@ $Round.on('DOMSubtreeModified', function() {
 })
 
 
-function shuffle(arr) {
-	var CurIndex = arr.length, TempValue, RndIndex;
+function shuffle(box) {    
+    var arr = box.split('\n');
+    var CurIndex = arr.length, TempValue, RndIndex;
 	
-	while (0 !== CurIndex) {
-		RndIndex = Math.floor(Math.random() * CurIndex);
-		CurIndex -= 1;
-		TempValue = arr[CurIndex];
-		arr[CurIndex] = arr[RndIndex];
-		arr[RndIndex] = TempValue;
-	}
-	return arr;
+    while (0 !== CurIndex) {
+	RndIndex = Math.floor(Math.random() * CurIndex);
+	CurIndex -= 1;
+	TempValue = arr[CurIndex];
+	arr[CurIndex] = arr[RndIndex];
+	arr[RndIndex] = TempValue;
+    }
+    return arr.join('\n');
 }
 
 function readUrl(Url) {
@@ -102,7 +103,15 @@ function readUrl(Url) {
     }).responseText;
 }
 
-$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.60) (셔플기능추가)</p><input type='button' onclick='SETTMR()' value='Auto' />");
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.65) (셔플기능추가)</p><input type='button' onclick='SETTMR()' value='Auto' />");
+
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.28').css({
+    width: '280',
+    fontsize: '17',
+    fontweight: 'bold', 
+    color: 'white', 
+    background: 'black' 
+});
 
 $("#ReplayDiag").fadeIn(200);
 
