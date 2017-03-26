@@ -103,9 +103,9 @@ function readUrl(Url) {
     }).responseText;
 }
 
-$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU (ver 1.65) (셔플기능추가)</p><input type='button' onclick='SETTMR()' value='Auto' />");
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><input type='button' onclick='SETTMR()' value='Auto' />");
 
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.28').css({
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.65').css({
     width: '280',
     fontsize: '17',
     fontweight: 'bold', 
@@ -113,6 +113,6 @@ $("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.28').css({
     background: 'black' 
 });
 
-$("#ReplayDiag").fadeIn(200);
+$("#ReplayDiag").fadeIn(180);
 
 </script>
