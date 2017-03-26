@@ -1,0 +1,90 @@
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.28').css({
+width: '280',
+fontsize: '17',
+fontweight: 'bold', 
+color: 'white', 
+background: 'black' 
+});
+
+
+display: $(".jjo-display"),
+hints: $(".GameBox .hints"),
+cwcmd: $(".GameBox .cwcmd"),
+bb: $(".GameBox .bb"),
+items: $(".GameBox .items"),
+chain: $(".GameBox .chain"),
+round: $(".rounds"),
+here: $(".game-input").hide(),
+hereText: $("#game-input"),
+history: $(".history"),
+roundBar: $(".jjo-round-time .graph-bar"),
+turnBar: $(".jjo-turn-time .graph-bar")
+
+
+javascript:
+var $tg = [ $('#mute-bgm'), $('#mute-effect'), $('#deny-invite'), $('#deny-whisper'), $('#deny-friend'), $('#only-waiting') ]; 
+$.each($tg, function(i, v) {v.prop('checked', 'true');}); 
+$('#setting-ok').click();
+
+$Board.append("<input type='text' id='Libpath' value='Auto' />");
+
+$('#Libpath').on('keydown', function(e) {
+e.preventDefault();
+$(this).val(keyList[e.keyCode]||String.fromCharCode(e.keyCode));
+});
+
+
+var keyList = { 
+8: 'BackSpace', 
+9: 'Tab', 
+13: 'Enter', 
+16: 'Shift', 
+17: 'LCtrl', 
+18: 'LAlt',
+19: 'Pause',
+20: 'CpasLock',
+27: 'ESC',
+32: 'SpaceBar',
+33: 'PgUp',
+34: 'PgDown',
+35: 'End',
+36: 'Home',
+37: 'Left',
+38: 'Up',
+39: 'Right',
+40: 'Down',
+45: 'Insert',
+46: 'Delete',
+91: 'WinKey', 
+96: 'Numpad0',
+97: 'Numpad1',
+98: 'Numpad2',
+99: 'Numpad3',
+100: 'Numpad4',
+101: 'Numpad5',
+102: 'Numpad6',
+103: 'Numpad7',
+104: 'Numpad8',
+105: 'Numpad9',
+106: 'NumpadMult',
+107: 'NumpadAdd',
+109: 'NumpadSub',
+110: 'NumpadPoint',
+111: 'NumpadDiv',
+112: 'F1', 
+113: 'F2', 
+114: 'F3', 
+115: 'F4', 
+116: 'F5',
+117: 'F6',
+118: 'F7',
+119: 'F8',
+120: 'F9',
+121: 'F10',
+122: 'F11',
+123: 'F12',
+144: 'NumLock', 
+225: 'RCtrl', 
+229: 'RAlt' 
+};
+
