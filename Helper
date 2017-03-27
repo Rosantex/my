@@ -2,6 +2,7 @@
 
 var wBox = readUrl('En') + shuffle(readUrl('Ko.txt').split('\n')).join('\n');
 var db;
+var mode, option;
 var _State;
 
 var $Dsp = $("div[class='jjo-display ellipse']"),
@@ -14,9 +15,95 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Round = $("div[class='rounds']"),
     $Board = $('#ReplayDiag .dialog-body');
 
+var PLAY = {
+
+'한국어 끝말잇기': function() {
+    var f = $Dsp.text();
+    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+    console.log('Search: ' + f);
+    var _Found = (db.match('\\[(' + f + '.*[^다])\\]')[0] || '');
+        $Talk.val(_Found.slice(1, -1));
+      	$Take.click();
+        db = db.replace(_Found, '');
+        pf = f;
+},
+
+'한국어 쿵쿵따': function() {
+console.log('쿵따');
+},
+
+'한국어 앞말잇기': function() {
+console.log('한앞');
+},
+
+'한국어 타자 대결': function() {
+var f = $Dsp.text();
+$Talk.val(option.includes('속담') ? f : f.split(' '));
+$Take.click();
+},
+
+'한국어 단어 대결': function() {
+console.log('한단');
+},
+
+'한국어 십자말풀이': function() {
+console.log('십자');
+},
+
+'한국어 솎솎': function() {
+console.log('한쇽');
+},
+
+'자음퀴즈': function() {
+console.log('자퀴');
+},
+
+'훈민정음': function() {
+console.log('훈민');
+},
+
+'영어 끝말잇기': function() {
+    var f = $Dsp.text();
+    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+    console.log('Search: ' + f);
+    var _Found = (db.match('\\[(' + f + '.*)\\]')[0] || '');
+        $Talk.val(_Found.slice(1, -1));
+      	$Take.click();
+        db = db.replace(_Found, '');
+        pf = f;
+},
+
+'영어 끄투': function() {
+    var f = $Dsp.text();
+    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+    console.log('Search: ' + f);
+    var _Found = (db.match('\\[(' + f + '.*)\\]')[0] || '');
+        $Talk.val(_Found.slice(1, -1));
+      	$Take.click();
+        db = db.replace(_Found, '');
+        pf = f;
+},
+
+'영어 타자 대결': function() {
+var f = $Dsp.text();
+$Talk.val(option.includes('속담') ? f : f.split(' '));
+$Take.click();
+},
+
+'영어 단어 대결': function() {
+console.log('영단');
+},
+
+'영어 솎솎': function() {
+console.log('영쇽');
+}
+
+};
+
+/*
 function wPrint() {
     if (_State) _State = false;
-    var f = $Dsp.text()
+    var f = $Dsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
     var _Found = (db.match('\\[(' + f + '.*[^다])\\]')[0] || '');
@@ -25,14 +112,20 @@ function wPrint() {
         db = db.replace(_Found, '');
         pf = f;
 }
+*/
 
 $Round.on('DOMSubtreeModified', function() {
-if (_State) return;
-        db = shuffle(wBox.split('\n')).join('\n');
+        if (_State) return false;
+	var $Mode = $("h5.room-head-mode");
+        option = $Mode.html().split(' / ');
+        mode = option.splice(0, 1);
+        db = shuffle(wBox);
+	console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
         _State = true;
 })
 
-function shuffle(arr) {
+function shuffle(box) {
+        var arr = box.split('\n');
 	var CurIndex = arr.length, TempValue, RndIndex;
 	while (0 !== CurIndex) {
 		RndIndex = Math.floor(Math.random() * CurIndex);
@@ -41,7 +134,7 @@ function shuffle(arr) {
 		arr[CurIndex] = arr[RndIndex];
 		arr[RndIndex] = TempValue;
 	}
-	return arr;
+	return arr.join('\n');
 }
 
 function readUrl(Url) {
@@ -70,7 +163,6 @@ var key, Hotkey;
 var setlock = false;
 
 $setkey.parent().css({position: 'relative'}); 
-$setkey.css({top: 200, left: 0, position:'absolute'});
 
 $setkey.css({
 width: 120,
@@ -84,7 +176,7 @@ $sethotkey.css({
 width: 40, 
 top: 20, 
 left: 140,
-position:'absolute'
+position:'absolute',
 background: 'skyblue'
 });
 
@@ -94,7 +186,7 @@ $(window).on('keydown', function(e) {
 if (!$Turn.is(":visible")) return false;
 if (e.keyCode == Hotkey) {
 e.preventDefault();
-wPrint();
+PLAY[mode]();
 }
 });
 
@@ -181,6 +273,5 @@ var keyList = {
 225: "RCtrl", 
 229: "RAlt" 
 };
-
 
 </script>
