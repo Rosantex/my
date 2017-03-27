@@ -14,7 +14,7 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Round = $("div[class='rounds']"),
     $Board = $('#ReplayDiag .dialog-body');
    
-   
+/*
 $(window).keypress(function(e) {
 if (!$Turn.is(":visible")) return;
 if (e.keyCode == 48) {
@@ -22,6 +22,7 @@ $Talk.val('');
 wPrint();
 }
 });
+*/
 
 function wPrint() {
     if (_State) _State = false;
@@ -63,5 +64,112 @@ function readUrl(Url) {
 
 $Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU(+ ko)");
 $("#ReplayDiag").fadeIn(150);
+
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.65').css({
+width: '280',
+fontsize: '17',
+fontweight: 'bold', 
+color: 'white', 
+background: 'black' 
+});
+
+$Board.append("<input type='text' id='Setkey' value='keydown here' />");
+$Board.append("<input type='button' id='SetHotkey' onclick='setHotkey();' value='OK' />");
+
+var key, Hotkey;
+
+$(window).on('keydown', function(e) {
+e.preventDefault();
+$(window).keypress(function(e) {
+if (!$Turn.is(":visible")) return;
+if (e.keyCode == Hotkey) {
+$Talk.val('');
+wPrint();
+}
+//if (e.keyCode == Hotkey)   console.log('fire');
+});
+
+function setHotkey() {
+Hotkey = key;
+$('#Setkey').css('background', 'pink');
+console.log('Hotkey Modified: ' + Hotkey);
+}
+
+$('#Setkey').on('keydown', function(e) {
+e.preventDefault();
+key = e.keyCode;
+$(this).val(keyList[key]||String.fromCharCode(key));
+});
+
+$('#Setkey').on('click', function(e) {
+$(this).css('background', 'white');
+});
+
+var keyList = { 
+8: "BackSpace", 
+9: "Tab", 
+12: "Form Feed",
+13: "Enter", 
+16: "Shift", 
+17: "LCtrl", 
+18: "LAlt",
+19: "Pause",
+20: "CpasLock",
+27: "ESC",
+32: "SpaceBar",
+33: "PgUp",
+34: "PgDown",
+35: "End",
+36: "Home",
+37: "Left",
+38: "Up",
+39: "Right",
+40: "Down",
+45: "Insert",
+46: "Delete",
+91: "WinKey", 
+96: "Numpad0",
+97: "Numpad1",
+98: "Numpad2",
+99: "Numpad3",
+100: "Numpad4",
+101: "Numpad5",
+102: "Numpad6",
+103: "Numpad7",
+104: "Numpad8",
+105: "Numpad9",
+106: "NumpadMult",
+107: "NumpadAdd",
+109: "NumpadSub",
+110: "NumpadPoint",
+111: "NumpadDiv",
+112: "F1", 
+113: "F2", 
+114: "F3", 
+115: "F4", 
+116: "F5",
+117: "F6",
+118: "F7",
+119: "F8",
+120: "F9",
+121: "F10",
+122: "F11",
+123: "F12",
+144: "NumLock",
+186: "Semicolon(;)",
+187: "Equal Sign(=)",
+188: "Comma(,)",
+189: "Hyphen Minus(-)",
+190: "Full Stop(.)",
+191: "Slash(/)",
+192: "Back Tick(`)",
+219: "Square Bracket([)",
+220: "BackSlash(\)",
+221: "Square Bracket(])",
+222: "Apostrophe(')",
+225: "RCtrl", 
+229: "RAlt" 
+};
+
 
 </script>
