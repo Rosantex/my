@@ -1,6 +1,6 @@
 <script type ="text/javascript">
 
-var wBox = readUrl('En') + shuffle(readUrl('Ko.txt').split('\n')).join('\n');
+var wBox = readUrl('En') + readUrl('Ko.txt');
 var db;
 var mode, option;
 var _State;
@@ -29,11 +29,11 @@ var PLAY = {
 },
 
 '한국어 쿵쿵따': function() {
-console.log('쿵따');
+console.log('쿵따-준비중');
 },
 
 '한국어 앞말잇기': function() {
-console.log('한앞');
+console.log('한앞-준비중');
 },
 
 '한국어 타자 대결': function() {
@@ -43,23 +43,23 @@ $Take.click();
 },
 
 '한국어 단어 대결': function() {
-console.log('한단');
+console.log('한단-준비중');
 },
 
 '한국어 십자말풀이': function() {
-console.log('십자');
+console.log('십자-준비중');
 },
 
 '한국어 솎솎': function() {
-console.log('한쇽');
+console.log('한쇽-준비중');
 },
 
 '자음퀴즈': function() {
-console.log('자퀴');
+console.log('자퀴-준비중');
 },
 
 '훈민정음': function() {
-console.log('훈민');
+console.log('훈민-준비중');
 },
 
 '영어 끝말잇기': function() {
@@ -91,11 +91,11 @@ $Take.click();
 },
 
 '영어 단어 대결': function() {
-console.log('영단');
+console.log('영단-준비중');
 },
 
 '영어 솎솎': function() {
-console.log('영쇽');
+console.log('영쇽-준비중');
 }
 
 };
