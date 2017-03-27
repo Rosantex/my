@@ -62,8 +62,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p><p id='My_Log' style='color:#000; font-size:9pt;'>AlphaKKU(+ ko)");
-$("#ReplayDiag").fadeIn(150);
+$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p>");
 
 $("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.65').css({
 width: '280',
@@ -73,36 +72,41 @@ color: 'white',
 background: 'black' 
 });
 
-$Board.append("<input type='text' id='Setkey' value='keydown here' />");
-$Board.append("<input type='button' id='SetHotkey' onclick='setHotkey();' value='OK' />");
+$Board.append("<input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='SET' />");
 
+var $setkey = $('#Setkey');
+var $sethotkey = $('#SetHotkey');
 var key, Hotkey;
+var setlock = false;
+
+$("#ReplayDiag").fadeIn(150);
 
 $(window).on('keydown', function(e) {
-e.preventDefault();
-$(window).keypress(function(e) {
-if (!$Turn.is(":visible")) return;
 if (e.keyCode == Hotkey) {
+e.preventDefault();
+console.log('fire');
+if (!$Turn.is(":visible")) return false;
 $Talk.val('');
 wPrint();
 }
-//if (e.keyCode == Hotkey)   console.log('fire');
 });
 
-function setHotkey() {
-Hotkey = key;
-$('#Setkey').css('background', 'pink');
-console.log('Hotkey Modified: ' + Hotkey);
-}
-
-$('#Setkey').on('keydown', function(e) {
+$setkey.on('keydown', function(e) {
+if (setlock) return false;
 e.preventDefault();
 key = e.keyCode;
 $(this).val(keyList[key]||String.fromCharCode(key));
+}).on('dblclick', function(e) {
+if (setlock) setlock = false;
+$(this).css('background', 'white');
 });
 
-$('#Setkey').on('click', function(e) {
-$(this).css('background', 'white');
+$sethotkey.on('click', function() {
+if (setlock) return false;
+Hotkey = key;
+$setkey.css('background', 'pink');
+setlock = true;
+console.log('Hotkey Modified: ' + keyList[Hotkey]||String.fromCharCode(Hotkey));
 });
 
 var keyList = { 
