@@ -13,16 +13,6 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Item = $("div[class='items']"),
     $Round = $("div[class='rounds']"),
     $Board = $('#ReplayDiag .dialog-body');
-   
-/*
-$(window).keypress(function(e) {
-if (!$Turn.is(":visible")) return;
-if (e.keyCode == 48) {
-$Talk.val('');
-wPrint();
-}
-});
-*/
 
 function wPrint() {
     if (_State) _State = false;
@@ -79,14 +69,31 @@ var $sethotkey = $('#SetHotkey');
 var key, Hotkey;
 var setlock = false;
 
-$("#ReplayDiag").fadeIn(150);
+$setkey.parent().css({position: 'relative'}); 
+$setkey.css({top: 200, left: 0, position:'absolute'});
+
+$setkey.css({
+width: 120,
+top: 20, 
+left: 0, 
+position:'absolute',
+background: 'MintCream'
+});
+
+$sethotkey.css({ 
+width: 40, 
+top: 20, 
+left: 140,
+position:'absolute'
+background: 'skyblue'
+});
+
+$("#ReplayDiag").fadeIn(120);
 
 $(window).on('keydown', function(e) {
+if (!$Turn.is(":visible")) return false;
 if (e.keyCode == Hotkey) {
 e.preventDefault();
-console.log('fire');
-if (!$Turn.is(":visible")) return false;
-$Talk.val('');
 wPrint();
 }
 });
@@ -98,7 +105,7 @@ key = e.keyCode;
 $(this).val(keyList[key]||String.fromCharCode(key));
 }).on('dblclick', function(e) {
 if (setlock) setlock = false;
-$(this).css('background', 'white');
+$(this).css({ background: 'MintCream' });
 });
 
 $sethotkey.on('click', function() {
@@ -106,7 +113,7 @@ if (setlock) return false;
 Hotkey = key;
 $setkey.css('background', 'pink');
 setlock = true;
-console.log('Hotkey Modified: ' + keyList[Hotkey]||String.fromCharCode(Hotkey));
+console.log('Hotkey Modified: ' + (keyList[key]||String.fromCharCode(key)));
 });
 
 var keyList = { 
