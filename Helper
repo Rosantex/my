@@ -2,12 +2,13 @@
 
 $('.dialog-front').css({ background: 'white' });
 
-$('.dialog-body')
+$('#ReplayDiag .dialog-body')
+     .css({ position: 'relative' })
     .html("<p style='color:#000; font-size:9pt'>by Rosantex</p>")
-    .append("<input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />")
-    .css({ position: 'relative' });
+    .append("<input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");
+    
 
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.90').css({
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.95').css({
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold', 
@@ -274,7 +275,9 @@ $(window).on('keydown', function(e) {
         $setkey.val(KEYNAME[key]||String.fromCharCode(key)); 
     } else if (e.keyCode == Hotkey && $Turn.is(':visible')) { 
         e.preventDefault();
+	var sTime = new Date().getTime();
         PLAY[mode]();
+	console.log(new Date().getTime() - sTime);
     }
 });
 
