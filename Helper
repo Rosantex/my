@@ -8,7 +8,7 @@ $('#ReplayDiag .dialog-body')
     .append("<input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");
     
 
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.95').css({
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.97').css({
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold', 
@@ -50,7 +50,7 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $setkey = $('#Setkey'),
     $sethotkey = $('#SetHotkey'); 
     
-var wBox = readUrl('En') + readUrl('Ko.txt');
+var wBox = [ readUrl('En'), readUrl('Ko.txt') ].join('\n');
 
 var db,
     mode, 
@@ -264,8 +264,7 @@ var PLAY = {
 	    n ? occ[w] = n : ignore += w;
 	} 
 
-	xreg.push('\\[.*[' + ignore + '].*\\]');
-
+	reg.push('\\[.*[' + ignore + '].*\\]');
 	for (var i in occ) { 
 	    reg.push('\\[(.*' + i + '.*){' + (occ[i]++) + ',}\\]');
 	}
@@ -287,7 +286,7 @@ $Round.on('DOMSubtreeModified', function() {
     var $Mode = $("h5.room-head-mode");
     option = $Mode.html().split(' / ');
     mode = GAMEMODE[option.splice(0, 1)];
-    db = shuffle(wBox);
+    db = wBox; //shuffle(wBox);
     console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
     lastupdate = new Date().getTime();
 });
