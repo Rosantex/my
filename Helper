@@ -1,11 +1,11 @@
 <script type ="text/javascript">
 
-$('.dialog-front').css({background: 'white'});
+$('.dialog-front').css({ background: 'white' });
 
 $('.dialog-body')
-    .css({ position: 'relative' }); 
     .html("<p style='color:#000; font-size:9pt'>by Rosantex</p>")
     .append("<input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />")
+    .css({ position: 'relative' });
 
 $("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.90').css({
     color: 'white',
@@ -26,7 +26,7 @@ $('#Setkey').css({
 });
 
 $('#SetHotkey').css({ 
-    color: 'black'
+    color: 'black',
     fontSize: 12,
     fontWeight: 'bold', 
     width: 40, 
