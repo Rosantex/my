@@ -50,7 +50,7 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $setkey = $('#Setkey'),
     $sethotkey = $('#SetHotkey'); 
     
-var wBox = [ readUrl('En'), readUrl('Ko.txt') ].join('\n');
+var wBox = readUrl('En') + '\n' + readUrl('Ko.txt');
 
 var db,
     mode, 
@@ -209,7 +209,7 @@ var PLAY = {
     'HUN': function() {
         var f = $Dsp.text().slice(1, -1);
         var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { 
-            var a = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'.search($1) * 588 + 44032; 
+            var a = ('ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ').search($1) * 588 + 44032; 
 	    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
         });
         var _Found = db.match('\\[' + res + '\\]')[0];
@@ -252,7 +252,7 @@ var PLAY = {
     'ESS': function() {
 	var str = $Dsp.html().match(/\w(?=<\/div)/g).join('');
 	var occ = []; 
-	var reg = [];
+	var xreg = [];
 	var ignore = '';
 	var w, n;
 
@@ -264,12 +264,12 @@ var PLAY = {
 	    n ? occ[w] = n : ignore += w;
 	} 
 
-	reg.push('\\[.*[' + ignore + '].*\\]');
+	xreg.push('\\[.*[' + ignore + '].*\\]');
 	for (var i in occ) { 
-	    reg.push('\\[(.*' + i + '.*){' + (occ[i]++) + ',}\\]');
+	    xreg.push('\\[(.*' + i + '.*){' + (occ[i]++) + ',}\\]');
 	}
 
-	reg = new RegExp(reg.join('|'), 'g');
+	var reg = new RegExp(reg.join('|'), 'g');
 	var wd = ( db.replace(reg, '').match(/\[[a-z]+\]/)[0] || '');
 
 	if ( wd ) {
@@ -298,9 +298,9 @@ $(window).on('keydown', function(e) {
 	
         key = e.keyCode;
         $setkey.val(KEYNAME[key]||String.fromCharCode(key)); 
-    } else if (e.keyCode == Hotkey && ($Turn.is(':visible')|| mode.match(/(K|E)SS/)) { 
+    } else if (e.keyCode == Hotkey && ($Turn.is(':visible')||mode.match(/(K|E)SS/)) { 
         e.preventDefault();
-	sTime = new Date().getTime();
+	var sTime = new Date().getTime();
         PLAY[mode]();
 	console.log(new Date().getTime() - sTime);
     }
