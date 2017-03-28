@@ -1,19 +1,36 @@
 <script type ="text/javascript">
 
-var wBox = readUrl('En') + readUrl('Ko.txt');
-
-var db,
-    mode, 
-    option,
-    key, 
-    Hotkey = 13,
-    setlock = false,
-    myScope = 'window',
-    lastupdate = 0;
-
 $('#ReplayDiag .dialog-body')
     .html("<p style='color:#000; font-size:9pt'>by Rosantex</p>")
     .append("<input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");
+
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.85').css({
+    width: '280',
+    fontsize: '17',
+    fontweight: 'bold', 
+    color: 'white', 
+    background: 'black' 
+});
+    
+$('#Setkey').parent().css({ position: 'relative' }); 
+
+$('#Setkey').css({
+    width: 120,
+    top: 20, 
+    left: 0, 
+    position:'absolute',
+    background: 'MintCream'
+});
+
+$('#SetHotkey').css({ 
+    width: 40, 
+    top: 20, 
+    left: 140,
+    position:'absolute',    
+    background: 'skyblue'
+});
+
+$("#ReplayDiag").fadeIn(120);
 
 var $Dsp = $("div[class='jjo-display ellipse']"),
     $Talk = $('#Talk'),
@@ -25,7 +42,86 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Round = $("div[class='rounds']"),
     $setkey = $('#Setkey'),
     $sethotkey = $('#SetHotkey'); 
+    
+var wBox = readUrl('En') + readUrl('Ko.txt');
 
+var db,
+    mode, 
+    option,
+    key, 
+    Hotkey = 13,
+    setlock = false,
+    k_scope = 'window',
+    lastupdate = 0;
+    
+ var KEYNAME = { 
+ 
+    8: "BackSpace", 
+    9: "Tab", 
+    12: "Form Feed",
+    13: "Enter", 
+    16: "Shift", 
+    17: "LCtrl", 
+    18: "LAlt",
+    19: "Pause",
+    20: "CpasLock",
+    27: "ESC",
+    32: "SpaceBar",
+    33: "PgUp",
+    34: "PgDown",
+    35: "End",
+    36: "Home",
+    37: "Left",
+    38: "Up",
+    39: "Right",
+    40: "Down",
+    45: "Insert",
+    46: "Delete",
+    91: "WinKey", 
+    96: "Numpad0",
+    97: "Numpad1",
+    98: "Numpad2",
+    99: "Numpad3",
+    100: "Numpad4",
+    101: "Numpad5",
+    102: "Numpad6",
+    103: "Numpad7",
+    104: "Numpad8",
+    105: "Numpad9",
+    106: "NumpadMult",
+    107: "NumpadAdd",
+    109: "NumpadSub",
+    110: "NumpadPoint",
+    111: "NumpadDiv",
+    112: "F1", 
+    113: "F2", 
+    114: "F3", 
+    115: "F4", 
+    116: "F5",
+    117: "F6",
+    118: "F7",
+    119: "F8",
+    120: "F9",
+    121: "F10",
+    122: "F11",
+    123: "F12",
+    144: "NumLock",
+    186: "Semicolon(;)",
+    187: "Equal Sign(=)",
+    188: "Comma(,)",
+    189: "Hyphen Minus(-)",
+    190: "Full Stop(.)",
+    191: "Slash(/)",
+    192: "Back Tick(`)",
+    219: "Square Bracket([)",
+    220: "BackSlash(\)",
+    221: "Square Bracket(])",
+    222: "Apostrophe(')",
+    225: "RCtrl", 
+    229: "RAlt" 
+    
+};  
+    
 var GAMEMODE = {
 
     '한국어 끝말잇기': 'KSH',
@@ -145,36 +241,9 @@ var PLAY = {
 
 };
 
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.80').css({
-    width: '280',
-    fontsize: '17',
-    fontweight: 'bold', 
-    color: 'white', 
-    background: 'black' 
-});
-    
-$setkey.parent().css({ position: 'relative' }); 
-
-$setkey.css({
-    width: 120,
-    top: 20, 
-    left: 0, 
-    position:'absolute',
-    background: 'MintCream'
-});
-
-$sethotkey.css({ 
-    width: 40, 
-    top: 20, 
-    left: 140,
-    position:'absolute',
-    background: 'skyblue'
-});
-
-$("#ReplayDiag").fadeIn(120);
-
 $Round.on('DOMSubtreeModified', function() {
         if (new Date().getTime() - lastupdate < 7000) return false;
+	
 	var $Mode = $("h5.room-head-mode");
         option = $Mode.html().split(' / ');
         mode = GAMEMODE[option.splice(0, 1)];
@@ -184,36 +253,38 @@ $Round.on('DOMSubtreeModified', function() {
 });
 
 $(window).on('keydown', function(e) {
-    if ((myScope == 'setkey') && !setlock) {
-         e.preventDefault();
-         key = e.keyCode;
-         $setkey.val(keylist[key]||String.fromCharCode(key)); 
+    if (k_scope == 'setkey') {
+        e.preventDefault();
+        if ( !setlock) return false;
+        key = e.keyCode;
+        $setkey.val(KEYNAME[key]||String.fromCharCode(key)); 
     } else if (e.keyCode == Hotkey && $Turn.is(':visible')) { 
-         e.preventDefault();
-         PLAY[mode]();
+        e.preventDefault();
+        PLAY[mode]();
     }
 });
 
-$setkey
-    .on('focus', function(e) {
-         myScope = 'setkey';
-    })
-    .on('blur', function(e) {
-         myScope = 'window';
-    })
-    .on('dblclick', function(e) {
+$setkey.on({
+    focus: function() {
+         k_scope = 'setkey';
+    },
+    blur: function() {
+         k_scope = 'window';
+    },
+    dblclick: function() {
          if (setlock) { 
 	      setlock = false;
               $(this).css({ background: 'MintCream' });
 	 }
-    });
+    }
+});
 
 $sethotkey.on('click', function(e) {
     if (setlock) return false;
     Hotkey = key;
     $setkey.css({ background: 'pink' });
     setlock = true;
-    console.log('Hotkey Modified: ' + (keylist[key]||String.fromCharCode(key)));
+    console.log('Hotkey Modified: ' + (KEYNAME[key]||String.fromCharCode(key)));
 });
 
 function shuffle(box) {
@@ -236,71 +307,5 @@ function readUrl(Url) {
         async: false
     }).responseText;
 }
-
-var keylist = { 
-8: "BackSpace", 
-9: "Tab", 
-12: "Form Feed",
-13: "Enter", 
-16: "Shift", 
-17: "LCtrl", 
-18: "LAlt",
-19: "Pause",
-20: "CpasLock",
-27: "ESC",
-32: "SpaceBar",
-33: "PgUp",
-34: "PgDown",
-35: "End",
-36: "Home",
-37: "Left",
-38: "Up",
-39: "Right",
-40: "Down",
-45: "Insert",
-46: "Delete",
-91: "WinKey", 
-96: "Numpad0",
-97: "Numpad1",
-98: "Numpad2",
-99: "Numpad3",
-100: "Numpad4",
-101: "Numpad5",
-102: "Numpad6",
-103: "Numpad7",
-104: "Numpad8",
-105: "Numpad9",
-106: "NumpadMult",
-107: "NumpadAdd",
-109: "NumpadSub",
-110: "NumpadPoint",
-111: "NumpadDiv",
-112: "F1", 
-113: "F2", 
-114: "F3", 
-115: "F4", 
-116: "F5",
-117: "F6",
-118: "F7",
-119: "F8",
-120: "F9",
-121: "F10",
-122: "F11",
-123: "F12",
-144: "NumLock",
-186: "Semicolon(;)",
-187: "Equal Sign(=)",
-188: "Comma(,)",
-189: "Hyphen Minus(-)",
-190: "Full Stop(.)",
-191: "Slash(/)",
-192: "Back Tick(`)",
-219: "Square Bracket([)",
-220: "BackSlash(\)",
-221: "Square Bracket(])",
-222: "Apostrophe(')",
-225: "RCtrl", 
-229: "RAlt" 
-};
 
 </script>
