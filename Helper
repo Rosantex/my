@@ -250,7 +250,33 @@ var PLAY = {
     },
 
     'ESS': function() {
-        console.log('영쇽-준비중');
+	var str = $Dsp.html().match(/\w(?=<\/div)/g).join('');
+	var occ = []; 
+	var xreg = [];
+	var ignore = '';
+	var w, n;
+
+        console.log(str);
+	
+	for (var i = 0; i < 25; i++) { 
+		w = String.fromCharCode(97 + i);
+		n = (str.match(new RegExp(w, 'g'), '')||[]).length;
+		n ? occ[w] = n : ignore += w;
+	} 
+
+	xreg.push('\\[.*[' + ignore + '].*\\]');
+
+	for (var i in occ) { 
+		xreg.push('\\[(.*' + i + '.*){' + (occ[i]++) + ',}\\]');
+	}
+
+	var reg = new RegExp(xreg.join('|'), 'g');
+	var wd = ( db.replace(reg, '').match(/\[[a-z]+\]/)[0] || '');
+
+	if ( wd ) {
+	$Talk.val(wd.slice(1, -1));
+	$Take.click();
+	}
     }
 
 };
