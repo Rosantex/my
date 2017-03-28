@@ -51,7 +51,9 @@ var PLAY = {
     var f = $Dsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
-    var _Found = (db.match('\\[(' + f + '.[^다])\\]')[0] || '');
+    
+    if (d = f.match(/\((\d)\)/)) f = f.replace(d[0], '');
+    var _Found = (db.match('\\[' + f + '[ㄱ-ㅣ가-힣]{' + (Number(d[1]) - 2).toString() + '}[^다]\\]')[0] || '');
     $Talk.val(_Found.slice(1, -1));
     $Take.click();
     db = db.replace(_Found, '');
