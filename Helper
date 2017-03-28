@@ -1,9 +1,19 @@
 <script type ="text/javascript">
 
 var wBox = readUrl('En') + readUrl('Ko.txt');
-var db;
-var mode, option;
-var lastupdate = 0;
+
+var db,
+    mode, 
+    option,
+    key, 
+    Hotkey = 13,
+    setlock = false,
+    myScope = 'window',
+    lastupdate = 0;
+
+$('#ReplayDiag .dialog-body')
+    .html("<p style='color:#000; font-size:9pt'>by Rosantex</p>")
+    .append("<input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");
 
 var $Dsp = $("div[class='jjo-display ellipse']"),
     $Talk = $('#Talk'),
@@ -13,7 +23,8 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Turn = $('.game-input'),
     $Item = $("div[class='items']"),
     $Round = $("div[class='rounds']"),
-    $Board = $('#ReplayDiag .dialog-body');
+    $setkey = $('#Setkey'),
+    $sethotkey = $('#SetHotkey'); 
 
 var GAMEMODE = {
 
@@ -49,7 +60,7 @@ var PLAY = {
 
 'KKT': function() {
     var f = $Dsp.text();
-    var d = f.match(/\((\d)\)/));
+    var d = f.match(/\((\d)\)/);
     f = f.replace(d[0], '');    
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
@@ -134,15 +145,76 @@ var PLAY = {
 
 };
 
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.80').css({
+    width: '280',
+    fontsize: '17',
+    fontweight: 'bold', 
+    color: 'white', 
+    background: 'black' 
+});
+    
+$setkey.parent().css({ position: 'relative' }); 
+
+$setkey.css({
+    width: 120,
+    top: 20, 
+    left: 0, 
+    position:'absolute',
+    background: 'MintCream'
+});
+
+$sethotkey.css({ 
+    width: 40, 
+    top: 20, 
+    left: 140,
+    position:'absolute',
+    background: 'skyblue'
+});
+
+$("#ReplayDiag").fadeIn(120);
+
 $Round.on('DOMSubtreeModified', function() {
-        if (new Date().getTime() - lastupdate < 1000) return false;
+        if (new Date().getTime() - lastupdate < 7000) return false;
 	var $Mode = $("h5.room-head-mode");
         option = $Mode.html().split(' / ');
         mode = GAMEMODE[option.splice(0, 1)];
         db = shuffle(wBox);
 	console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
         lastupdate = new Date().getTime();
-})
+});
+
+$(window).on('keydown', function(e) {
+    if ((myScope == 'setkey') && !setlock) {
+         e.preventDefault();
+         key = e.keyCode;
+         $setkey.val(keylist[key]||String.fromCharCode(key)); 
+    } else if (e.keyCode == Hotkey && $Turn.is(':visible')) { 
+         e.preventDefault();
+         PLAY[mode]();
+    }
+});
+
+$setkey
+    .on('focus', function(e) {
+         myScope = 'setkey';
+    })
+    .on('blur', function(e) {
+         myScope = 'window';
+    })
+    .on('dblclick', function(e) {
+         if (setlock) { 
+	      setlock = false;
+              $(this).css({ background: 'MintCream' });
+	 }
+    });
+
+$sethotkey.on('click', function(e) {
+    if (setlock) return false;
+    Hotkey = key;
+    $setkey.css({ background: 'pink' });
+    setlock = true;
+    console.log('Hotkey Modified: ' + (keylist[key]||String.fromCharCode(key)));
+});
 
 function shuffle(box) {
         var arr = box.split('\n');
@@ -165,78 +237,7 @@ function readUrl(Url) {
     }).responseText;
 }
 
-$Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p>");
-
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.75').css({
-    width: '280',
-    fontsize: '17',
-    fontweight: 'bold', 
-    color: 'white', 
-    background: 'black' 
-});
-
-$Board.append("<input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='SET' />");
-
-var $setkey = $('#Setkey'),
-    $sethotkey = $('#SetHotkey');
-    
-var key, Hotkey;
-var setlock = false;
-var myScope = 'window';
-
-$setkey.parent().css({ position: 'relative' }); 
-
-$setkey.css({
-    width: 120,
-    top: 20, 
-    left: 0, 
-    position:'absolute',
-    background: 'MintCream'
-});
-
-$sethotkey.css({ 
-    width: 40, 
-    top: 20, 
-    left: 140,
-    position:'absolute',
-    background: 'skyblue'
-});
-
-$("#ReplayDiag").fadeIn(120);
-
-$(window).on('keydown', function(e) {
-    if (myScope == 'setkey' && !setlock) {
-         e.preventDefault();
-         key = e.keyCode;
-         $setkey.val(keyList[key]||String.fromCharCode(key)); 
-    } else if (e.keyCode == Hotkey && $Turn.is(':visible')) { 
-         e.preventDefault();
-         PLAY[mode]();
-    }
-});
-
-$setkey
-.on('focus', function(e) {
-e.preventDefault();
-myScope = 'setkey';
-})
-.on('blur', function(e) {
-myScope = 'window';
-})
-.on('dblclick', function(e) {
-if (setlock) setlock = false;
-$(this).css({ background: 'MintCream' });
-});
-
-$sethotkey.on('click', function(e) {
-if (setlock) return false;
-Hotkey = key;
-$setkey.css({ background: 'pink' });
-setlock = true;
-console.log('Hotkey Modified: ' + (keyList[key]||String.fromCharCode(key)));
-});
-
-var keyList = { 
+var keylist = { 
 8: "BackSpace", 
 9: "Tab", 
 12: "Form Feed",
