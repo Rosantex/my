@@ -143,101 +143,100 @@ var GAMEMODE = {
 
 var PLAY = {
 
-'KSH': function() {
-    var f = $Dsp.text();
-    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-    console.log('Search: ' + f);
-    var _Found = (db.match('\\[(' + f + '.*[^다])\\]')[0] || '');
-    $Talk.val(_Found.slice(1, -1));
-    $Take.click();
-    db = db.replace(_Found, '');
-    pf = f;
-},
+    'KSH': function() {
+        var f = $Dsp.text();
+        f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+        console.log('Search: ' + f);
+        var _Found = (db.match('\\[(' + f + '.*[^다])\\]')[0] || '');
+        $Talk.val(_Found.slice(1, -1));
+        $Take.click();
+        db = db.replace(_Found, '');
+        pf = f;
+    },
 
-'KKT': function() {
-    var f = $Dsp.text();
-    var d = f.match(/\((\d)\)/);
-    f = f.replace(d[0], '');    
-    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-    console.log('Search: ' + f);
-    var _Found = (db.match('\\[' + f + '.{' + (Number(d[1]) - 2).toString() + '}[^다]\\]')[0] || '');
-    $Talk.val(_Found.slice(1, -1));
-    $Take.click();
-    db = db.replace(_Found, '');
-    pf = f;
-},
+    'KKT': function() {
+        var f = $Dsp.text();
+        var d = f.match(/\((\d)\)/);
+        f = f.replace(d[0], '');    
+        f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+        console.log('Search: ' + f);
+        var _Found = (db.match('\\[' + f + '.{' + (Number(d[1]) - 2).toString() + '}[^다]\\]')[0] || '');
+        $Talk.val(_Found.slice(1, -1));
+        $Take.click();
+        db = db.replace(_Found, '');
+        pf = f;
+    },
 
-'KAP': function() {
-    var f = $Dsp.text();
-    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-    console.log('Search: ' + f);
-    var _Found = (db.match('\\[(.+' + f + ')\\]')[0] || '');
-    $Talk.val(_Found.slice(1, -1));
-    $Take.click();
-    db = db.replace(_Found, '');
-    pf = f;
+    'KAP': function() {
+        var f = $Dsp.text();
+        f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+        console.log('Search: ' + f);
+        var _Found = (db.match('\\[(.+' + f + ')\\]')[0] || '');
+        $Talk.val(_Found.slice(1, -1));
+        $Take.click();
+        db = db.replace(_Found, '');
+        pf = f;
+    },
 
-},
+    'KTY': function() {
+       $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
+       $Take.click();
+    },
 
-'KTY': function() {
-    $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
-    $Take.click();
-},
+    'KDA': function() {
+       console.log('한단-준비중');
+    },
 
-'KDA': function() {
-    console.log('한단-준비중');
-},
+    'KCW': function() {
+       console.log('십자-준비중');
+    },
 
-'KCW': function() {
-    console.log('십자-준비중');
-},
+    'KSS': function() {      
+       console.log('한쇽-준비중');
+    },
 
-'KSS': function() {
-    console.log('한쇽-준비중');
-},
+    'CSQ': function() {
+       console.log('자퀴-준비중');
+    },
 
-'CSQ': function() {
-    console.log('자퀴-준비중');
-},
+    'HUN': function() {
+       console.log('훈민-준비중');
+    },
 
-'HUN': function() {
-    console.log('훈민-준비중');
-},
+    'ESH': function() {        
+       var f = $Dsp.text();
+       f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+       console.log('Search: ' + f);
+       var _Found = (db.match('\\[(' + f + '.+)\\]')[0] || '');
+       $Talk.val(_Found.slice(1, -1));
+       $Take.click();
+       db = db.replace(_Found, '');
+       pf = f;
+    },
 
-'ESH': function() {
-    var f = $Dsp.text();
-    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-    console.log('Search: ' + f);
-    var _Found = (db.match('\\[(' + f + '.+)\\]')[0] || '');
-    $Talk.val(_Found.slice(1, -1));
-    $Take.click();
-    db = db.replace(_Found, '');
-    pf = f;
-},
+    'EKT': function() {
+       var f = $Dsp.text();
+       f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);       
+       console.log('Search: ' + f);
+       var _Found = (db.match('\\[(' + f + '.{2,})\\]')[0] || '');
+       $Talk.val(_Found.slice(1, -1));
+       $Take.click();
+       db = db.replace(_Found, '');
+       pf = f;
+    },
 
-'EKT': function() {
-    var f = $Dsp.text();
-    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-    console.log('Search: ' + f);
-    var _Found = (db.match('\\[(' + f + '.{2,})\\]')[0] || '');
-    $Talk.val(_Found.slice(1, -1));
-    $Take.click();
-    db = db.replace(_Found, '');
-    pf = f;
-},
+    'ETY': function() {
+       $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
+       $Take.click();
+    },
 
-'ETY': function() {
-    $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
-    $Take.click();
-},
+    'EDA': function() {
+       console.log('영단-준비중');
+    },
 
-'EDA': function() {
-    console.log('영단-준비중');
-},
-
-'ESS': function() {
-    console.log('영쇽-준비중');
-}
+    'ESS': function() {
+       console.log('영쇽-준비중');
+    }
 
 };
 
@@ -255,7 +254,8 @@ $Round.on('DOMSubtreeModified', function() {
 $(window).on('keydown', function(e) {
     if (k_scope == 'setkey') {
         e.preventDefault();
-        if ( !setlock) return false;
+        if (setlock) return false;
+	
         key = e.keyCode;
         $setkey.val(KEYNAME[key]||String.fromCharCode(key)); 
     } else if (e.keyCode == Hotkey && $Turn.is(':visible')) { 
@@ -281,6 +281,7 @@ $setkey.on({
 
 $sethotkey.on('click', function(e) {
     if (setlock) return false;
+    
     Hotkey = key;
     $setkey.css({ background: 'pink' });
     setlock = true;
