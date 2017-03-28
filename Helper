@@ -17,20 +17,20 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
 
 var GAMEMODE = {
 
-'한국어 끝말잇기': 'KSH',
-'한국어 쿵쿵따': 'KKT',
-'한국어 앞말잇기': 'KAP',
-'한국어 타자 대결': 'KTY',
-'한국어 단어 대결': 'KDA',
-'한국어 십자말풀이': 'KCW',
-'한국어 솎솎': 'KSS',
-'자음퀴즈': 'CSQ',
-'훈민정음': 'HUN',
-'영어 끝말잇기': 'ESH',
-'영어 끄투': 'EKT',
-'영어 타자 대결': 'ETY',
-'영어 단어 대결': 'EDA',
-'영어 솎솎': 'ESS'
+    '한국어 끝말잇기': 'KSH',
+    '한국어 쿵쿵따': 'KKT',
+    '한국어 앞말잇기': 'KAP',
+    '한국어 타자 대결': 'KTY',
+    '한국어 단어 대결': 'KDA',
+    '한국어 십자말풀이': 'KCW',
+    '한국어 솎솎': 'KSS',
+    '자음퀴즈': 'CSQ',
+    '훈민정음': 'HUN',
+    '영어 끝말잇기': 'ESH',
+    '영어 끄투': 'EKT',
+    '영어 타자 대결': 'ETY',
+    '영어 단어 대결': 'EDA',
+    '영어 솎솎': 'ESS'
 
 };
 
@@ -51,9 +51,9 @@ var PLAY = {
     var f = $Dsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
-    
+    var d;
     if (d = f.match(/\((\d)\)/)) f = f.replace(d[0], '');
-    var _Found = (db.match('\\[' + f + '[ㄱ-ㅣ가-힣]{' + (Number(d[1]) - 2).toString() + '}[^다]\\]')[0] || '');
+    var _Found = (db.match('\\[' + f + '.{' + (Number(d[1]) - 2).toString() + '}[^다]\\]')[0] || '');
     $Talk.val(_Found.slice(1, -1));
     $Take.click();
     db = db.replace(_Found, '');
@@ -73,28 +73,28 @@ var PLAY = {
 },
 
 'KTY': function() {
-$Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
-$Take.click();
+    $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
+    $Take.click();
 },
 
 'KDA': function() {
-console.log('한단-준비중');
+    console.log('한단-준비중');
 },
 
 'KCW': function() {
-console.log('십자-준비중');
+    console.log('십자-준비중');
 },
 
 'KSS': function() {
-console.log('한쇽-준비중');
+    console.log('한쇽-준비중');
 },
 
 'CSQ': function() {
-console.log('자퀴-준비중');
+    console.log('자퀴-준비중');
 },
 
 'HUN': function() {
-console.log('훈민-준비중');
+    console.log('훈민-준비중');
 },
 
 'ESH': function() {
@@ -102,10 +102,10 @@ console.log('훈민-준비중');
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
     var _Found = (db.match('\\[(' + f + '.+)\\]')[0] || '');
-        $Talk.val(_Found.slice(1, -1));
-      	$Take.click();
-        db = db.replace(_Found, '');
-        pf = f;
+    $Talk.val(_Found.slice(1, -1));
+    $Take.click();
+    db = db.replace(_Found, '');
+    pf = f;
 },
 
 'EKT': function() {
@@ -113,24 +113,23 @@ console.log('훈민-준비중');
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
     var _Found = (db.match('\\[(' + f + '.{2,})\\]')[0] || '');
-        $Talk.val(_Found.slice(1, -1));
-      	$Take.click();
-        db = db.replace(_Found, '');
-        pf = f;
+    $Talk.val(_Found.slice(1, -1));
+    $Take.click();
+    db = db.replace(_Found, '');
+    pf = f;
 },
 
 'ETY': function() {
-var f = $Dsp.text();
-$Talk.val(option.includes('속담') ? f : f.split(' ')[0]);
-$Take.click();
+    $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
+    $Take.click();
 },
 
 'EDA': function() {
-console.log('영단-준비중');
+    console.log('영단-준비중');
 },
 
 'ESS': function() {
-console.log('영쇽-준비중');
+    console.log('영쇽-준비중');
 }
 
 };
