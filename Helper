@@ -3,7 +3,7 @@
 var wBox = readUrl('En') + readUrl('Ko.txt');
 var db;
 var mode, option;
-var _State;
+var lastupdate = 0;
 
 var $Dsp = $("div[class='jjo-display ellipse']"),
     $Talk = $('#Talk'),
@@ -38,7 +38,7 @@ console.log('한앞-준비중');
 
 '한국어 타자 대결': function() {
 var f = $Dsp.text();
-$Talk.val(option.includes('속담') ? f : f.split(' '));
+$Talk.val(option.includes('속담') ? f : f.split(' ')[0]);
 $Take.click();
 },
 
@@ -100,28 +100,14 @@ console.log('영쇽-준비중');
 
 };
 
-/*
-function wPrint() {
-    if (_State) _State = false;
-    var f = $Dsp.text();
-    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-    console.log('Search: ' + f);
-    var _Found = (db.match('\\[(' + f + '.*[^다])\\]')[0] || '');
-        $Talk.val(_Found.slice(1, -1));
-      	$Take.click();
-        db = db.replace(_Found, '');
-        pf = f;
-}
-*/
-
 $Round.on('DOMSubtreeModified', function() {
-        if (_State) return false;
+        if (new Date().getTime() - lastupdate < 1000) return false;
 	var $Mode = $("h5.room-head-mode");
         option = $Mode.html().split(' / ');
         mode = option.splice(0, 1);
         db = shuffle(wBox);
 	console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
-        _State = true;
+        lastupdate = new Date().getTime();
 })
 
 function shuffle(box) {
@@ -161,6 +147,7 @@ var $setkey = $('#Setkey');
 var $sethotkey = $('#SetHotkey');
 var key, Hotkey;
 var setlock = false;
+var myScope = 'window';
 
 $setkey.parent().css({position: 'relative'}); 
 
@@ -183,19 +170,24 @@ background: 'skyblue'
 $("#ReplayDiag").fadeIn(120);
 
 $(window).on('keydown', function(e) {
-if (!$Turn.is(":visible")) return false;
-if (e.keyCode == Hotkey) {
-e.preventDefault();
-PLAY[mode]();
-}
-});
-
-$setkey.on('keydown', function(e) {
-if (setlock) return false;
+if (myScope == 'setkey' && !setlock) {
 e.preventDefault();
 key = e.keyCode;
-$(this).val(keyList[key]||String.fromCharCode(key));
-}).on('dblclick', function(e) {
+$setkey.val(keyList[key]||String.fromCharCode(key)); } else if (e.keyCode == Hotkey && $Turn.is(':visible')) { 
+e.preventDefault();
+PLAY[mode]();
+}});
+
+$setkey
+.on('focus', function() { 
+e.preventDefault();
+myScope = 'setkey';
+})
+.on('blur', function() {
+e.preventDefault();
+myScope = 'window';
+});
+.on('dblclick', function(e) {
 if (setlock) setlock = false;
 $(this).css({ background: 'MintCream' });
 });
@@ -203,7 +195,7 @@ $(this).css({ background: 'MintCream' });
 $sethotkey.on('click', function() {
 if (setlock) return false;
 Hotkey = key;
-$setkey.css('background', 'pink');
+$setkey.css({ background: 'pink' });
 setlock = true;
 console.log('Hotkey Modified: ' + (keyList[key]||String.fromCharCode(key)));
 });
