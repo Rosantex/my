@@ -1,20 +1,23 @@
 <script type ="text/javascript">
 
-$('#ReplayDiag .dialog-body')
-    .html("<p style='color:#000; font-size:9pt'>by Rosantex</p>")
-    .append("<input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");
+$('.dialog-front').css({background: 'white'});
 
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.85').css({
-    width: '280',
-    fontsize: '17',
-    fontweight: 'bold', 
-    color: 'white', 
+$('.dialog-body')
+    .css({ position: 'relative' }); 
+    .html("<p style='color:#000; font-size:9pt'>by Rosantex</p>")
+    .append("<input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />")
+
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.90').css({
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold', 
+    width: '280', 
     background: 'black' 
 });
-    
-$('#Setkey').parent().css({ position: 'relative' }); 
 
 $('#Setkey').css({
+    fontSize: 12,
+    fontWeight: 'bold', 
     width: 120,
     top: 20, 
     left: 0, 
@@ -23,6 +26,9 @@ $('#Setkey').css({
 });
 
 $('#SetHotkey').css({ 
+    color: 'black'
+    fontSize: 12,
+    fontWeight: 'bold', 
     width: 40, 
     top: 20, 
     left: 140,
@@ -200,7 +206,7 @@ var PLAY = {
     },
 
     'HUN': function() {
-        var f = $Dsp.text();
+        var f = $Dsp.text().slice(1, -1);
         var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { 
             var a = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'.search($1) * 588 + 44032; 
 	    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
@@ -282,18 +288,26 @@ $setkey.on({
     dblclick: function() {
         if (setlock) { 
 	    setlock = false;
-            $(this).css({ background: 'MintCream' });
+            $(this).css({ background: '' });
 	}
     }
 });
 
-$sethotkey.on('click', function(e) {
-    if (setlock) return false;
+$sethotkey.on({
+    click: function(e) {
+        if (setlock) return false;
     
-    Hotkey = key;
-    $setkey.css({ background: 'pink' });
-    setlock = true;
-    console.log('Hotkey Modified: ' + (KEYNAME[key]||String.fromCharCode(key)));
+        Hotkey = key;
+        $setkey.css({ background: 'pink' });
+        setlock = true;
+        console.log('Hotkey Modified: ' + (KEYNAME[key]||String.fromCharCode(key)));
+    },
+    mouseover: function() {
+        $(this).css({ color: 'red' });
+    },
+    mouseout: function() {
+        $(this).css({ color: '' });
+    }
 });
 
 function shuffle(box) {
