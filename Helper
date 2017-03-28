@@ -15,9 +15,28 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Round = $("div[class='rounds']"),
     $Board = $('#ReplayDiag .dialog-body');
 
+var GAMEMODE = {
+
+'한국어 끝말잇기': 'KSH',
+'한국어 쿵쿵따': 'KKT',
+'한국어 앞말잇기': 'KAP',
+'한국어 타자 대결': 'KTY',
+'한국어 단어 대결': 'KDA',
+'한국어 십자말풀이': 'KCW',
+'한국어 솎솎': 'KSS',
+'자음퀴즈': 'CSQ',
+'훈민정음': 'HUN',
+'영어 끝말잇기': 'ESH',
+'영어 끄투': 'EKT',
+'영어 타자 대결': 'ETY',
+'영어 단어 대결': 'EDA',
+'영어 솎솎': 'ESS'
+
+};
+
 var PLAY = {
 
-'한국어 끝말잇기': function() {
+'KSH': function() {
     var f = $Dsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
@@ -28,41 +47,41 @@ var PLAY = {
         pf = f;
 },
 
-'한국어 쿵쿵따': function() {
+'KKT': function() {
 console.log('쿵따-준비중');
 },
 
-'한국어 앞말잇기': function() {
+'KAP': function() {
 console.log('한앞-준비중');
 },
 
-'한국어 타자 대결': function() {
+'KTY': function() {
 var f = $Dsp.text();
 $Talk.val(option.includes('속담') ? f : f.split(' ')[0]);
 $Take.click();
 },
 
-'한국어 단어 대결': function() {
+'KDA': function() {
 console.log('한단-준비중');
 },
 
-'한국어 십자말풀이': function() {
+'KCW': function() {
 console.log('십자-준비중');
 },
 
-'한국어 솎솎': function() {
+'KSS': function() {
 console.log('한쇽-준비중');
 },
 
-'자음퀴즈': function() {
+'CSQ': function() {
 console.log('자퀴-준비중');
 },
 
-'훈민정음': function() {
+'HUN': function() {
 console.log('훈민-준비중');
 },
 
-'영어 끝말잇기': function() {
+'ESH': function() {
     var f = $Dsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
@@ -73,7 +92,7 @@ console.log('훈민-준비중');
         pf = f;
 },
 
-'영어 끄투': function() {
+'EKT': function() {
     var f = $Dsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
@@ -84,17 +103,17 @@ console.log('훈민-준비중');
         pf = f;
 },
 
-'영어 타자 대결': function() {
+'ETY': function() {
 var f = $Dsp.text();
-$Talk.val(option.includes('속담') ? f : f.split(' '));
+$Talk.val(option.includes('속담') ? f : f.split(' ')[0]);
 $Take.click();
 },
 
-'영어 단어 대결': function() {
+'EDA': function() {
 console.log('영단-준비중');
 },
 
-'영어 솎솎': function() {
+'ESS': function() {
 console.log('영쇽-준비중');
 }
 
@@ -104,7 +123,7 @@ $Round.on('DOMSubtreeModified', function() {
         if (new Date().getTime() - lastupdate < 1000) return false;
 	var $Mode = $("h5.room-head-mode");
         option = $Mode.html().split(' / ');
-        mode = option.splice(0, 1);
+        mode = GAMEMODE[option.splice(0, 1)];
         db = shuffle(wBox);
 	console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
         lastupdate = new Date().getTime();
@@ -133,7 +152,7 @@ function readUrl(Url) {
 
 $Board.html("<p style='color:#000; font-size:9pt'>by Rosantex</p>");
 
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.65').css({
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.75').css({
 width: '280',
 fontsize: '17',
 fontweight: 'bold', 
@@ -149,7 +168,7 @@ var key, Hotkey;
 var setlock = false;
 var myScope = 'window';
 
-$setkey.parent().css({position: 'relative'}); 
+$setkey.parent().css({ position: 'relative' }); 
 
 $setkey.css({
 width: 120,
@@ -179,20 +198,19 @@ PLAY[mode]();
 }});
 
 $setkey
-.on('focus', function() { 
+.on('focus', function(e) { 
 e.preventDefault();
 myScope = 'setkey';
 })
-.on('blur', function() {
-e.preventDefault();
+.on('blur', function(e) {
 myScope = 'window';
-});
+})
 .on('dblclick', function(e) {
 if (setlock) setlock = false;
 $(this).css({ background: 'MintCream' });
 });
 
-$sethotkey.on('click', function() {
+$sethotkey.on('click', function(e) {
 if (setlock) return false;
 Hotkey = key;
 $setkey.css({ background: 'pink' });
