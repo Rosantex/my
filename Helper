@@ -212,7 +212,7 @@ var PLAY = {
             var a = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'.search($1) * 588 + 44032; 
 	    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
         });
-        var _Found = db.match('\\[' + res + '\\]');
+        var _Found = db.match('\\[' + res + '\\]')[0];
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
 	db = db.replace(_Found, '');
