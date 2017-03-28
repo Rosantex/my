@@ -41,23 +41,37 @@ var PLAY = {
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
     var _Found = (db.match('\\[(' + f + '.*[^다])\\]')[0] || '');
-        $Talk.val(_Found.slice(1, -1));
-      	$Take.click();
-        db = db.replace(_Found, '');
-        pf = f;
+    $Talk.val(_Found.slice(1, -1));
+    $Take.click();
+    db = db.replace(_Found, '');
+    pf = f;
 },
 
 'KKT': function() {
-console.log('쿵따-준비중');
+    var f = $Dsp.text();
+    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+    console.log('Search: ' + f);
+    var _Found = (db.match('\\[(' + f + '.[^다])\\]')[0] || '');
+    $Talk.val(_Found.slice(1, -1));
+    $Take.click();
+    db = db.replace(_Found, '');
+    pf = f;
 },
 
 'KAP': function() {
-console.log('한앞-준비중');
+    var f = $Dsp.text();
+    f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+    console.log('Search: ' + f);
+    var _Found = (db.match('\\[(.+' + f + ')\\]')[0] || '');
+    $Talk.val(_Found.slice(1, -1));
+    $Take.click();
+    db = db.replace(_Found, '');
+    pf = f;
+
 },
 
 'KTY': function() {
-var f = $Dsp.text();
-$Talk.val(option.includes('속담') ? f : f.split(' ')[0]);
+$Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
 $Take.click();
 },
 
@@ -85,7 +99,7 @@ console.log('훈민-준비중');
     var f = $Dsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
-    var _Found = (db.match('\\[(' + f + '.*)\\]')[0] || '');
+    var _Found = (db.match('\\[(' + f + '.+)\\]')[0] || '');
         $Talk.val(_Found.slice(1, -1));
       	$Take.click();
         db = db.replace(_Found, '');
@@ -96,7 +110,7 @@ console.log('훈민-준비중');
     var f = $Dsp.text();
     f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
     console.log('Search: ' + f);
-    var _Found = (db.match('\\[(' + f + '.*)\\]')[0] || '');
+    var _Found = (db.match('\\[(' + f + '.{2,})\\]')[0] || '');
         $Talk.val(_Found.slice(1, -1));
       	$Take.click();
         db = db.replace(_Found, '');
