@@ -179,88 +179,84 @@ var PLAY = {
     },
 
     'KTY': function() {
-       $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
-       $Take.click();
+        $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
+        $Take.click();
     },
 
     'KDA': function() {
-       console.log('한단-준비중');
+        console.log('한단-준비중');
     },
 
     'KCW': function() {
-       console.log('십자-준비중');
+        console.log('십자-준비중');
     },
 
     'KSS': function() {      
-       console.log('한쇽-준비중');
+        console.log('한쇽-준비중');
     },
 
     'CSQ': function() {
-       console.log('자퀴-준비중');
+        console.log('자퀴-준비중');
     },
 
     'HUN': function() {
-       var f = $Dsp.text();
-       var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { 
-           var a = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'.search($1) * 588 + 44032; return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
-       });
-       var _Found = db.match(new RegExp('\\['+res+'\\]','g'));
-    
-    for (var i = 0, x = _Found.length; i < x; i++) {
-       if (!$Turn.is(":visible")) return;
-       $Talk.val(_Found[i].slice(1, -1));
-       $Take.click();
-       sleep(80)
-    }
-       
+        var f = $Dsp.text();
+        var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { 
+            var a = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ'.search($1) * 588 + 44032; 
+	    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
+        });
+        var _Found = db.match('\\[' + res + '\\]');
+        $Talk.val(_Found.slice(1, -1));
+        $Take.click();
+	db = db.replace(_Found, '');
     },
 
     'ESH': function() {        
-       var f = $Dsp.text();
-       f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-       console.log('Search: ' + f);
-       var _Found = (db.match('\\[(' + f + '.+)\\]')[0] || '');
-       $Talk.val(_Found.slice(1, -1));
-       $Take.click();
-       db = db.replace(_Found, '');
-       pf = f;
+        var f = $Dsp.text();
+        f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
+        console.log('Search: ' + f);
+        var _Found = (db.match('\\[(' + f + '.+)\\]')[0] || '');
+        $Talk.val(_Found.slice(1, -1));
+        $Take.click();
+        db = db.replace(_Found, '');
+        pf = f;
     },
 
     'EKT': function() {
-       var f = $Dsp.text();
-       f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);       
-       console.log('Search: ' + f);
-       var _Found = (db.match('\\[(' + f + '.{2,})\\]')[0] || '');
-       $Talk.val(_Found.slice(1, -1));
-       $Take.click();
-       db = db.replace(_Found, '');
-       pf = f;
+        var f = $Dsp.text();
+        f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);       
+        console.log('Search: ' + f);
+        var _Found = (db.match('\\[(' + f + '.{2,})\\]')[0] || '');
+        $Talk.val(_Found.slice(1, -1));
+        $Take.click();
+        db = db.replace(_Found, '');
+        pf = f;
     },
 
     'ETY': function() {
-       $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
-       $Take.click();
+        $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
+        $Take.click();
     },
 
     'EDA': function() {
-       console.log('영단-준비중');
+        console.log('영단-준비중');
     },
 
     'ESS': function() {
-       console.log('영쇽-준비중');
+        console.log('영쇽-준비중');
     }
 
 };
 
 $Round.on('DOMSubtreeModified', function() {
-        if (new Date().getTime() - lastupdate < 7000) return false;
+    if (new Date().getTime() - lastupdate < 7000) return false;
 	
-	var $Mode = $("h5.room-head-mode");
-        option = $Mode.html().split(' / ');
-        mode = GAMEMODE[option.splice(0, 1)];
-        db = shuffle(wBox);
-	console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
-        lastupdate = new Date().getTime();
+    var $Mode = $("h5.room-head-mode");
+    option = $Mode.html().split(' / ');
+    mode = GAMEMODE[option.splice(0, 1)];
+    db = shuffle(wBox);
+    console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
+    lastupdate = new Date().getTime();
 });
 
 $(window).on('keydown', function(e) {
@@ -278,16 +274,16 @@ $(window).on('keydown', function(e) {
 
 $setkey.on({
     focus: function() {
-         k_scope = 'setkey';
+        k_scope = 'setkey';
     },
     blur: function() {
-         k_scope = 'window';
+        k_scope = 'window';
     },
     dblclick: function() {
-         if (setlock) { 
-	      setlock = false;
-              $(this).css({ background: 'MintCream' });
-	 }
+        if (setlock) { 
+	    setlock = false;
+            $(this).css({ background: 'MintCream' });
+	}
     }
 });
 
@@ -301,16 +297,16 @@ $sethotkey.on('click', function(e) {
 });
 
 function shuffle(box) {
-        var arr = box.split('\n');
-	var CurIndex = arr.length, TempValue, RndIndex;
-	while (0 !== CurIndex) {
-		RndIndex = Math.floor(Math.random() * CurIndex);
-		CurIndex -= 1;
-		TempValue = arr[CurIndex];
-		arr[CurIndex] = arr[RndIndex];
-		arr[RndIndex] = TempValue;
-	}
-	return arr.join('\n');
+    var arr = box.split('\n');
+    var CurIndex = arr.length, TempValue, RndIndex;
+    while (0 !== CurIndex) {
+        RndIndex = Math.floor(Math.random() * CurIndex);
+	CurIndex -= 1;
+	TempValue = arr[CurIndex];
+	arr[CurIndex] = arr[RndIndex];
+	arr[RndIndex] = TempValue;
+    }
+    return arr.join('\n');
 }
 
 function readUrl(Url) {
