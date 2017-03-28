@@ -250,9 +250,9 @@ var PLAY = {
     },
 
     'ESS': function() {
-	var str = $Dsp.html().match(/\w(?=<\/div)/g).join('');
+	var str = $("div[class='jjo-display ellipse']").html().match(/\w(?=<\/div)/g).join('');
 	var occ = []; 
-	var xreg = [];
+	var reg = [];
 	var ignore = '';
 	var w, n;
 
@@ -264,13 +264,12 @@ var PLAY = {
 	    n ? occ[w] = n : ignore += w;
 	} 
 
-	xreg.push('\\[.*[' + ignore + '].*\\]');
+	reg.push('\\[.*[' + ignore + '].*\\]');
 	for (var i in occ) { 
-	    xreg.push('\\[(.*' + i + '.*){' + (occ[i]++) + ',}\\]');
+	    reg.push('\\[(.*' + i + '.*){' + (occ[i]++) + ',}\\]');
 	}
 
-	var reg = new RegExp(xreg.join('|'), 'g');
-	var wd = ( db.replace(reg, '').match(/\[[a-z]+\]/)[0] || '');
+	var wd = ( db.replace(new RegExp(reg.join('|'), 'g'), '').match(/\[[a-z]+\]/)[0] || '');
 
 	if ( wd ) {
 	    $Talk.val(wd.slice(1, -1));
@@ -299,10 +298,10 @@ $(window).on('keydown', function(e) {
         key = e.keyCode;
         $setkey.val(KEYNAME[key]||String.fromCharCode(key)); 
     } else if (e.keyCode == Hotkey && ($Turn.is(':visible')||mode.match(/(K|E)SS/))) { 
-            e.preventDefault();
-	    var sTime = new Date().getTime();
-            PLAY[mode]();
-	    console.log(new Date().getTime() - sTime);
+        e.preventDefault();
+        var sTime = new Date().getTime();
+        PLAY[mode]();
+	console.log(new Date().getTime() - sTime);
     }
 });
 
