@@ -1,6 +1,6 @@
 <script type ="text/javascript">
 
-$('#ReplayDiag .dialog-front').css({ background: 'white' });
+$('#ReplayDiag.dialog.dialog-front').css({ background: 'white' });
 
 $('#ReplayDiag .dialog-body')
      .css({ position: 'relative' })
@@ -286,7 +286,7 @@ $Round.on('DOMSubtreeModified', function() {
     var $Mode = $("h5.room-head-mode");
     option = $Mode.html().split(' / ');
     mode = GAMEMODE[option.splice(0, 1)];
-    db = wBox;     //shuffle(wBox);
+    db = wBox;
     console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
     lastupdate = new Date().getTime();
 });
@@ -303,7 +303,6 @@ $(window).on('keydown', function(e) {
 	    var sTime = new Date().getTime();
             PLAY[mode]();
 	    console.log(new Date().getTime() - sTime);
-	}
     }
 });
 
