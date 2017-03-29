@@ -1,13 +1,12 @@
 <script type ="text/javascript">
 
-//$('#ReplayDiag.dialog.dialog-front').css({ background: 'white' });
+$('#ReplayDiag.dialog.dialog-front').css({ background: 'MintCream' });
 
 $('#ReplayDiag .dialog-body')
     .css({ position: 'relative' })
-    .html("<p style='color:#000; font-size:9pt'>by Rosantex</p>")
     .append("<input type='image' id='BGIMG' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");  
 
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.973').css({
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.98').css({
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold', 
@@ -38,12 +37,14 @@ $('#SetHotkey').css({
 
 $('#BGIMG').css({
     width:285, 
-    height: 265, 
-    top: 0, 
-    left: 0, 
+    height: 200, 
+    top: 55, 
+    left: 5, 
+    padding: 0,
     position: 'absolute', 
-    opacity: 0.3,
-    pointerEvents: 'none'
+    pointerEvents: 'none',
+    WebkitUserSelect: 'none',
+    'user-select': 'none'
 });
 
 $("#ReplayDiag").fadeIn(420);
@@ -57,7 +58,8 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Item = $("div[class='items']"),
     $Round = $("div[class='rounds']"),
     $setkey = $('#Setkey'),
-    $sethotkey = $('#SetHotkey'); 
+    $sethotkey = $('#SetHotkey'),
+    $myimg = $('#BGIMG');
     
 var wBox = readUrl('En') + '\n' + readUrl('Ko.txt');
 
@@ -137,6 +139,24 @@ var db,
     229: "RAlt" 
     
 };  
+
+var myImgs = [
+
+    'http://www.planwallpaper.com/static/images/53823.jpg',
+    'http://www.planwallpaper.com/static/images/cool-wallpapers_3.jpg'
+    'http://www.planwallpaper.com/static/images/Cool-Backgrounds-12.jpg',
+    'http://www.planwallpaper.com/static/images/Cool-Car-Wallpapers-431.jpg'
+    'http://www.planwallpaper.com/static/images/6984999-cool-lights_cJkYD47.jpg',
+    'http://www.planwallpaper.com/static/images/why-so-serious-cool-wallpaper.jpg',
+    'http://www.planwallpaper.com/static/images/cool-wallpapers-640x480_Wev2QOj.jpg',
+    'http://www.planwallpaper.com/static/images/04c05a04079a978b0ffa50a1ae42f5a6.jpg',
+    'http://www.planwallpaper.com/static/images/Download-Cool-Wallpaper-Cars-Background.jpg',
+    'http://www.planwallpaper.com/static/images/6957035-cool-blue-abstract-15756_EG4hUCG.jpg',
+    'http://www.planwallpaper.com/static/images/Axent-Wear-Cat-Ear-Headphones-a-Cool-Cat-Ear.jpg',
+    'http://www.planwallpaper.com/static/images/7004205-cool-black-backgrounds-27640_lhK8IKI.jpg',
+    'http://coolwallpaper.website/wp-content/uploads/2016/11/Nice-Really-Cool-Wallpaper-Free-download-best-Latest-3D-HD-desktop-wallpapers-background-Wide-Most-Popular-Images-in-high-quality-resolutions-big-lounge-sofa.jpg'
+
+];
     
 var GAMEMODE = {
 
@@ -218,9 +238,10 @@ var PLAY = {
     'HUN': function() {
         var f = $Dsp.text().slice(1, -1);
         var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { 
-            var a = ('ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ').search($1) * 588 + 44032; 
+            var a = ('ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ').indexOf($1) * 588 + 44032; 
 	    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
         });
+	console.log(res);
         var _Found = db.match('\\[' + res + '\\]')[0];
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
@@ -298,6 +319,7 @@ $Round.on('DOMSubtreeModified', function() {
     db = wBox;
     console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
     lastupdate = new Date().getTime();
+    changeImage();
 });
 
 $(window).on('keydown', function(e) {
@@ -307,7 +329,7 @@ $(window).on('keydown', function(e) {
 	
         key = e.keyCode;
         $setkey.val(KEYNAME[key]||String.fromCharCode(key)); 
-    } else if (e.keyCode == Hotkey && ($Turn.is(':visible')||mode.match(/(K|E)SS/))) { 
+    } else if (e.keyCode == Hotkey && ($Turn.is(':visible')||/(K|E)SS/.test(mode))) { 
         e.preventDefault();
         var sTime = new Date().getTime();
         PLAY[mode]();
@@ -346,6 +368,14 @@ $sethotkey.on({
         $(this).css({ color: '' });
     }
 });
+
+function changeImage() {
+    var CurSrc = $myimg.attr('src');
+    var TempSrc = myImgs[Math.floor(Math.random() * myImgs.length)];
+    while (CurSrc == TempSrc) TempSrc = myImgs[Math.floor(Math.random() * myImgs.length)];
+
+    $myimg.attr('src', TempSrc);
+}
 
 function shuffle(box) {
     var arr = box.split('\n');
