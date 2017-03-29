@@ -183,7 +183,9 @@ var PLAY = {
         var f = $Dsp.text();
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
         console.log('Search: ' + f);
-        var _Found = (db.match('\\[(' + f + '.*[^다])\\]')[0] || '');
+        var _Found = (db.match('\\[(' + f + '.*[^다])\\]') || '')[0];
+	if (!_Found) console.log('Not Found'); return false;
+	
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
         db = db.replace(_Found, '');
@@ -196,7 +198,9 @@ var PLAY = {
         f = f.replace(d[0], '');    
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
         console.log('Search: ' + f);
-        var _Found = (db.match('\\[' + f + '.{' + (Number(d[1]) - 2).toString() + '}[^다]\\]')[0] || '');
+        var _Found = (db.match('\\[' + f + '.{' + (Number(d[1]) - 2).toString() + '}[^다]\\]') || '')[0];
+	if (!_Found) console.log('Not Found'); return false;
+	
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
         db = db.replace(_Found, '');
@@ -207,7 +211,9 @@ var PLAY = {
         var f = $Dsp.text();
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
         console.log('Search: ' + f);
-        var _Found = (db.match('\\[(.+' + f + ')\\]')[0] || '');
+        var _Found = (db.match('\\[(.+' + f + ')\\]') || '')[0];
+	if (!_Found) console.log('Not Found'); return false;
+	
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
         db = db.replace(_Found, '');
@@ -236,13 +242,17 @@ var PLAY = {
     },
 
     'HUN': function() {
+        console.log('훈민-점검중'); 
+        return false;
         var f = $Dsp.text().match(/[ㄱ-ㅎ]/)[0];
         var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { 
             var a = ('ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ').indexOf($1) * 588 + 44032; 
 	    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
         });
 	console.log(res);
-        var _Found = db.match('\\[' + res + '\\]')[0];
+        var _Found = (db.match('\\[' + res + '\\]') || '')[0];
+	if (!_Found) console.log('Not Found'); return false;
+	
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
 	db = db.replace(_Found, '');
@@ -252,7 +262,9 @@ var PLAY = {
         var f = $Dsp.text();
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
         console.log('Search: ' + f);
-        var _Found = (db.match('\\[(' + f + '.+)\\]')[0] || '');
+        var _Found = (db.match('\\[(' + f + '.+)\\]') || '')[0];
+	if (!_Found) console.log('Not Found'); return false;
+	
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
         db = db.replace(_Found, '');
@@ -263,7 +275,9 @@ var PLAY = {
         var f = $Dsp.text();
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);       
         console.log('Search: ' + f);
-        var _Found = (db.match('\\[(' + f + '.{2,})\\]')[0] || '');
+        var _Found = (db.match('\\[(' + f + '.{2,})\\]') || '')[0];
+	if (!_Found) console.log('Not Found'); return false;
+	
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
         db = db.replace(_Found, '');
@@ -281,7 +295,7 @@ var PLAY = {
 
     'ESS': function() {
 	var res = $Dsp.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g,'');
-	var occ = []; 
+	var occ = {}; 
 	var reg = [];
 	var ignore = '';
 	var w, n;
@@ -291,18 +305,19 @@ var PLAY = {
 	    n = res.split(w).length - 1;
 	    n ? occ[w] = n : ignore += w;
 	} 
-
-	reg.push('\\[.*[' + ignore + '].*\\]');
+	
+	if (ignore) reg.push('\\[.*[' + ignore + '].*\\]');
+	
 	for (var i in occ) { 
 	    reg.push('\\[(.*' + i + '.*){' + (occ[i]++) + ',}\\]');
 	}
 
-	var wd = ( db.replace(new RegExp(reg.join('|'), 'g'), '').match(/\[\w+\]/)[0] || '');
+	var _Found = (db.replace(new RegExp(reg.join('|'), 'g'), '').match(/\[\w+\]/) || '')[0];
 
-	if ( wd ) {
-	    $Talk.val(wd.slice(1, -1));
-	    $Take.click();
-	}
+	if (!_Found) console.log('Not Found'); return false
+	
+	$Talk.val(_Found.slice(1, -1));
+	$Take.click();
     }
 
 };
@@ -326,7 +341,7 @@ $(window).on('keydown', function(e) {
 	
         key = e.keyCode;
         $setkey.val(KEYNAME[key]||String.fromCharCode(key)); 
-    } else if (e.keyCode == Hotkey && ($Turn.is(':visible')||/(K|E)SS/.test(mode))) { 
+    } else if (e.keyCode == Hotkey && ($Turn.is(':visible') || /(K|E)SS/.test(mode))) { 
         e.preventDefault();
         var sTime = new Date().getTime();
         PLAY[mode]();
