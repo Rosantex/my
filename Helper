@@ -142,7 +142,7 @@ var db,
 var myImgs = [
 
     'http://www.planwallpaper.com/static/images/53823.jpg',
-    'http://www.planwallpaper.com/static/images/cool-wallpapers_3.jpg'
+    'http://www.planwallpaper.com/static/images/cool-wallpapers_3.jpg',
     'http://www.planwallpaper.com/static/images/Cool-Backgrounds-12.jpg',
     'http://www.planwallpaper.com/static/images/Cool-Car-Wallpapers-431.jpg'
     'http://www.planwallpaper.com/static/images/6984999-cool-lights_cJkYD47.jpg',
@@ -235,7 +235,7 @@ var PLAY = {
     },
 
     'HUN': function() {
-        var f = $Dsp.text().slice(1, -1);
+        var f = $Dsp.text().match(/[ㄱ-ㅎ]/)[0];
         var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { 
             var a = ('ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ').indexOf($1) * 588 + 44032; 
 	    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
