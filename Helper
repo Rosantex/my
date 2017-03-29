@@ -7,7 +7,7 @@ $('#ReplayDiag .dialog-body')
     .html('')
     .append("<input type='image' id='BGIMG' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");  
 
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.985').css({
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.987').css({
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold', 
@@ -152,7 +152,6 @@ var myImgs = [
     'http://www.planwallpaper.com/static/images/cool-wallpapers-640x480_Wev2QOj.jpg',
     'http://www.planwallpaper.com/static/images/04c05a04079a978b0ffa50a1ae42f5a6.jpg',
     'http://www.planwallpaper.com/static/images/Download-Cool-Wallpaper-Cars-Background.jpg',
-    'http://www.planwallpaper.com/static/images/6957035-cool-blue-abstract-15756_EG4hUCG.jpg',
     'http://www.planwallpaper.com/static/images/Axent-Wear-Cat-Ear-Headphones-a-Cool-Cat-Ear.jpg',
     'http://www.planwallpaper.com/static/images/7004205-cool-black-backgrounds-27640_lhK8IKI.jpg',
     'http://coolwallpaper.website/wp-content/uploads/2016/11/Nice-Really-Cool-Wallpaper-Free-download-best-Latest-3D-HD-desktop-wallpapers-background-Wide-Most-Popular-Images-in-high-quality-resolutions-big-lounge-sofa.jpg'
@@ -287,7 +286,7 @@ var PLAY = {
 	var ignore = '';
 	var w, n;
 	
-	for (var i = 0; i < 25; i++) { 
+	for (var i = 0; i < 26; i++) { 
 	    w = String.fromCharCode(97 + i);
 	    n = res.split(w).length - 1;
 	    n ? occ[w] = n : ignore += w;
@@ -309,7 +308,7 @@ var PLAY = {
 };
 
 $Round.on('DOMSubtreeModified', function() {
-    if (new Date().getTime() - lastupdate < 5000) return false;
+    if (new Date().getTime() - lastupdate < 5555) return false;
 	
     var $Mode = $("h5.room-head-mode");
     option = $Mode.html().split(' / ');
