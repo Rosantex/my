@@ -184,8 +184,10 @@ var PLAY = {
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
         console.log('Search: ' + f);
         var _Found = (db.match('\\[(' + f + '.*[^다])\\]') || '')[0];
-	if (!_Found) console.log('Not Found'); return false;
-	
+	if (!_Found) {
+	    console.log('Not Found'); 
+	    return false;
+	}	
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
         db = db.replace(_Found, '');
@@ -199,8 +201,10 @@ var PLAY = {
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
         console.log('Search: ' + f);
         var _Found = (db.match('\\[' + f + '.{' + (Number(d[1]) - 2).toString() + '}[^다]\\]') || '')[0];
-	if (!_Found) console.log('Not Found'); return false;
-	
+	if (!_Found) {
+	    console.log('Not Found'); 
+	    return false;
+	}
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
         db = db.replace(_Found, '');
@@ -212,8 +216,10 @@ var PLAY = {
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
         console.log('Search: ' + f);
         var _Found = (db.match('\\[(.+' + f + ')\\]') || '')[0];
-	if (!_Found) console.log('Not Found'); return false;
-	
+	if (!_Found) {
+	    console.log('Not Found'); 
+	    return false;
+	}
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
         db = db.replace(_Found, '');
@@ -251,8 +257,10 @@ var PLAY = {
         });
 	console.log(res);
         var _Found = (db.match('\\[' + res + '\\]') || '')[0];
-	if (!_Found) console.log('Not Found'); return false;
-	
+	if (!_Found) {
+	    console.log('Not Found'); 
+	    return false;
+	}
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
 	db = db.replace(_Found, '');
@@ -263,8 +271,10 @@ var PLAY = {
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
         console.log('Search: ' + f);
         var _Found = (db.match('\\[(' + f + '.+)\\]') || '')[0];
-	if (!_Found) console.log('Not Found'); return false;
-	
+	if (!_Found) {
+	    console.log('Not Found'); 
+	    return false;
+	}
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
         db = db.replace(_Found, '');
@@ -276,8 +286,10 @@ var PLAY = {
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);       
         console.log('Search: ' + f);
         var _Found = (db.match('\\[(' + f + '.{2,})\\]') || '')[0];
-	if (!_Found) console.log('Not Found'); return false;
-	
+	if (!_Found) {
+	    console.log('Not Found'); 
+	    return false;
+	}
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
         db = db.replace(_Found, '');
@@ -313,9 +325,10 @@ var PLAY = {
 	}
 
 	var _Found = (db.replace(new RegExp(reg.join('|'), 'g'), '').match(/\[\w+\]/) || '')[0];
-
-	if (!_Found) console.log('Not Found'); return false
-	
+	if (!_Found) {
+	    console.log('Not Found'); 
+	    return false;
+	}
 	$Talk.val(_Found.slice(1, -1));
 	$Take.click();
     }
