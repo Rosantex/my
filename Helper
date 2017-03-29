@@ -1,12 +1,11 @@
 <script type ="text/javascript">
 
-$('#ReplayDiag.dialog.dialog-front').css({ background: 'white' });
+//$('#ReplayDiag.dialog.dialog-front').css({ background: 'white' });
 
 $('#ReplayDiag .dialog-body')
-     .css({ position: 'relative' })
+    .css({ position: 'relative' })
     .html("<p style='color:#000; font-size:9pt'>by Rosantex</p>")
-    .append("<input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");
-    
+    .append("<input type='image' id='BGIMG' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");  
 
 $("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.973').css({
     color: 'white',
@@ -37,7 +36,17 @@ $('#SetHotkey').css({
     background: 'skyblue'
 });
 
-$("#ReplayDiag").fadeIn(120);
+$('#BGIMG').css({
+    width:285, 
+    height: 265, 
+    top: 0, 
+    left: 0, 
+    position: 'absolute', 
+    opacity: 0.3,
+    pointerEvents: 'none'
+});
+
+$("#ReplayDiag").fadeIn(420);
 
 var $Dsp = $("div[class='jjo-display ellipse']"),
     $Talk = $('#Talk'),
