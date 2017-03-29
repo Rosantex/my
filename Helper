@@ -43,8 +43,7 @@ $('#BGIMG').css({
     padding: 0,
     position: 'absolute', 
     pointerEvents: 'none',
-    WebkitUserSelect: 'none',
-    'user-select': 'none'
+    WebkitUserSelect: 'none'
 });
 
 $("#ReplayDiag").fadeIn(420);
@@ -280,7 +279,7 @@ var PLAY = {
     },
 
     'ESS': function() {
-	var res = $Dsp.html().match(/\w(?=<\/div)/g).join('');
+	var res = $Dsp.html().match(/%;">\w(?=<\/div)/g).join('').replace(/[^a-z]/g,'');
 	var occ = []; 
 	var reg = [];
 	var ignore = '';
