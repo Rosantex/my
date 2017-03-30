@@ -265,6 +265,7 @@ var PLAY = {
 	
 	$Talk.val(_Found.slice(1, -1));
 	$Take.click();
+	db = db.replace(_Found, '');
     },
 
     'CSQ': function() {
