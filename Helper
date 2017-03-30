@@ -297,7 +297,10 @@ var PLAY = {
         pf = f;
     },
 
-    'ETY': PLAY['KTY'],
+    'ETY': function() {
+        $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
+        $Take.click();
+    },
 
     'EDA': function() {
         console.log('영단-준비중');
@@ -358,7 +361,6 @@ sock();
 
     'ESS': function() {
         var res = $Dsp.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g,'');
-
         var len, char, have = '';
         var count = 0;
         var rSock = [];
@@ -367,8 +369,8 @@ sock();
             char = res[0];
             res = res.replace(new RegExp(char, 'g'), '');
             count = len - res.length + 1;
-            have += char;
             rSock.push('\\[([^' + char + ']*' + char + '[^' + char + ']*){' + count.toString() + ',}\\]');
+	    have += char;
         }
 	
         rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
@@ -382,6 +384,7 @@ sock();
 	    console.log('Not Found'); 
 	    return false;
 	}
+	
 	$Talk.val(_Found.slice(1, -1));
 	$Take.click();
 }
