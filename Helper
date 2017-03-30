@@ -7,7 +7,7 @@ $('#ReplayDiag .dialog-body')
     .html('')
     .append("<input type='image' id='BGIMG' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");  
 
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.987').css({
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.992').css({
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold', 
@@ -38,7 +38,7 @@ $('#SetHotkey').css({
 
 $('#BGIMG').css({
     width:285, 
-    height: 200, 
+    height: 190, 
     top: 55, 
     left: 5, 
     padding: 0,
@@ -145,9 +145,14 @@ var db,
 var myImgs = [
 
     'http://www.planwallpaper.com/static/images/53823.jpg',
+    'https://wallpaperbrowse.com/media/images/cool-wallpaper-2.jpg',
+    'https://wallpaperbrowse.com/media/images/cool-pictures-24.jpg',
+    'https://wallpaperbrowse.com/media/images/cool-wallpaper-15.jpg',
     'http://www.planwallpaper.com/static/images/cool-wallpapers_3.jpg',
     'http://www.planwallpaper.com/static/images/Cool-Backgrounds-12.jpg',
     'http://www.planwallpaper.com/static/images/Cool-Car-Wallpapers-431.jpg',
+    'https://wallpaperbrowse.com/media/images/Cool-And-Beautiful-Wallpaper.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/2/20/Cool%2C_Calif_sign.jpg',
     'http://www.planwallpaper.com/static/images/6984999-cool-lights_cJkYD47.jpg',
     'http://www.planwallpaper.com/static/images/why-so-serious-cool-wallpaper.jpg',
     'http://www.planwallpaper.com/static/images/cool-wallpapers-640x480_Wev2QOj.jpg',
@@ -229,7 +234,7 @@ var PLAY = {
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
         console.log('Search: ' + f);
 	
-	var _Found = ( m ? db.match('\\[(.*' + m + '.*)+' + f + \\]') : '' );
+	var _Found = ( m ? db.match('\\[(.*' + m + '.*)+' + f + '\\]') : '' );
         var _LFound;
 	
 	if (_Found) {
