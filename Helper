@@ -1,7 +1,12 @@
 <script type ="text/javascript">
 
 $('#ReplayDiag.dialog.dialog-front').css({ background: 'MintCream' });
-$('#ReplayDiag.dialog').css({ height: 245 });
+
+$('#ReplayDiag.dialog').css({ 
+    height: 245, 
+    width: 278 
+});
+
 $('#ReplayDiag .dialog-body')
     .css({ position: 'relative' })
     .html('')
@@ -11,8 +16,9 @@ $("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.995').css({
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold', 
-    width: 280, 
-    background: 'black' 
+    width: 255, 
+    background: 'MidnightBlue',
+    WebkitUserSelect: 'none'
 });
 
 $('#Setkey').css({
@@ -33,12 +39,13 @@ $('#SetHotkey').css({
     top: 0, 
     left: 140,
     position:'absolute',    
-    background: 'skyblue'
+    background: 'skyblue',
+    WebkitUserSelect: 'none'
 });
 
 $('#BGIMG').css({
-    width:285, 
-    height: 175, 
+    width:265, 
+    height: 166, 
     top: 35, 
     left: 5, 
     padding: 0,
