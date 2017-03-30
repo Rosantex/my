@@ -392,8 +392,9 @@ $(window).on('keydown', function(e) {
         if (setlock) return false;
 	
         key = e.keyCode;
-        $setkey.val(KEYNAME[key]||String.fromCharCode(key)); 
+        $setkey.val(KEYNAME[key] || String.fromCharCode(key)); 
     } else if (e.keyCode == Hotkey && ($Turn.is(':visible') || /(K|E)SS/.test(mode))) { 
+        e.stopPropagation();
         e.preventDefault();
 	if (playing) return false;
 	
