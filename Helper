@@ -1,17 +1,17 @@
 <script type ="text/javascript">
 
 $('#ReplayDiag.dialog.dialog-front').css({ background: 'MintCream' });
-
+$('#ReplayDiag.dialog').css({ height: 245 });
 $('#ReplayDiag .dialog-body')
     .css({ position: 'relative' })
     .html('')
     .append("<input type='image' id='BGIMG' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");  
 
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.992').css({
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.995').css({
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold', 
-    width: '280', 
+    width: 280, 
     background: 'black' 
 });
 
@@ -19,9 +19,9 @@ $('#Setkey').css({
     fontSize: 12,
     fontWeight: 'bold', 
     width: 120,
-    top: 20, 
+    top: 0, 
     left: 0, 
-    position:'absolute',
+    position: 'absolute',
     background: 'MintCream'
 });
 
@@ -30,7 +30,7 @@ $('#SetHotkey').css({
     fontSize: 12,
     fontWeight: 'bold', 
     width: 40, 
-    top: 20, 
+    top: 0, 
     left: 140,
     position:'absolute',    
     background: 'skyblue'
@@ -38,8 +38,8 @@ $('#SetHotkey').css({
 
 $('#BGIMG').css({
     width:285, 
-    height: 190, 
-    top: 55, 
+    height: 175, 
+    top: 35, 
     left: 5, 
     padding: 0,
     position: 'absolute', 
