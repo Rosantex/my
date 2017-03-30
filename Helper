@@ -71,8 +71,8 @@ var db,
     Hotkey = 96,
     setlock = false,
     k_scope = 'window',
-    lastupdate = 0,
-    playing = false;
+    playing = false,
+    lastupdate = 0;
     
  var KEYNAME = { 
  
@@ -249,14 +249,14 @@ var PLAY = {
         while (len = res.length) {
             char = res[0];
             res = res.replace(new RegExp(char, 'g'), '');
-            count = len - res.length + 1;
-            rSock.push('\\[(.*' + char + '.*){' + count.toString() + ',}\\]');
+            count = (len - res.length + 1).toString();
+            rSock.push('\\[(.*' + char + '.*){' + count + ',}\\]');
 	    have += char;
         }
 	
         rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
-	console.log(rSock);
-        var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{2,}\\]') || '')[0];
+	var digit = (option.includes('2글자 금지') ? 3 : 2).toString();
+        var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + digit + ',}\\]') || '')[0];
         
         if (!_Found) {
 	    console.log('Not Found'); 
@@ -338,14 +338,14 @@ var PLAY = {
         while (len = res.length) {
             char = res[0];
             res = res.replace(new RegExp(char, 'g'), '');
-            count = len - res.length + 1;
-            rSock.push('\\[(.*' + char + '.*){' + count.toString() + ',}\\]');
+            count = (len - res.length + 1).toString();
+            rSock.push('\\[(.*' + char + '.*){' + count + ',}\\]');
 	    have += char;
         }
 	
         rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
-	console.log(rSock);
-        var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{2,}\\]') || '')[0];
+	var digit = (option.includes('2글자 금지') ? 3 : 2).toString();
+        var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + digit + ',}\\]') || '')[0];
         
         if (!_Found) {
 	    console.log('Not Found'); 
@@ -354,6 +354,7 @@ var PLAY = {
 	
 	$Talk.val(_Found.slice(1, -1));
 	$Take.click();
+	db = db.replace(_Found, '');
     }
 
 
