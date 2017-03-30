@@ -68,10 +68,11 @@ var db,
     mode, 
     option,
     key, 
-    Hotkey = 13,
+    Hotkey = 48,
     setlock = false,
     k_scope = 'window',
-    lastupdate = 0;
+    lastupdate = 0,
+    playing = false;
     
  var KEYNAME = { 
  
@@ -296,10 +297,7 @@ var PLAY = {
         pf = f;
     },
 
-    'ETY': function() {
-        $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
-        $Take.click();
-    },
+    'ETY': PLAY['KTY'];
 
     'EDA': function() {
         console.log('영단-준비중');
@@ -311,6 +309,31 @@ var PLAY = {
 	var reg = [];
 	var ignore = '';
 	var w, n;
+	
+/*보류
+function sock() {
+var sTime = new Date().getTime();
+var res = 'acegikwxyz';
+
+var len, char, have = '';
+var count = {};
+
+while (len = res.length) {
+    char = res[0];
+    res = res.replace(new RegExp(char, 'g'), '');
+    count[char] = len - res.length;
+    have += char;
+}
+var rSock = new RegExp('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]', 'g');
+var Catch = En.replace(rSock, '').match('\\[[' + have + ']{2,}\\]'); 
+console.log(rSock);
+console.log( Catch ? Catch[0] : 'Not Found' );
+console.log( new Date().getTime() - sTime );
+}
+
+sock();
+*/
+	
 	
 	for (var i = 0; i < 26; i++) { 
 	    w = String.fromCharCode(97 + i);
@@ -356,9 +379,13 @@ $(window).on('keydown', function(e) {
         $setkey.val(KEYNAME[key]||String.fromCharCode(key)); 
     } else if (e.keyCode == Hotkey && ($Turn.is(':visible') || /(K|E)SS/.test(mode))) { 
         e.preventDefault();
+	if (playing) return false;
+	
         var sTime = new Date().getTime();
+	playing = true;
         PLAY[mode]();
 	console.log(new Date().getTime() - sTime);
+	playing = false;
     }
 });
 
