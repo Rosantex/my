@@ -374,10 +374,9 @@ sock();
         }
 	
         rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
-        rSock = new RegExp( rSock.join('|'), 'g' );
-        var _Found = En.replace(rSock, '').match('\\[[' + have + ']{2,}\\]');
+        var _Found = db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{2,}\\]');
 
-        //console.log(rSock);
+        console.log(rSock);
         //console.log( _Found ? _Found[0] : 'Not Found' );
 	
         if (!_Found) {
