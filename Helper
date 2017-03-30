@@ -305,30 +305,7 @@ var PLAY = {
     'EDA': function() {
         console.log('영단-준비중');
     },
-    
-/*보류
-function sock() {
-var sTime = new Date().getTime();
-var res = 'acegikwxyz';
 
-var len, char, have = '';
-var count = {};
-
-while (len = res.length) {
-    char = res[0];
-    res = res.replace(new RegExp(char, 'g'), '');
-    count[char] = len - res.length;
-    have += char;
-}
-var rSock = new RegExp('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]', 'g');
-var Catch = En.replace(rSock, '').match('\\[[' + have + ']{2,}\\]'); 
-console.log(rSock);
-console.log( Catch ? Catch[0] : 'Not Found' );
-console.log( new Date().getTime() - sTime );
-}
-
-sock();
-*/
 /*
     'ESS': function() {
 	var res = $Dsp.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g,'');
@@ -361,24 +338,22 @@ sock();
 
     'ESS': function() {
         var res = $Dsp.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g,'');
-        var len, char, have = '';
-        var count = 0;
+        var len = 0, count = 0;
+        var char = '', have = '';
         var rSock = [];
 
         while (len = res.length) {
             char = res[0];
             res = res.replace(new RegExp(char, 'g'), '');
             count = len - res.length + 1;
-            rSock.push('\\[([^' + char + ']*' + char + '[^' + char + ']*){' + count.toString() + ',}\\]');
+            rSock.push('\\[(.*' + char + '.*){' + count.toString() + ',}\\]');
 	    have += char;
         }
 	
         rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
+	console.log(rSock);
         var _Found = db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{2,}\\]');
-
-        console.log(rSock);
-        //console.log( _Found ? _Found[0] : 'Not Found' );
-	
+        
         if (!_Found) {
 	    console.log('Not Found'); 
 	    return false;
