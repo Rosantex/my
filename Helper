@@ -68,7 +68,7 @@ var db,
     mode, 
     option,
     key, 
-    Hotkey = 48,
+    Hotkey = 96,
     setlock = false,
     k_scope = 'window',
     lastupdate = 0,
@@ -240,8 +240,31 @@ var PLAY = {
         console.log('십자-준비중');
     },
 
-    'KSS': function() {      
-        console.log('한쇽-준비중');
+    'KSS': function() {
+        var res = $Dsp.html().match(/%;">[가-힣](?=<\/div>)/g).join('').replace(/[^가-힣]/g,'');
+        var len = 0, count = 0;
+        var char = '', have = '';
+        var rSock = [];
+
+        while (len = res.length) {
+            char = res[0];
+            res = res.replace(new RegExp(char, 'g'), '');
+            count = len - res.length + 1;
+            rSock.push('\\[(.*' + char + '.*){' + count.toString() + ',}\\]');
+	    have += char;
+        }
+	
+        rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
+	console.log(rSock);
+        var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{2,}\\]') || '')[0];
+        
+        if (!_Found) {
+	    console.log('Not Found'); 
+	    return false;
+	}
+	
+	$Talk.val(_Found.slice(1, -1));
+	$Take.click();
     },
 
     'CSQ': function() {
@@ -306,36 +329,6 @@ var PLAY = {
         console.log('영단-준비중');
     },
 
-/*
-    'ESS': function() {
-	var res = $Dsp.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g,'');
-	var occ = {}; 
-	var reg = [];
-	var ignore = '';
-	var w, n;
-	
-	for (var i = 0; i < 26; i++) { 
-	    w = String.fromCharCode(97 + i);
-	    n = res.split(w).length - 1;
-	    n ? occ[w] = n : ignore += w;
-	} 
-	
-	if (ignore) reg.push('\\[.*[' + ignore + '].*\\]');
-	
-	for (var i in occ) { 
-	    reg.push('\\[(.*' + i + '.*){' + (occ[i]++) + ',}\\]');
-	}
-
-	var _Found = (db.replace(new RegExp(reg.join('|'), 'g'), '').match(/\[\w+\]/) || '')[0];
-	if (!_Found) {
-	    console.log('Not Found'); 
-	    return false;
-	}
-	$Talk.val(_Found.slice(1, -1));
-	$Take.click();
-    }
-*/
-
     'ESS': function() {
         var res = $Dsp.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g,'');
         var len = 0, count = 0;
@@ -352,7 +345,7 @@ var PLAY = {
 	
         rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
 	console.log(rSock);
-        var _Found = db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{2,}\\]');
+        var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{2,}\\]') || '')[0];
         
         if (!_Found) {
 	    console.log('Not Found'); 
@@ -361,7 +354,7 @@ var PLAY = {
 	
 	$Talk.val(_Found.slice(1, -1));
 	$Take.click();
-}
+    }
 
 
 };
