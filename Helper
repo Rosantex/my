@@ -184,11 +184,24 @@ var PLAY = {
         var f = $Dsp.text();
         f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
         console.log('Search: ' + f);
-        var _Found = (db.match('\\[(' + f + '.*[^다])\\]') || '')[0];
+	
+	var mission = option.includes('미션');
+	var m = mission && $Item.text();
+	var _Found = ( m ? db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]') : '' );
+        var _LFound;
+	
+	if (_Found) {
+            while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}[^다]\\]'));
+        } else {
+             _LFound = (db.match('\\[(' + f + '.*[^다])\\]') || '')[0];
+        }
+	_Found = _LFound;
+	
 	if (!_Found) {
 	    console.log('Not Found'); 
 	    return false;
 	}	
+	
         $Talk.val(_Found.slice(1, -1));
         $Take.click();
         db = db.replace(_Found, '');
