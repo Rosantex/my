@@ -8,9 +8,9 @@ $('#ReplayDiag.dialog').css({
 });
 
 $('#ReplayDiag .dialog-body')
-    .css({ position: 'relative' })
     .html('')
-    .append("<input type='image' id='BGIMG' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");  
+    .css({ position: 'relative' })
+    .append("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");  
 
 $("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.995').css({
     color: 'white',
@@ -43,7 +43,7 @@ $('#SetHotkey').css({
     WebkitUserSelect: 'none'
 });
 
-$('#BGIMG').css({
+$('#BgImg').css({
     width:265, 
     height: 166, 
     top: 35, 
@@ -59,19 +59,18 @@ $("#ReplayDiag").fadeIn(420);
 var $Dsp = $("div[class='jjo-display ellipse']"),
     $Talk = $('#Talk'),
     $Take = $('#ChatBtn'),
-    $Exit = $('#ExitBtn'),
-    $Time = $("div[class='graph jjo-turn-time']"),
     $Turn = $('.game-input'),
     $Item = $("div[class='items']"),
     $Round = $("div[class='rounds']"),
+    $myimg = $('#BgImg'),
     $setkey = $('#Setkey'),
-    $sethotkey = $('#SetHotkey'),
-    $myimg = $('#BGIMG');
+    $sethotkey = $('#SetHotkey');
     
-var Ko = readUrl('Ko.txt');
-var En = readUrl('En');
+var Ko = readUrl('Ko.txt'),
+    En = readUrl('En');
 
 var db,
+    pf,
     mode, 
     option,
     key, 
@@ -149,7 +148,7 @@ var db,
     
 };  
 
-var myImgs = [
+var IMG = [
 
     'http://www.planwallpaper.com/static/images/53823.jpg',
     'https://wallpaperbrowse.com/media/images/cool-wallpaper-2.jpg',
@@ -305,8 +304,6 @@ var PLAY = {
     },
 
     'HUN': function() {
-        console.log('훈민-점검중'); 
-        return false;
         var f = $Dsp.text().match(/[ㄱ-ㅎ]/)[0];
         var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { 
             var a = ('ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ').indexOf($1) * 588 + 44032; 
@@ -476,11 +473,9 @@ $sethotkey.on({
 });
 
 function changeImage() {
-    var CurSrc = $myimg.attr('src');
-    var TempSrc = myImgs[Math.floor(Math.random() * myImgs.length)];
-    while (CurSrc == TempSrc) TempSrc = myImgs[Math.floor(Math.random() * myImgs.length)];
-
-    $myimg.attr('src', TempSrc);
+    var cursrc = IMG.indexOf($myimg.attr('src'));
+    var tempsrc = Math.floor(Math.random() * IMG.length);
+    $myimg.attr('src', cursrc == tempsrc ? changeImage() : IMG[tempsrc]);
 }
 
 function shuffle(box) {
