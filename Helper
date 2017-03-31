@@ -290,9 +290,11 @@ var PLAY = {
 	    have += char;
         }
 	
-        rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
-	var digit = (option.includes('2글자 금지') ? 3 : 2).toString();
-        var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + digit + ',}\\]') || '')[0];
+        //rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
+	
+	var d = (option.includes('2글자 금지') ? 3 : 2).toString();	
+	var rSock2 = new RegExp('\\[[' + have + ']{' + d + ',}\\]', 'g');
+        var _Found = (db.match(rSock2).join('\n').replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + d + ',}\\]') || '')[0];
         
         if (!_Found) {
 	    console.log('Not Found'); 
