@@ -12,7 +12,7 @@ $('#ReplayDiag .dialog-body')
     .css({ position: 'relative' })
     .append("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");  
 
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.995').css({
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.997').css({
     color: 'white',
     fontSize: 12,
     fontWeight: 'bold', 
@@ -304,9 +304,9 @@ var PLAY = {
     },
 
     'HUN': function() {
-        var f = $Dsp.text().match(/[ㄱ-ㅎ]/)[0];
-        var res = f.replace(/([ㄱ-ㅎ])/g, function($1) { 
-            var a = ('ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ').indexOf($1) * 588 + 44032; 
+        var f = $Dsp.text().slice(1, -1);
+        var res = f.replace(/(.)/g, function($1) { 
+            var a = (String.fromCharCode($1) - 4352) * 588 + 44032; 
 	    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
         });
 	console.log(res);
