@@ -10,23 +10,23 @@ $('#ReplayDiag.dialog').css({
 $('#ReplayDiag .dialog-body')
     .html('')
     .css({ position: 'relative' })
-    .append("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");  
+    .append("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");
 
 $("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.997').css({
     color: 'white',
     fontSize: 12,
-    fontWeight: 'bold', 
-    width: 255, 
+    fontWeight: 'bold',
+    width: 255,
     background: 'MidnightBlue',
     WebkitUserSelect: 'none'
 });
 
 $('#Setkey').css({
     fontSize: 12,
-    fontWeight: 'bold', 
+    fontWeight: 'bold',
     width: 120,
-    top: 0, 
-    left: 0, 
+    top: 0,
+    left: 0,
     position: 'absolute',
     background: 'MintCream'
 });
@@ -66,7 +66,8 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $setkey = $('#Setkey'),
     $sethotkey = $('#SetHotkey');
     
-var Ko,En
+var Ko,En;
+
 var db,
     pf,
     mode, 
@@ -78,7 +79,7 @@ var db,
     playing = false,
     lastupdate = 0;
     
- var KEYNAME = { 
+const KEYNAME = { 
  
     8: "BackSpace", 
     9: "Tab", 
@@ -146,7 +147,7 @@ var db,
     
 };  
 
-var IMG = [
+const IMG = [
 
     'http://www.planwallpaper.com/static/images/53823.jpg',
     'https://wallpaperbrowse.com/media/images/cool-wallpaper-2.jpg',
@@ -168,7 +169,7 @@ var IMG = [
 
 ];
     
-var GAMEMODE = {
+const GAMEMODE = {
 
     '한국어 끝말잇기': 'KSH',
     '한국어 쿵쿵따': 'KKT',
@@ -191,11 +192,8 @@ var PLAY = {
 
     'KSH': function() {
         var f = $Dsp.text();
-        f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);
-        console.log('Search: ' + f);
-	
-	var mission = option.includes('미션');
-	var m = mission && $Item.text();
+        f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);	
+	var m = option.includes('미션') && $Item.text();
 	var _Found = ( m ? db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]') : '' );
         var _LFound;
 	
@@ -203,15 +201,10 @@ var PLAY = {
             while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}[^다]\\]'));
         } else {
              _LFound = (db.match('\\[(' + f + '.*[^다])\\]') || '')[0];
-        }
-	_Found = _LFound;
+        }	
+	if (!_Found = _LFound) return false;
 	
-	if (!_Found) {
-	    console.log('Not Found'); 
-	    return false;
-        }
-        $Talk.val(_Found.slice(1, -1));
-        $Take.click();
+        transmit(_Found.slice(1, -1));
         db = db.replace(_Found, '');
         pf = f;
     },
@@ -227,8 +220,7 @@ var PLAY = {
 	    console.log('Not Found'); 
 	    return false;
 	}
-        $Talk.val(_Found.slice(1, -1));
-        $Take.click();
+        transmit(_Found.slice(1, -1));
         db = db.replace(_Found, '');
         pf = f;
     },
@@ -254,15 +246,13 @@ var PLAY = {
 	    console.log('Not Found'); 
 	    return false;
 	}
-        $Talk.val(_Found.slice(1, -1));
-        $Take.click();
+        transmit(_Found.slice(1, -1));
         db = db.replace(_Found, '');
         pf = f;
     },
 
     'KTY': function() {
-        $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
-        $Take.click();
+        transmit(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
     },
 
     'KDA': function() {
@@ -292,8 +282,7 @@ var PLAY = {
 	    console.log('Not Found'); 
 	    return false;
 	}
-	$Talk.val(_Found.slice(1, -1));
-	$Take.click();
+	transmit(_Found.slice(1, -1));
 	db = db.replace(_Found, '');
     },
 
@@ -313,8 +302,7 @@ var PLAY = {
 	    console.log('Not Found'); 
 	    return false;
 	}
-        $Talk.val(_Found.slice(1, -1));
-        $Take.click();
+        transmit(_Found.slice(1, -1));
 	db = db.replace(_Found, '');
     },
 
@@ -339,8 +327,7 @@ var PLAY = {
 	    console.log('Not Found'); 
 	    return false;
 	}
-        $Talk.val(_Found.slice(1, -1));
-        $Take.click();
+        transmit(_Found.slice(1, -1));
         db = db.replace(_Found, '');
         pf = f;
     },
@@ -366,15 +353,13 @@ var PLAY = {
 	    console.log('Not Found'); 
 	    return false;
 	}
-        $Talk.val(_Found.slice(1, -1));
-        $Take.click();
+        transmit(_Found.slice(1, -1));
         db = db.replace(_Found, '');
         pf = f;
     },
 
     'ETY': function() {
-        $Talk.val(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
-        $Take.click();
+        transmit(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]);
     },
 
     'EDA': function() {
@@ -399,8 +384,7 @@ var PLAY = {
 	    console.log('Not Found'); 
 	    return false;
 	}	
-	$Talk.val(_Found.slice(1, -1));
-	$Take.click();
+	transmit(_Found.slice(1, -1));
 	db = db.replace(_Found, '');
     }
 
@@ -469,6 +453,11 @@ $sethotkey.on({
         $(this).css({ color: '' });
     }
 });
+
+function transmit(msg) {
+    $Talk.val(msg);
+    $Take.click();
+}
 
 function changeImage() {
     var cursrc = IMG.indexOf($myimg.attr('src'));
