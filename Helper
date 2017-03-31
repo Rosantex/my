@@ -66,9 +66,7 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $setkey = $('#Setkey'),
     $sethotkey = $('#SetHotkey');
     
-var Ko = readUrl('Ko.txt'),
-    En = readUrl('En');
-
+var Ko,En
 var db,
     pf,
     mode, 
@@ -306,7 +304,7 @@ var PLAY = {
     'HUN': function() {
         var f = $Dsp.text().slice(1, -1);
         var res = f.replace(/(.)/g, function($1) { 
-            var a = (String.fromCharCode($1) - 4352) * 588 + 44032; 
+            var a = ($1.charCodeAt(0) - 4352) * 588 + 44032; 
 	    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
         });
 	console.log(res);
@@ -414,7 +412,7 @@ $Round.on('DOMSubtreeModified', function() {
     var $Mode = $("h5.room-head-mode");
     option = $Mode.html().split(' / ');
     mode = GAMEMODE[option.splice(0, 1)];
-    db = (/E../.test(mode) ? En : Ko);
+    db = /E../.test(mode) ? (En || readUrl('En')) : (Ko || readUrl('Ko.txt'));
     console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
     lastupdate = new Date().getTime();
     changeImage();
