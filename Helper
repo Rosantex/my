@@ -278,23 +278,18 @@ var PLAY = {
 
     'KSS': function() {
         var res = $Dsp.html().match(/%;">[가-힣](?=<\/div>)/g).join('').replace(/[^가-힣]/g,'');
-        var len = 0, count = 0;
-        var char = '', have = '';
+        var len = 0, chr = '', have = '';
         var rSock = [];
 
         while (len = res.length) {
-            char = res[0];
-            res = res.replace(new RegExp(char, 'g'), '');
-            count = (len - res.length + 1).toString();
-            rSock.push('\\[(.*' + char + '.*){' + count + ',}\\]');
-	    have += char;
+            res = res.replace(new RegExp(chr = res[0], 'g'), '');
+            rSock.push('\\[(.*' + chr + '.*){' + (len - res.length + 1) + ',}\\]');
+	    have += chr;
         }
 	
-        //rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
-	
-	var d = (option.includes('2글자 금지') ? 3 : 2).toString();	
+	var d = option.includes('2글자 금지') ? 3 : 2;	
 	var rSock2 = new RegExp('\\[[' + have + ']{' + d + ',}\\]', 'g');
-        var _Found = (db.match(rSock2).join('\n').replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + d + ',}\\]') || '')[0];
+        var _Found = ((db.match(rSock2) || []).join('\n').replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + d + ',}\\]') || '')[0];
         
         if (!_Found) {
 	    console.log('Not Found'); 
@@ -341,7 +336,7 @@ var PLAY = {
 	if (_Found) {
             while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}\\]'));
         } else {
-             _LFound = (db.match('\\[(' + f + '.+)\\]') || '')[0];
+            _LFound = (db.match('\\[(' + f + '.+)\\]') || '')[0];
         }
 	_Found = _LFound;
 	
@@ -393,27 +388,22 @@ var PLAY = {
 
     'ESS': function() {
         var res = $Dsp.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g,'');
-        var len = 0, count = 0;
-        var char = '', have = '';
-        var rSock = [];
+        var len = 0, chr = '', have = '', rSock = [];
 
         while (len = res.length) {
-            char = res[0];
-            res = res.replace(new RegExp(char, 'g'), '');
-            count = (len - res.length + 1).toString();
-            rSock.push('\\[(.*' + char + '.*){' + count + ',}\\]');
-	    have += char;
+            res = res.replace(new RegExp(chr = res[0], 'g'), '');
+            rSock.push('\\[(.*' + chr + '.*){' + (len - res.length + 1) + ',}\\]');
+	    have += chr;
         }
 	
         rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
-	var digit = (option.includes('2글자 금지') ? 3 : 2).toString();
-        var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + digit + ',}\\]') || '')[0];
+	var d = (option.includes('2글자 금지') ? 3 : 2).toString();
+        var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + d + ',}\\]') || '')[0];
         
         if (!_Found) {
 	    console.log('Not Found'); 
 	    return false;
-	}
-	
+	}	
 	$Talk.val(_Found.slice(1, -1));
 	$Take.click();
 	db = db.replace(_Found, '');
