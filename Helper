@@ -70,7 +70,7 @@ var Ko, En, db,
     mode,
     option,
     k_scope,
-    key, Hotkey = 96,
+    key, Hotkey = isMobile ? 13 : 96,
     f, pf,
     _Found, _LFound,
     setlock = false,
@@ -415,6 +415,10 @@ $sethotkey.on({
 function transmit(msg) {
     $Talk.val(msg);
     $Take.click();
+}
+
+function isMobile() { 
+return ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) )
 }
 
 function changeImage() {
