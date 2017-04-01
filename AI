@@ -86,8 +86,7 @@ var PLAY = {
     'KSH': function() {
         f = $Dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;		
-        var m = option.includes('미션') && $Item.text();
-        _Found = m ? db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]') : '';		
+        _Found = option.includes('미션') && $Item.text() ? db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]') : '';		
         if (_Found) {
             while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}[^다]\\]'));
         } else {
@@ -110,9 +109,8 @@ var PLAY = {
     },
     'KAP': function() {
         f = $Dsp.text();
-        f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;	
-        var m = option.includes('미션') && $Item.text();	
-        _Found = m ? db.match('\\[(.*' + m + '.*)+' + f + '\\]') : '';	
+        f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
+        _Found = option.includes('미션') && $Item.text() ? db.match('\\[(.*' + m + '.*)+' + f + '\\]') : '';	
         if (_Found) {
             while (_Found = db.match('\\[(.*' + m  + '.*){' + (_LFound = _Found[0]).split(m).length + ',}' + f + '\\]'));
         } else {
@@ -132,7 +130,7 @@ var PLAY = {
         while (len = res.length) {
             res = res.replace(new RegExp(chr = res[0], 'g'), '');
             rSock.push('\\[(.*' + chr + '.*){' + (len - res.length + 1) + ',}\\]');
-	          have += chr;
+	    have += chr;
         }		
         var rSock2 = new RegExp('\\[[' + have + ']{' + (d = option.includes('2글자 금지') ? 3 : 2) + ',}\\]', 'g');
         var _Found = ((db.match(rSock2) || []).join('\n').replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + d + ',}\\]') || '')[0];
@@ -157,8 +155,7 @@ var PLAY = {
     'ESH': function() {        
         f = $Dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;		
-        var m = option.includes('미션') && $Item.text();	
-        _Found = m ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';		
+        _Found = option.includes('미션') && $Item.text() ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';		
         if (_Found) {
             while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}\\]'));
         } else {
@@ -171,9 +168,8 @@ var PLAY = {
     },
     'EKT': function() {
         f = $Dsp.text();
-        f = (f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f);       	
-        var m = option.includes('미션') && $Item.text();
-        _Found = m ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';
+        f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
+        _Found = option.includes('미션') && $Item.text() ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';
         if (_Found) {
             while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}\\]'));
         } else {
@@ -204,8 +200,7 @@ var PLAY = {
 
 $Round.on('DOMSubtreeModified', function() {
     if (new Date().getTime() - lastupdate < 5555) { return false; }
-    var $Mode = $("h5.room-head-mode");
-    option = $Mode.html().split(' / ');
+    option = $("h5.room-head-mode").html().split(' / ');
     mode = GAMEMODE[option.splice(0, 1)];
     db = /E../.test(mode) ? (En || readUrl('En')) : (Ko || readUrl('Ko.txt'));
     console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
@@ -213,10 +208,11 @@ $Round.on('DOMSubtreeModified', function() {
     changeImage();
 });
 $(window).on('keydown', function(e) {
-    if (k_scope == 'setkey') {
+    if (k_scope === 'setkey') {
         e.preventDefault();
         if (setlock) { return false; }
-        $setkey.val(KEYNAME[key = e.keyCode] || String.fromCharCode(key)); 
+	key = e.keyCode;
+        $setkey.val(KEYNAME[key] || String.fromCharCode(key)); 
     } else if (e.keyCode == Hotkey && ($Turn.is(':visible') || /(K|E)SS/.test(mode))) { 
         e.stopPropagation();
         e.preventDefault();	
@@ -235,7 +231,7 @@ $sethotkey.on({
         Hotkey = key;
         $setkey.css({ background: 'pink' });
         setlock = true;
-        console.log('Hotkey Modified: ' + (KEYNAME[key]||String.fromCharCode(key)));
+        console.log('Hotkey Modified: ' + (KEYNAME[key] || String.fromCharCode(key)));
     },
     mouseover: function() { $(this).css({ color: 'red' }); },
     mouseout: function() { $(this).css({ color: '' }); }
@@ -249,7 +245,7 @@ function shuffle(box) {
     var CurIndex = arr.length, TempValue, RndIndex;
     while (0 !== CurIndex) {
         RndIndex = Math.floor(Math.random() * CurIndex);	
-        CurIndex -= 1;	
+        CurIndex--;	
         TempValue = arr[CurIndex];	
         arr[CurIndex] = arr[RndIndex];	
         arr[RndIndex] = TempValue;
