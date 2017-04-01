@@ -206,7 +206,7 @@ $Round.on('DOMSubtreeModified', function() {
     if (new Date().getTime() - lastupdate < 5555) { return false; }
     option = $("h5.room-head-mode").html().split(' / ');
     mode = GAMEMODE[option.splice(0, 1)];
-    db = /E../.test(mode) ? (En || En = readUrl('En')) : (Ko || Ko = readUrl('Ko.txt'));
+    db = /E../.test(mode) ? (En || (En = readUrl('En'))) : (Ko || (Ko = readUrl('Ko.txt')));
     console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
     lastupdate = new Date().getTime();
     playing = false;
