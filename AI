@@ -144,7 +144,7 @@ var PLAY = {
     'HUN': function() {
         f = $Dsp.text().slice(1, -1);	
         f = f.includes(':') ? pf : f; 
-        var res = f.replace(/([\u4352-\u4370])/g, function($1) { 
+        var res = f.replace(/([\u1100-\u1112])/g, function($1) { 
             var a = ($1.charCodeAt(0) - 4352) * 588 + 44032; 
 	          return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
         });
