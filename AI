@@ -6,6 +6,7 @@ $('#ReplayDiag .dialog-body').css({ position: 'relative' }).html("<input type='i
 $("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.997').css({ color: 'white', fontSize: 12, fontWeight: 'bold', width: 255, background: 'MidnightBlue', WebkitUserSelect: 'none' });
 $('#Setkey').css({ fontSize: 12, fontWeight: 'bold', width: 120, top: 0, left: 0, position: 'absolute', background: 'MintCream' });
 $('#SetHotkey').css({ color: 'black', fontSize: 12, fontWeight: 'bold', width: 40, top: 0, left: 140, position:'absolute', background: 'skyblue', WebkitUserSelect: 'none' });
+$('#Autoplay').css({ fontWeight: 'bold', left: 190, position: 'absolute', background: 'LimeGreen' });
 $('#BgImg').css({ width:265, height: 166, top: 35, left: 5, padding: 0, position: 'absolute', pointerEvents: 'none', WebkitUserSelect: 'none' });
 $("#ReplayDiag").fadeIn(200);
 
@@ -193,7 +194,7 @@ var PLAY = {
             rSock.push('\\[(.*' + chr + '.*){' + (len - res.length + 1) + ',}\\]');
 	          have += chr;
         }
-        rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?])+\\]');
+        rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?]) + \\]');
         var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + (option.includes('2글자 금지') ? 3 : 2) + ',}\\]') || '')[0];
         if (!_Found) { return false; }
         transmit(_Found.slice(1, -1));	
@@ -205,9 +206,10 @@ $Round.on('DOMSubtreeModified', function() {
     if (new Date().getTime() - lastupdate < 5555) { return false; }
     option = $("h5.room-head-mode").html().split(' / ');
     mode = GAMEMODE[option.splice(0, 1)];
-    db = /E../.test(mode) ? (En || readUrl('En')) : (Ko || readUrl('Ko.txt'));
+    db = /E../.test(mode) ? (En || En = readUrl('En')) : (Ko || Ko = readUrl('Ko.txt'));
     console.log('[New Game]\nmode: ' + mode + '\noption: ' + option + '\n  ');
     lastupdate = new Date().getTime();
+    playing = false;
     changeImage();
 });
 $(window).on('keydown', function(e) {
@@ -241,7 +243,7 @@ $sethotkey.on({
 });
 $autoplay.on('click', function() { automode = !automode; pTime(automode); console.log('AutoMode: ' + automode); });
 
-function pTime(plug) { var e = 'DOMSubtreeModified'; plug ? $Time.on(e, function() { if (playing || !$Turn.is(":visible")) { return false; } playing = true; PLAY[mode](); playing = false; }) : $Time.off(e); }
+function pTime(plug) { var ev = 'DOMSubtreeModified'; plug ? $Time.on(ev, function(e) { if (playing || !$Turn.is(":visible")) { return false; } playing = true; e.stopPropagation(); e.preventDefault(); PLAY[mode](); playing = false; }) : $Time.off(ev); }
 function transmit(msg) { $Talk.val(msg); $Take.click(); }
 function isMobile() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); }
 function changeImage() { var tempsrc = Math.floor(Math.random() * IMG.length); $myimg.attr('src', tempsrc == IMG.indexOf($myimg.attr('src')) ? changeImage() : IMG[tempsrc]); }
