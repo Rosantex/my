@@ -22,7 +22,7 @@ var Ko, En, db,
     mode, option,
     k_scope,
     Hotkey = isMobile() ? 13 : 96, key,
-    f, pf,
+    f, pf, m,
     _Found, _LFound,
     setlock = false,
     playing = false,
@@ -86,7 +86,7 @@ var PLAY = {
     'KSH': function() {
         f = $Dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;		
-        _Found = option.includes('미션') && $Item.text() ? db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]') : '';		
+        _Found = option.includes('미션') && ( m = $Item.text() ) ? db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]') : '';		
         if (_Found) {
             while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}[^다]\\]'));
         } else {
@@ -110,7 +110,7 @@ var PLAY = {
     'KAP': function() {
         f = $Dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
-        _Found = option.includes('미션') && $Item.text() ? db.match('\\[(.*' + m + '.*)+' + f + '\\]') : '';	
+        _Found = option.includes('미션') && ( m = $Item.text() ) ? db.match('\\[(.*' + m + '.*)+' + f + '\\]') : '';	
         if (_Found) {
             while (_Found = db.match('\\[(.*' + m  + '.*){' + (_LFound = _Found[0]).split(m).length + ',}' + f + '\\]'));
         } else {
@@ -155,7 +155,7 @@ var PLAY = {
     'ESH': function() {        
         f = $Dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;		
-        _Found = option.includes('미션') && $Item.text() ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';		
+        _Found = option.includes('미션') && ( m = $Item.text() ) ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';		
         if (_Found) {
             while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}\\]'));
         } else {
@@ -169,7 +169,7 @@ var PLAY = {
     'EKT': function() {
         f = $Dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
-        _Found = option.includes('미션') && $Item.text() ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';
+        _Found = option.includes('미션') && ( m = $Item.text() ) ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';
         if (_Found) {
             while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}\\]'));
         } else {
