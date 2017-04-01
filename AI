@@ -2,7 +2,7 @@
 
 $('#ReplayDiag.dialog').css({ height: 245, width: 278 });
 $('#ReplayDiag.dialog.dialog-front').css({ background: 'MintCream' });
-$('#ReplayDiag .dialog-body').css({ position: 'relative' }).html("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' />");
+$('#ReplayDiag .dialog-body').css({ position: 'relative' }).html("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' /><input type='button' id='Autoplay' value='Auto' />");
 $("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.997').css({ color: 'white', fontSize: 12, fontWeight: 'bold', width: 255, background: 'MidnightBlue', WebkitUserSelect: 'none' });
 $('#Setkey').css({ fontSize: 12, fontWeight: 'bold', width: 120, top: 0, left: 0, position: 'absolute', background: 'MintCream' });
 $('#SetHotkey').css({ color: 'black', fontSize: 12, fontWeight: 'bold', width: 40, top: 0, left: 140, position:'absolute', background: 'skyblue', WebkitUserSelect: 'none' });
@@ -13,20 +13,23 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Talk = $('#Talk'),
     $Take = $('#ChatBtn'),
     $Turn = $('.game-input'),
+    $Time = $("div[class='graph jjo-turn-time']"),
     $Item = $("div[class='items']"),
     $Round = $("div[class='rounds']"),
     $myimg = $('#BgImg'),
     $setkey = $('#Setkey'),
-    $sethotkey = $('#SetHotkey');
+    $sethotkey = $('#SetHotkey'),
+    $autoplay = $('#Autoplay');
 var Ko, En, db,
     mode, option,
     k_scope,
-    Hotkey = isMobile() ? 13 : 96, key,
+    Hotkey = isMobile() ? 18 : 96, key,
     f, pf, m,
     _Found, _LFound,
     setlock = false,
     playing = false,
-    lastupdate = 0;
+    lastupdate = 0,
+    automode = false;
     
 const KEYNAME = { 
     8: "BackSpace", 
@@ -236,7 +239,9 @@ $sethotkey.on({
     mouseover: function() { $(this).css({ color: 'red' }); },
     mouseout: function() { $(this).css({ color: '' }); }
 });
+$autoplay.on('click', function() { automode = !automode; pTime(automode); console.log('AutoMode: ' + automode); });
 
+function pTime(plug) { var e = 'DOMSubtreeModified'; plug ? $Time.on(e, function() { if (playing || !$Turn.is(":visible")) { return false; } playing = true; PLAY[mode](); playing = false; }) : $Time.off(e); }
 function transmit(msg) { $Talk.val(msg); $Take.click(); }
 function isMobile() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); }
 function changeImage() { var tempsrc = Math.floor(Math.random() * IMG.length); $myimg.attr('src', tempsrc == IMG.indexOf($myimg.attr('src')) ? changeImage() : IMG[tempsrc]); }
