@@ -14,19 +14,27 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Talk = $('#Talk'),
     $Take = $('#ChatBtn'),
     $Turn = $('.game-input'),
-    $Time = $('.jjo-turn-time .graph-bar')),
+    $Time = $('.jjo-turn-time .graph-bar'),
     $Item = $(".GameBox .items"),
     $Round = $('.rounds'),
     $myimg = $('#BgImg'),
     $setkey = $('#Setkey'),
     $sethotkey = $('#SetHotkey'),
     $autoplay = $('#Autoplay');
-var Ko, En, db,
-    mode, option,
+    
+var Ko, 
+    En, 
+    db,
+    mode, 
+    option,
     k_scope,
-    Hotkey = isMobile() ? 18 : 96, key,
-    f, pf, m,
-    _Found, _LFound,
+    key,
+    Hotkey = isMobile() ? 18 : 96, 
+    f, 
+    pf,
+    m,
+    _Found, 
+    _LFound,
     setlock = false,
     playing = false,
     lastupdate = 0,
@@ -87,6 +95,7 @@ const IMG = [
 const GAMEMODE = { '한국어 끝말잇기': 'KSH', '한국어 쿵쿵따': 'KKT', '한국어 앞말잇기': 'KAP', '한국어 타자 대결': 'KTY', '한국어 단어 대결': 'KDA', '한국어 십자말풀이': 'KCW', '한국어 솎솎': 'KSS', '자음퀴즈': 'CSQ', '훈민정음': 'HUN', '영어 끝말잇기': 'ESH', '영어 끄투': 'EKT', '영어 타자 대결': 'ETY', '영어 단어 대결': 'EDA', '영어 솎솎': 'ESS'};
 
 var PLAY = {
+
     'KSH': function() {
         f = $Dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;		
@@ -101,6 +110,7 @@ var PLAY = {
         db = db.replace(_Found, '');
         pf = f;
     },
+    
     'KKT': function() {
         f = $Dsp.text();
         f = f.replace(f.match(/\((\d)\)/)[0], '');    
@@ -111,6 +121,7 @@ var PLAY = {
         db = db.replace(_Found, '');
         pf = f;
     },
+    
     'KAP': function() {
         f = $Dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
@@ -125,9 +136,13 @@ var PLAY = {
         db = db.replace(_Found, '');
         pf = f;
     },
+    
     'KTY': function() { transmit(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]); },
+    
     'KDA': function() { console.log('한단-준비중'); },
+    
     'KCW': function() { console.log('십자-준비중'); },
+    
     'KSS': function() {
         var res = $Dsp.html().match(/%;">[가-힣](?=<\/div>)/g).join('').replace(/[^가-힣]/g,'');
         var d, len = 0, chr = '', have = '', rSock = [];
@@ -142,7 +157,9 @@ var PLAY = {
         transmit(_Found.slice(1, -1));	
         db = db.replace(_Found, '');
     },
+    
     'CSQ': function() { console.log('자퀴-준비중'); },
+    
     'HUN': function() {
         f = $Dsp.text().slice(1, -1);	
         f = f.includes(':') ? pf : f; 
@@ -156,6 +173,7 @@ var PLAY = {
         db = db.replace(_Found, '');	
         pf = f;
     },
+    
     'ESH': function() {        
         f = $Dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;		
@@ -170,6 +188,7 @@ var PLAY = {
         db = db.replace(_Found, '');
         pf = f;
     },
+    
     'EKT': function() {
         f = $Dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
@@ -184,8 +203,11 @@ var PLAY = {
         db = db.replace(_Found, '');
         pf = f;
     },
+    
     'ETY': function() { transmit(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]); },
+    
     'EDA': function() { console.log('영단-준비중'); },
+    
     'ESS': function() {
         var res = $Dsp.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g,'');
         var len = 0, chr = '', have = '', rSock = [];
@@ -200,6 +222,7 @@ var PLAY = {
         transmit(_Found.slice(1, -1));	
         db = db.replace(_Found, '');
     }
+    
 };
 
 $Round.on('DOMSubtreeModified', function() {
@@ -231,18 +254,37 @@ $(window).on('keydown', function(e) {
     }
 });
 
-$setkey.on({ focus: function() { k_scope = 'setkey'; }, blur: function() { k_scope = false; }, dblclick: function() { if (setlock) { setlock = false; $(this).css({ background: '' }); } } });
+$setkey.on({ 
+    focus: function() { 
+        k_scope = 'setkey'; 
+    }, 
+    blur: function() { 
+        k_scope = false; 
+    },
+    dblclick: function() { 
+        if (setlock) { 
+	    setlock = false; 
+	    $(this).css({ background: '' }); 
+	} 
+    }
+});
 
 $sethotkey.on({
     click: function() {
-        if (setlock) { return false; }
+        if (setlock) { 
+	    return false; 
+	}
         Hotkey = key;
         $setkey.css({ background: 'pink' });
         setlock = true;
         console.log('Hotkey Modified: ' + (KEYNAME[key] || String.fromCharCode(key)));
     },
-    mouseover: function() { $(this).css({ color: 'red' }); },
-    mouseout: function() { $(this).css({ color: '' }); }
+    mouseover: function() { 
+        $(this).css({ color: 'red' }); 
+    },
+    mouseout: function() { 
+        $(this).css({ color: '' }); 
+    }
 });
 
 $autoplay.on('click', control_AI(automode = !automode));
