@@ -226,7 +226,6 @@ $(window).on('keydown', function(e) {
         playing = true;
         PLAY[mode]();	
         console.log(new Date().getTime() - sTime);
-	sleep(30)
         playing = false;
     }
 });
@@ -245,7 +244,7 @@ $sethotkey.on({
 $autoplay.on('click', function() { automode = !automode; pTime(automode); console.log('AutoMode: ' + automode); });
 
 function sleep(delay) { var start = new Date().getTime(); while ( new Date().getTime() < start + delay ); }
-function pTime(plug) { var ev = 'DOMSubtreeModified'; plug ? $Time.on(ev, function(e) { if (playing || !$Turn.is(":visible")) { return false; } playing = true; e.stopPropagation(); e.preventDefault(); PLAY[mode](); playing = false; }) : $Time.off(ev); }
+function pTime(plug) { var ev = 'DOMSubtreeModified'; plug ? $Time.on(ev, function(e) { if (playing || !$Turn.is(":visible")) { return false; } console.log('fire'); playing = true; e.stopPropagation(); e.preventDefault(); PLAY[mode](); sleep(30); playing = false; console.log('end'); }) : $Time.off(ev); }
 function transmit(msg) { $Talk.val(msg); $Take.click(); }
 function isMobile() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); }
 function changeImage() { var tempsrc = Math.floor(Math.random() * IMG.length); $myimg.attr('src', tempsrc == IMG.indexOf($myimg.attr('src')) ? changeImage() : IMG[tempsrc]); }
