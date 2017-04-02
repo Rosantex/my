@@ -1,16 +1,74 @@
 <script type ="text/javascript">
 
-$('#ReplayDiag.dialog').css({ height: 245, width: 278 });
-$('#ReplayDiag.dialog.dialog-front').css({ background: 'MintCream' });
-$('#ReplayDiag .dialog-body').css({ position: 'relative' }).html("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' /><input type='button' id='Autoplay' value='Auto' />");
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.998').css({ color: 'white', fontSize: 12, fontWeight: 'bold', width: 255, background: 'MidnightBlue', WebkitUserSelect: 'none' });
-$('#Setkey').css({ fontSize: 12, fontWeight: 'bold', width: 120, top: 0, left: 0, position: 'absolute', background: 'MintCream' });
-$('#SetHotkey').css({ color: 'black', fontSize: 12, fontWeight: 'bold', width: 40, top: 0, left: 140, position:'absolute', background: 'skyblue', WebkitUserSelect: 'none' });
-$('#Autoplay').css({ fontWeight: 'bold', left: 190, position: 'absolute', background: 'LimeGreen' });
-$('#BgImg').css({ width:265, height: 166, top: 35, left: 5, padding: 0, position: 'absolute', pointerEvents: 'none', WebkitUserSelect: 'none' });
+$('#ReplayDiag.dialog').css({ 
+    height: 245, 
+    width: 278 
+});
+
+$('#ReplayDiag.dialog.dialog-front').css({ 
+    background: 'MintCream' 
+});
+
+$('#ReplayDiag .dialog-body')
+    .html("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' /><input type='button' id='Autoplay' value='Auto' />")
+    .css({ 
+        position: 'relative' 
+    });
+
+$("#ReplayDiag .dialog-title")
+    .html('AlphaKKU Ver 1.999')
+    .css({ 
+        color: 'white', 
+	fontSize: 12, 
+	fontWeight: 'bold', 
+	width: 255, 
+	background: 'MidnightBlue', 
+	WebkitUserSelect: 'none' 
+    });
+
+$('#Setkey').css({ 
+    fontSize: 12, 
+    fontWeight: 'bold', 
+    width: 120, 
+    top: 0, 
+    left: 0, 
+    position: 'absolute', 
+    background: 'MintCream' 
+});
+
+$('#SetHotkey').css({ 
+    color: 'black', 
+    fontSize: 12, 
+    fontWeight: 'bold', 
+    width: 40, 
+    top: 0, 
+    left: 140, 
+    position:'absolute', 
+    background: 'skyblue', 
+    WebkitUserSelect: 'none' 
+});
+
+$('#Autoplay').css({ 
+    fontWeight: 'bold', 
+    left: 190, 
+    position: 'absolute', 
+    background: 'LimeGreen' 
+});
+
+$('#BgImg').css({ 
+    width:265, 
+    height: 166, 
+    top: 35, 
+    left: 5, 
+    padding: 0, 
+    position: 'absolute', 
+    pointerEvents: 'none', 
+    WebkitUserSelect: 'none' 
+});
+
 $("#ReplayDiag").fadeIn(200);
 
-var $Dsp = $("div[class='jjo-display ellipse']"),
+var $Dsp = $('div.jjo-display.ellipse'),
     $Talk = $('#Talk'),
     $Take = $('#ChatBtn'),
     $Turn = $('.game-input'),
@@ -22,24 +80,18 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $sethotkey = $('#SetHotkey'),
     $autoplay = $('#Autoplay');
     
-var Ko, 
-    En, 
-    db,
-    mode, 
-    option,
-    key,
-    Hotkey = isMobile() ? 18 : 96, 
-    f, 
-    pf,
-    m,
-    _Found, 
-    _LFound,
+var Ko, En, db,
+    mode, option,
+    key, Hotkey = isMobile() ? 18 : 96, 
+    f, pf, m,
+    _Found, _LFound,
     setlock = false,
     playing = false,
     lastupdate = 0,
     automode = false;
     
 const KEYNAME = { 
+
     8: "BackSpace", 
     9: "Tab", 
     12: "Form Feed",
@@ -52,12 +104,38 @@ const KEYNAME = {
     32: "SpaceBar",
     33: "PgUp", 34: "PgDown",
     35: "End", 36: "Home",
-    37: "Left", 38: "Up", 39: "Right", 40: "Down",
+    37: "Left", 
+    38: "Up", 
+    39: "Right", 40: "Down",
     45: "Insert", 46: "Delete",
     91: "WinKey", 
-    96: "Numpad0", 97: "Numpad1", 98: "Numpad2", 99: "Numpad3", 100: "Numpad4", 101: "Numpad5", 102: "Numpad6", 103: "Numpad7", 104: "Numpad8", 105: "Numpad9",
-    106: "NumpadMult", 107: "NumpadAdd", 109: "NumpadSub", 110: "NumpadPoint", 111: "NumpadDiv",
-    112: "F1", 113: "F2", 114: "F3", 115: "F4", 116: "F5", 117: "F6", 118: "F7", 119: "F8", 120: "F9", 121: "F10", 122: "F11", 123: "F12",
+    96: "Numpad0", 
+    97: "Numpad1", 
+    98: "Numpad2", 
+    99: "Numpad3",
+    100: "Numpad4", 
+    101: "Numpad5",
+    102: "Numpad6",
+    103: "Numpad7",
+    104: "Numpad8",
+    105: "Numpad9",
+    106: "NumpadMult",
+    107: "NumpadAdd",
+    109: "NumpadSub",
+    110: "NumpadPoint", 
+    111: "NumpadDiv",
+    112: "F1", 
+    113: "F2", 
+    114: "F3", 
+    115: "F4", 
+    116: "F5", 
+    117: "F6", 
+    118: "F7", 
+    119: "F8", 
+    120: "F9", 
+    121: "F10", 
+    122: "F11", 
+    123: "F12",
     144: "NumLock",
     186: "Semicolon(;)",
     187: "Equal Sign(=)",
@@ -70,10 +148,13 @@ const KEYNAME = {
     220: "BackSlash(\\)",
     221: "Square Bracket(])",
     222: "Apostrophe(')",
-    225: "RCtrl", 229: "RAlt" 
-}; 
+    225: "RCtrl", 
+    229: "RAlt" 
+    
+};
 
 const IMG = [
+
     'http://www.planwallpaper.com/static/images/53823.jpg',
     'https://wallpaperbrowse.com/media/images/cool-wallpaper-2.jpg',
     'https://wallpaperbrowse.com/media/images/cool-pictures-24.jpg',
@@ -91,6 +172,7 @@ const IMG = [
     'http://www.planwallpaper.com/static/images/Axent-Wear-Cat-Ear-Headphones-a-Cool-Cat-Ear.jpg',
     'http://www.planwallpaper.com/static/images/7004205-cool-black-backgrounds-27640_lhK8IKI.jpg',
     'http://coolwallpaper.website/wp-content/uploads/2016/11/Nice-Really-Cool-Wallpaper-Free-download-best-Latest-3D-HD-desktop-wallpapers-background-Wide-Most-Popular-Images-in-high-quality-resolutions-big-lounge-sofa.jpg'
+
 ];
 
 const GAMEMODE = { 
@@ -272,7 +354,9 @@ var PLAY = {
 };
 
 $Round.on('DOMSubtreeModified', function() {
-    if (new Date().getTime() - lastupdate < 5555) { return false; }
+    if (new Date().getTime() - lastupdate < 5555) { 
+        return false; 
+    }
     option = $("h5.room-head-mode").html().split(' / ');
     mode = GAMEMODE[option.splice(0, 1)];
     db = /E../.test(mode) ? (En || (En = readUrl('En'))) : (Ko || (Ko = readUrl('Ko.txt')));
@@ -282,15 +366,8 @@ $Round.on('DOMSubtreeModified', function() {
     changeImage();
 });
 
-$(window).on('keydown', function(e) {
-    if (e.keyCode === Hotkey && ($Turn.is(':visible') || /(K|E)SS/.test(mode))) { 	
-        if (playing) { return false; }
-        var sTime = new Date().getTime();	
-        playing = true;
-        PLAY[mode]();	
-        console.log(new Date().getTime() - sTime);
-        playing = false;
-    }
+$autoplay.on('click', function() { 
+    control_AI(automode = !automode);
 });
 
 $setkey.on({ 
@@ -327,7 +404,15 @@ $sethotkey.on({
     }
 });
 
-$autoplay.on('click', control_AI(automode = !automode));
+$(window).on('keydown', function(e) {
+    if (e.keyCode === Hotkey && !playing ($Turn.is(':visible') || /(K|E)SS/.test(mode))) {
+        var sTime = new Date().getTime();	
+        playing = true;
+        PLAY[mode]();	
+        console.log(new Date().getTime() - sTime);
+        playing = false;
+    }
+});
 
 function control_AI(plug) {
     if (!plug) {
@@ -342,25 +427,22 @@ function control_AI(plug) {
       	    subtree: true 
         });
     }
-    console.log('AutoMode: ' + automode);
+    console.log('AutoMode: ' + plug);
 }
 
 function execute_AI(mutation) {
-     if (playing || !$Turn.is(":visible")) { 
-         return false;
+     if (!playing && $Turn.is(":visible")) { 
+          playing = true;
+          PLAY[mode](); 
+          playing = false; 
      }
-     playing = true; 
-     PLAY[mode](); 
-     playing = false; 
 }
 
-function sleep(delay) { 
-    var start = new Date().getTime(); 
-    while (new Date().getTime() < start + delay); 
-}
-
-function transmit(msg) { 
-    $Talk.val(msg); $Take.click(); 
+function transmit(msg) {
+    if ($Turn.is(":visible")) {
+        $Talk.val(msg); 
+	$Take.click(); 
+    }
 }
 
 function isMobile() { 
@@ -374,13 +456,13 @@ function changeImage() {
 
 function shuffle(box) {
     var arr = box.split('\n');
-    var CurIndex = arr.length, TempValue, RndIndex;
-    while (0 !== CurIndex) {
-        RndIndex = Math.floor(Math.random() * CurIndex);	
-        CurIndex--;	
-        TempValue = arr[CurIndex];	
-        arr[CurIndex] = arr[RndIndex];	
-        arr[RndIndex] = TempValue;
+    var curindex = arr.length, tempvalue, rndindex;
+    while (0 !== curindex) {
+        rndindex = Math.floor(Math.random() * curindex);	
+        curindex--;	
+        tempvalue = arr[curindex];	
+        arr[curindex] = arr[rndindex];	
+        arr[rndindex] = tempvalue;
     }
     return arr.join('\n');
 }
