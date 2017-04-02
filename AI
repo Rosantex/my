@@ -14,7 +14,6 @@ var $Dsp = $("div[class='jjo-display ellipse']"),
     $Talk = $('#Talk'),
     $Take = $('#ChatBtn'),
     $Turn = $('.game-input'),
-    $Time = $('.jjo-turn-time .graph-bar'),
     $Item = $(".GameBox .items"),
     $Round = $('.rounds'),
     $myimg = $('#BgImg'),
@@ -71,7 +70,8 @@ const KEYNAME = {
     221: "Square Bracket(])",
     222: "Apostrophe(')",
     225: "RCtrl", 229: "RAlt" 
-};  
+}; 
+
 const IMG = [
     'http://www.planwallpaper.com/static/images/53823.jpg',
     'https://wallpaperbrowse.com/media/images/cool-wallpaper-2.jpg',
@@ -91,7 +91,25 @@ const IMG = [
     'http://www.planwallpaper.com/static/images/7004205-cool-black-backgrounds-27640_lhK8IKI.jpg',
     'http://coolwallpaper.website/wp-content/uploads/2016/11/Nice-Really-Cool-Wallpaper-Free-download-best-Latest-3D-HD-desktop-wallpapers-background-Wide-Most-Popular-Images-in-high-quality-resolutions-big-lounge-sofa.jpg'
 ];
-const GAMEMODE = { '한국어 끝말잇기': 'KSH', '한국어 쿵쿵따': 'KKT', '한국어 앞말잇기': 'KAP', '한국어 타자 대결': 'KTY', '한국어 단어 대결': 'KDA', '한국어 십자말풀이': 'KCW', '한국어 솎솎': 'KSS', '자음퀴즈': 'CSQ', '훈민정음': 'HUN', '영어 끝말잇기': 'ESH', '영어 끄투': 'EKT', '영어 타자 대결': 'ETY', '영어 단어 대결': 'EDA', '영어 솎솎': 'ESS'};
+
+const GAMEMODE = { 
+
+    '한국어 끝말잇기': 'KSH', 
+    '한국어 쿵쿵따': 'KKT', 
+    '한국어 앞말잇기': 'KAP', 
+    '한국어 타자 대결': 'KTY', 
+    '한국어 단어 대결': 'KDA', 
+    '한국어 십자말풀이': 'KCW', 
+    '한국어 솎솎': 'KSS', 
+    '자음퀴즈': 'CSQ', 
+    '훈민정음': 'HUN', 
+    '영어 끝말잇기': 'ESH', 
+    '영어 끄투': 'EKT', 
+    '영어 타자 대결': 'ETY', 
+    '영어 단어 대결': 'EDA', 
+    '영어 솎솎': 'ESS'
+
+};
 
 var PLAY = {
 
@@ -104,7 +122,9 @@ var PLAY = {
         } else {
              _LFound = (db.match('\\[(' + f + '.*[^다])\\]') || '')[0];
         }	
-        if (!(_Found = _LFound)) { return false; }
+        if (!(_Found = _LFound)) { 
+	    return false; 
+	}
         transmit(_Found.slice(1, -1));
         db = db.replace(_Found, '');
         pf = f;
@@ -115,7 +135,9 @@ var PLAY = {
         f = f.replace(f.match(/\((\d)\)/)[0], '');    
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
         _Found = (db.match('\\[' + f + '.{' + (Number(d[1]) - 2).toString() + '}[^다]\\]') || '')[0];
-        if (!_Found) { return false; }
+        if (!_Found) { 
+	    return false; 
+	}
         transmit(_Found.slice(1, -1));
         db = db.replace(_Found, '');
         pf = f;
@@ -130,7 +152,9 @@ var PLAY = {
         } else {
              _LFound = (db.match('\\[(.+' + f + ')\\]') || '')[0];
         }	
-        if (!(_Found = _LFound)) { return false; }
+        if (!(_Found = _LFound)) { 
+	    return false; 
+	}
         transmit(_Found.slice(1, -1));
         db = db.replace(_Found, '');
         pf = f;
@@ -158,7 +182,9 @@ var PLAY = {
         }		
         var rSock2 = new RegExp('\\[[' + have + ']{' + (d = option.includes('2글자 금지') ? 3 : 2) + ',}\\]', 'g');
         var _Found = ((db.match(rSock2) || []).join('\n').replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + d + ',}\\]') || '')[0];
-        if (!_Found) { return false; }	
+        if (!_Found) { 
+	    return false; 
+	}	
         transmit(_Found.slice(1, -1));	
         db = db.replace(_Found, '');
     },
@@ -175,7 +201,9 @@ var PLAY = {
 	          return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
         });
         _Found = (db.match('\\[' + res + '\\]') || '')[0];	
-        if (!_Found) { return false; }
+        if (!_Found) { 
+	    return false; 
+	}
         transmit(_Found.slice(1, -1));	
         db = db.replace(_Found, '');	
         pf = f;
@@ -190,7 +218,9 @@ var PLAY = {
         } else {
             _LFound = (db.match('\\[(' + f + '.+)\\]') || '')[0];
         }	
-        if (!(_Found = _LFound)) { return false; }
+        if (!(_Found = _LFound)) { 
+            return false; 
+	}
         transmit(_Found.slice(1, -1));
         db = db.replace(_Found, '');
         pf = f;
@@ -205,7 +235,9 @@ var PLAY = {
         } else {
              _LFound = (db.match('\\[(' + f + '.+)\\]') || '')[0];
         }	
-        if (!(_Found = _LFound)) { return false; }
+        if (!(_Found = _LFound)) { 
+            return false; 
+	}
         transmit(_Found.slice(1, -1));
         db = db.replace(_Found, '');
         pf = f;
@@ -229,8 +261,10 @@ var PLAY = {
         }
         rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?]) + \\]');
         var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + (option.includes('2글자 금지') ? 3 : 2) + ',}\\]') || '')[0];
-        if (!_Found) { return false; }
-        transmit(_Found.slice(1, -1));	
+        if (!_Found) {
+	    return false;
+	}
+        transmit(_Found.slice(1, -1));
         db = db.replace(_Found, '');
     }
     
@@ -298,10 +332,11 @@ function control_AI(plug) {
     if (!plug) {
         observer && observer.disconnect();
     } else {
+        var target = $('.jjo-turn-time .graph-bar');
         var observer = new WebKitMutationObserver(function(mutations) {
             mutations.forEach(execute_AI);
         });
-        observer.observe($Time, { 
+        observer.observe(target, { 
             attributes: false, 
 	    childList: true, 
       	    subtree: true 
