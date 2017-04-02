@@ -88,7 +88,8 @@ var Ko, En, db,
     setlock = false,
     playing = false,
     lastupdate = 0,
-    automode = false;
+    automode = false,
+    observer;
     
 const KEYNAME = { 
 
@@ -405,7 +406,7 @@ $sethotkey.on({
 });
 
 $(window).on('keydown', function(e) {
-    if (e.keyCode === Hotkey && !playing ($Turn.is(':visible') || /(K|E)SS/.test(mode))) {
+    if (e.keyCode === Hotkey && !playing && ($Turn.is(':visible') || /(K|E)SS/.test(mode))) {
         var sTime = new Date().getTime();	
         playing = true;
         PLAY[mode]();	
@@ -416,11 +417,11 @@ $(window).on('keydown', function(e) {
 
 function control_AI(plug) {
     if (!plug) {
-        observer && observer.disconnect();
+       observer.disconnect();
     } else {
-        var observer = new WebKitMutationObserver(function(mutations) {
-            mutations.forEach(execute_AI);
-        });
+       observer = new WebKitMutationObserver(function(mutations) {
+       mutations.forEach(execute_AI);
+    });
         observer.observe($Time, { 
             attributes: false, 
 	    childList: true, 
