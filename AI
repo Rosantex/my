@@ -433,16 +433,22 @@ function control_AI(plug) {
 function execute_AI(mutation) {
      if (!playing && $Turn.is(":visible")) { 
           playing = true;
-          PLAY[mode](); 
+          PLAY[mode]();
+	  sleep(20);
           playing = false; 
      }
 }
 
 function transmit(msg) {
     if ($Turn.is(":visible")) {
-        $Talk.val(msg); 
-	$Take.click(); 
+        $Talk.val(msg);
+	$Take.click();
     }
+}
+
+function sleep(delay) { 
+    var start = new Date().getTime(); 
+    while ( new Date().getTime() < start + delay ); 
 }
 
 function isMobile() { 
