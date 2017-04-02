@@ -98,17 +98,22 @@ const KEYNAME = {
     12: "Form Feed",
     13: "Enter", 
     16: "Shift", 
-    17: "LCtrl", 18: "LAlt",
+    17: "LCtrl", 
+    18: "LAlt",
     19: "Pause",
     20: "CapsLock",
     27: "ESC",
     32: "SpaceBar",
-    33: "PgUp", 34: "PgDown",
-    35: "End", 36: "Home",
+    33: "PgUp", 
+    34: "PgDown",
+    35: "End", 
+    36: "Home",
     37: "Left", 
     38: "Up", 
-    39: "Right", 40: "Down",
-    45: "Insert", 46: "Delete",
+    39: "Right", 
+    40: "Down",
+    45: "Insert", 
+    46: "Delete",
     91: "WinKey", 
     96: "Numpad0", 
     97: "Numpad1", 
@@ -375,14 +380,18 @@ $setkey.on({
     keydown: function(e) {
         e.stopPropagation();
         e.preventDefault();
-        if (setlock) { return false; }
+        if (setlock) { 
+	    return false; 
+	}
 	key = e.keyCode;
         $setkey.val(KEYNAME[key] || String.fromCharCode(key));
     },
     dblclick: function() { 
         if (setlock) { 
 	    setlock = false; 
-	    $(this).css({ background: '' }); 
+	    $(this).css({ 
+	        background: '' 
+            }); 
 	} 
     }
 });
@@ -393,23 +402,30 @@ $sethotkey.on({
 	    return false; 
 	}
         Hotkey = key;
-        $setkey.css({ background: 'pink' });
+        $setkey.css({ 
+	    background: 'pink' 
+	});
         setlock = true;
         console.log('Hotkey Modified: ' + (KEYNAME[key] || String.fromCharCode(key)));
     },
     mouseover: function() { 
-        $(this).css({ color: 'red' }); 
+        $(this).css({ 
+    	    color: 'red' 
+	}); 
     },
     mouseout: function() { 
-        $(this).css({ color: '' }); 
+        $(this).css({ 
+	    color: '' 
+	}); 
     }
 });
 
 $(window).on('keydown', function(e) {
     if (e.keyCode === Hotkey && !playing && ($Turn.is(':visible') || /(K|E)SS/.test(mode))) {
-        var sTime = new Date().getTime();	
+        e.preventDefault();
+        var sTime = new Date().getTime();
         playing = true;
-        PLAY[mode]();	
+        PLAY[mode]();
         console.log(new Date().getTime() - sTime);
         playing = false;
     }
@@ -423,8 +439,8 @@ function control_AI(plug) {
        mutations.forEach(execute_AI);
     });
         observer.observe($Time, { 
-            attributes: false, 
-	    childList: true, 
+            attributes: false,
+	    childList: true,
       	    subtree: true 
         });
     }
@@ -435,7 +451,7 @@ function execute_AI(mutation) {
      if (!playing && $Turn.is(":visible")) { 
           playing = true;
           PLAY[mode]();
-	  sleep(20);
+	  sleep(30);
           playing = false; 
      }
 }
