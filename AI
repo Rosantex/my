@@ -27,7 +27,6 @@ var Ko,
     db,
     mode, 
     option,
-    k_scope,
     key,
     Hotkey = isMobile() ? 18 : 96, 
     f, 
@@ -137,11 +136,17 @@ var PLAY = {
         pf = f;
     },
     
-    'KTY': function() { transmit(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]); },
+    'KTY': function() { 
+        transmit(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]); 
+    },
     
-    'KDA': function() { console.log('한단-준비중'); },
+    'KDA': function() { 
+        console.log('한단-준비중'); 
+    },
     
-    'KCW': function() { console.log('십자-준비중'); },
+    'KCW': function() { 
+        console.log('십자-준비중'); 
+    },
     
     'KSS': function() {
         var res = $Dsp.html().match(/%;">[가-힣](?=<\/div>)/g).join('').replace(/[^가-힣]/g,'');
@@ -158,7 +163,9 @@ var PLAY = {
         db = db.replace(_Found, '');
     },
     
-    'CSQ': function() { console.log('자퀴-준비중'); },
+    'CSQ': function() { 
+        console.log('자퀴-준비중'); 
+    },
     
     'HUN': function() {
         f = $Dsp.text().slice(1, -1);	
@@ -204,9 +211,13 @@ var PLAY = {
         pf = f;
     },
     
-    'ETY': function() { transmit(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]); },
+    'ETY': function() { 
+        transmit(option.includes('속담') ? $Dsp.text() : $Dsp.text().split(' ')[0]); 
+    },
     
-    'EDA': function() { console.log('영단-준비중'); },
+    'EDA': function() { 
+        console.log('영단-준비중'); 
+    },
     
     'ESS': function() {
         var res = $Dsp.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g,'');
@@ -214,7 +225,7 @@ var PLAY = {
         while (len = res.length) {
             res = res.replace(new RegExp(chr = res[0], 'g'), '');
             rSock.push('\\[(.*' + chr + '.*){' + (len - res.length + 1) + ',}\\]');
-	          have += chr;
+	    have += chr;
         }
         rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?]) + \\]');
         var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + (option.includes('2글자 금지') ? 3 : 2) + ',}\\]') || '')[0];
@@ -237,14 +248,7 @@ $Round.on('DOMSubtreeModified', function() {
 });
 
 $(window).on('keydown', function(e) {
-    if (k_scope === 'setkey') {
-        e.preventDefault();
-        if (setlock) { return false; }
-	key = e.keyCode;
-        $setkey.val(KEYNAME[key] || String.fromCharCode(key)); 
-    } else if (e.keyCode == Hotkey && ($Turn.is(':visible') || /(K|E)SS/.test(mode))) { 
-        e.stopPropagation();
-        e.preventDefault();	
+    if (e.keyCode === Hotkey && ($Turn.is(':visible') || /(K|E)SS/.test(mode))) { 	
         if (playing) { return false; }
         var sTime = new Date().getTime();	
         playing = true;
@@ -255,11 +259,12 @@ $(window).on('keydown', function(e) {
 });
 
 $setkey.on({ 
-    focus: function() { 
-        k_scope = 'setkey'; 
-    }, 
-    blur: function() { 
-        k_scope = false; 
+    keydown: function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        if (setlock) { return false; }
+	key = e.keyCode;
+        $setkey.val(KEYNAME[key] || String.fromCharCode(key));
     },
     dblclick: function() { 
         if (setlock) { 
@@ -296,7 +301,7 @@ function control_AI(plug) {
         var observer = new WebKitMutationObserver(function(mutations) {
             mutations.forEach(execute_AI);
         });
-        observer.observe(target, { 
+        observer.observe($Time, { 
             attributes: false, 
 	    childList: true, 
       	    subtree: true 
