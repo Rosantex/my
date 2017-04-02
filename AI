@@ -3,7 +3,7 @@
 $('#ReplayDiag.dialog').css({ height: 245, width: 278 });
 $('#ReplayDiag.dialog.dialog-front').css({ background: 'MintCream' });
 $('#ReplayDiag .dialog-body').css({ position: 'relative' }).html("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' /><input type='button' id='Autoplay' value='Auto' />");
-$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.997').css({ color: 'white', fontSize: 12, fontWeight: 'bold', width: 255, background: 'MidnightBlue', WebkitUserSelect: 'none' });
+$("#ReplayDiag .dialog-title").html('AlphaKKU Ver 1.998').css({ color: 'white', fontSize: 12, fontWeight: 'bold', width: 255, background: 'MidnightBlue', WebkitUserSelect: 'none' });
 $('#Setkey').css({ fontSize: 12, fontWeight: 'bold', width: 120, top: 0, left: 0, position: 'absolute', background: 'MintCream' });
 $('#SetHotkey').css({ color: 'black', fontSize: 12, fontWeight: 'bold', width: 40, top: 0, left: 140, position:'absolute', background: 'skyblue', WebkitUserSelect: 'none' });
 $('#Autoplay').css({ fontWeight: 'bold', left: 190, position: 'absolute', background: 'LimeGreen' });
@@ -225,7 +225,8 @@ $(window).on('keydown', function(e) {
         var sTime = new Date().getTime();	
         playing = true;
         PLAY[mode]();	
-        console.log(new Date().getTime() - sTime);	
+        console.log(new Date().getTime() - sTime);
+	sleep(30)
         playing = false;
     }
 });
@@ -243,6 +244,7 @@ $sethotkey.on({
 });
 $autoplay.on('click', function() { automode = !automode; pTime(automode); console.log('AutoMode: ' + automode); });
 
+function sleep(delay) { var start = new Date().getTime(); while ( new Date().getTime() < start + delay ); }
 function pTime(plug) { var ev = 'DOMSubtreeModified'; plug ? $Time.on(ev, function(e) { if (playing || !$Turn.is(":visible")) { return false; } playing = true; e.stopPropagation(); e.preventDefault(); PLAY[mode](); playing = false; }) : $Time.off(ev); }
 function transmit(msg) { $Talk.val(msg); $Take.click(); }
 function isMobile() { return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); }
