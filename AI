@@ -76,7 +76,9 @@ $('#DictionaryBtn')
          $("#ReplayBtn").click();    
     })
     .click();
-    
+ 
+$('.history').attr('id', 'fucking_history')
+ 
 var $Dsp = [ $('div.jjo-display.ellipse'), $('div.jjo-display') ][isMobile],
     $Talk = [ $('#Talk'), $('#game-input') ][isMobile],
     $Take = $('#ChatBtn'),
@@ -84,7 +86,7 @@ var $Dsp = [ $('div.jjo-display.ellipse'), $('div.jjo-display') ][isMobile],
     $Time = document.getElementsByClassName('graph jjo-turn-time')[0],
     $Item = $(".GameBox .items"),
     $Round = $('.rounds'),
-    $history = $('.history'),
+    $history = $('#fucking_history'),
     $myimg = $('#BgImg'),
     $setkey = $('#Setkey'),
     $sethotkey = $('#SetHotkey'),
@@ -388,7 +390,23 @@ $autoplay.on('click', function() {
     control_AI(automode = !automode);
 });
 
-$history.on('DOMSubtreeModified', log_History);
+$history.on('DOMSubtreeModified',  function() {
+     if (new Date().getTime() - lasthistory < 50) {
+          return false;
+     }
+     var stuff, trash;
+     if (!(stuff = $(this).html())) {
+	  lasthistory = new Date().getTime();
+          return false;
+     }
+     if (word_history.includes(trash = stuff.split('<')[1].split('>')[1])) {
+          lasthistory = new Date().getTime();
+          return false;
+     }
+     word_history.push(trash);
+     db = db.replace('[' + trash + ']', '');
+     lasthistory = new Date().getTime();
+});
 
 $setkey.on({ 
     keydown: function(e) {
@@ -468,25 +486,6 @@ function execute_AI(mutation) {
 	  sleep(15);
           playing = false; 
      }
-}
-
-function log_History() {
-     if (new Date().getTime() - lasthistory < 30) {
-          return false;
-     }
-     var stuff, trash;
-     if (!(stuff = $('div.ellipse.history-item.expl-mother').html())) {
-          word_history = [];
-	  lasthistory = new Date().getTime();
-          return false;
-     }
-     if (word_history.includes(trash = stuff.split('<')[0])) {
-          lasthistory = new Date().getTime();
-          return false;
-     }
-     word_history.push(trash);
-     db = db.replace('[' + trash + ']', '');
-     lasthistory = new Date().getTime();
 }
 
 function transmit(msg) {
