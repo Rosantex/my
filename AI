@@ -95,7 +95,7 @@ var Ko, En, db,
     _Found, _LFound,
     setlock = false,
     playing = false,
-    lastupdate = 0,
+    lastupdate = 0, lasthistory = 0,
     automode = false,
     observer_time
     word_history = [];
@@ -224,7 +224,7 @@ var PLAY = {
 	    return false; 
 	}
         transmit(_Found.slice(1, -1));
-        db = db.replace(_Found, '');
+        //db = db.replace(_Found, '');
         pf = f;
     },
     
@@ -471,20 +471,28 @@ function execute_AI(mutation) {
      if (!playing && $Turn.is(":visible")) { 
           playing = true;
           PLAY[mode]();
-	  sleep(30);
+	  sleep(15);
           playing = false; 
      }
 }
 
 function log_History() {
-     if (!(stuff = $('div.ellipse.history-item.expl-mother').html())) {
-          word_history = [];
+     if (new Date().getTime() - lasthistory < 500) {
           return false;
      }
-     if (word_history.includes(stuff.split('<')[0])) { 
+     var stuff, trash;
+     if (!(stuff = $('div.ellipse.history-item.expl-mother').html())) {
+          word_history = [];
+	  lasthistory = new Date().getTime();
           return false;
-     }  
-     word_history.push(stuff.split('<')[0]);
+     }
+     if (word_history.includes(trash = stuff.split('<')[0])) {
+          lasthistory = new Date().getTime();
+          return false;
+     }
+     word_history.push(trash);
+     db = db.replace('[' + trash + ']', '');
+     lasthistory = new Date().getTime();
 }
 
 function transmit(msg) {
