@@ -224,7 +224,7 @@ var PLAY = {
 	    return false; 
 	}
         transmit(_Found.slice(1, -1));
-        //db = db.replace(_Found, '');
+        db = db.replace(_Found, '');
         pf = f;
     },
     
@@ -369,16 +369,6 @@ var PLAY = {
     
 };
 
-var observer_history = new WebKitMutationObserver(function(mutations) {
-        mutations.forEach(log_History);
-    });
-
-observer_history.observe($history, { 
-    attributes: false,
-    childList: true,
-    subtree: true
-});
-
 $Round.on('DOMSubtreeModified', function() {
     if (new Date().getTime() - lastupdate < 5555) { 
         return false; 
@@ -395,6 +385,8 @@ $Round.on('DOMSubtreeModified', function() {
 $autoplay.on('click', function() { 
     control_AI(automode = !automode);
 });
+
+$history.on('DOMSubtreeModified', log_History);
 
 $setkey.on({ 
     keydown: function(e) {
@@ -477,7 +469,7 @@ function execute_AI(mutation) {
 }
 
 function log_History() {
-     if (new Date().getTime() - lasthistory < 500) {
+     if (new Date().getTime() - lasthistory < 400) {
           return false;
      }
      var stuff, trash;
