@@ -2,6 +2,8 @@
 
 var isMobile = Number(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
 
+$(document).off('paste');
+
 $('#ReplayDiag.dialog').css({ 
     height: 245, 
     width: 278 
@@ -463,13 +465,13 @@ function execute_AI(mutation) {
      if (!playing && $Turn.is(":visible")) { 
           playing = true;
           PLAY[mode]();
-	  sleep(20);
+	  sleep(15);
           playing = false; 
      }
 }
 
 function log_History() {
-     if (new Date().getTime() - lasthistory < 400) {
+     if (new Date().getTime() - lasthistory < 30) {
           return false;
      }
      var stuff, trash;
