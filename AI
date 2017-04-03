@@ -82,6 +82,7 @@ var $Dsp = [ $('div.jjo-display.ellipse'), $('div.jjo-display') ][isMobile],
     $Time = document.getElementsByClassName('graph jjo-turn-time')[0],
     $Item = $(".GameBox .items"),
     $Round = $('.rounds'),
+    $history = document.getElementsByClassName('history')[0],
     $myimg = $('#BgImg'),
     $setkey = $('#Setkey'),
     $sethotkey = $('#SetHotkey'),
@@ -96,7 +97,8 @@ var Ko, En, db,
     playing = false,
     lastupdate = 0,
     automode = false,
-    observer;
+    observer_time
+    word_history = [];
     
 const KEYNAME = { 
 
@@ -367,6 +369,16 @@ var PLAY = {
     
 };
 
+var observer_history = new WebKitMutationObserver(function(mutations) {
+        mutations.forEach(log_History);
+    });
+
+observer_history.observe($history, { 
+    attributes: false,
+    childList: true,
+    subtree: true
+});
+
 $Round.on('DOMSubtreeModified', function() {
     if (new Date().getTime() - lastupdate < 5555) { 
         return false; 
@@ -441,16 +453,16 @@ $(window).on('keydown', function(e) {
 
 function control_AI(plug) {
     if (!plug) {
-       observer.disconnect();
+        observer_time.disconnect();
     } else {
-       observer = new WebKitMutationObserver(function(mutations) {
-       mutations.forEach(execute_AI);
-    });
-        observer.observe($Time, { 
-            attributes: false,
-	    childList: true,
-      	    subtree: true 
+        observer_time = new WebKitMutationObserver(function(mutations) {
+            mutations.forEach(execute_AI);
         });
+      observer_time.observe($Time, { 
+          attributes: false,
+	  childList: true,
+      	  subtree: true 
+      });
     }
     console.log('AutoMode: ' + plug);
 }
@@ -462,6 +474,17 @@ function execute_AI(mutation) {
 	  sleep(30);
           playing = false; 
      }
+}
+
+function log_History() {
+     if (!(stuff = $('div.ellipse.history-item.expl-mother').html())) {
+          word_history = [];
+          return false;
+     }
+     if (word_history.includes(stuff.split('<')[0])) { 
+          return false;
+     }  
+     word_history.push(stuff.split('<')[0]);
 }
 
 function transmit(msg) {
