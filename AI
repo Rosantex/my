@@ -82,7 +82,7 @@ var $Dsp = [ $('div.jjo-display.ellipse'), $('div.jjo-display') ][isMobile],
     $Time = document.getElementsByClassName('graph jjo-turn-time')[0],
     $Item = $(".GameBox .items"),
     $Round = $('.rounds'),
-    $history = document.getElementsByClassName('history')[0],
+    $history = $('.history'),
     $myimg = $('#BgImg'),
     $setkey = $('#Setkey'),
     $sethotkey = $('#SetHotkey'),
@@ -463,7 +463,7 @@ function execute_AI(mutation) {
      if (!playing && $Turn.is(":visible")) { 
           playing = true;
           PLAY[mode]();
-	  sleep(15);
+	  sleep(20);
           playing = false; 
      }
 }
