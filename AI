@@ -68,8 +68,13 @@ $('#BgImg').css({
     WebkitUserSelect: 'none' 
 });
 
-$("#ReplayDiag").fadeIn(200);
-
+$('#DictionaryBtn')
+    .off('click')  
+    .on('click', function() { 
+         $("#ReplayBtn").click();    
+    })
+    .click();
+    
 var $Dsp = [ $('div.jjo-display.ellipse'), $('div.jjo-display') ][isMobile],
     $Talk = [ $('#Talk'), $('#game-input') ][isMobile],
     $Take = $('#ChatBtn'),
@@ -84,7 +89,7 @@ var $Dsp = [ $('div.jjo-display.ellipse'), $('div.jjo-display') ][isMobile],
     
 var Ko, En, db,
     mode, option,
-    key, Hotkey = [ 18, 96 ][isMobile],
+    key, Hotkey = [ 96, 18 ][isMobile],
     f, pf, m,
     _Found, _LFound,
     setlock = false,
@@ -222,8 +227,9 @@ var PLAY = {
     },
     
     'KKT': function() {
+        var d;
         f = $Dsp.text();
-        f = f.replace(f.match(/\((\d)\)/)[0], '');    
+        f = f.replace((d = f.match(/\((\d)\)/))[0], '');    
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
         _Found = (db.match('\\[' + f + '.{' + (Number(d[1]) - 2).toString() + '}[^다]\\]') || '')[0];
         if (!_Found) { 
@@ -479,9 +485,8 @@ function shuffle(box) {
     var arr = box.split('\n');
     var curindex = arr.length, tempvalue, rndindex;
     while (0 !== curindex) {
-        rndindex = Math.floor(Math.random() * curindex);	
-        curindex--;	
-        tempvalue = arr[curindex];	
+        rndindex = Math.floor(Math.random() * curindex);
+        tempvalue = arr[--curindex];	
         arr[curindex] = arr[rndindex];	
         arr[rndindex] = tempvalue;
     }
