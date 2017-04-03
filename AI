@@ -1,5 +1,7 @@
 <script type ="text/javascript">
 
+var isMobile = Number(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+
 $('#ReplayDiag.dialog').css({ 
     height: 245, 
     width: 278 
@@ -68,8 +70,8 @@ $('#BgImg').css({
 
 $("#ReplayDiag").fadeIn(200);
 
-var $Dsp = $('div.jjo-display.ellipse'),
-    $Talk = $('#Talk'),
+var $Dsp = [ $('div.jjo-display.ellipse'), $('div.jjo-display') ][isMobile],
+    $Talk = [ $('#Talk'), $('#game-input') ][isMobile],
     $Take = $('#ChatBtn'),
     $Turn = $('.game-input'),
     $Time = document.getElementsByClassName('graph jjo-turn-time')[0],
@@ -82,7 +84,7 @@ var $Dsp = $('div.jjo-display.ellipse'),
     
 var Ko, En, db,
     mode, option,
-    key, Hotkey = isMobile() ? 18 : 96, 
+    key, Hotkey = [ 18, 96 ][isMobile],
     f, pf, m,
     _Found, _LFound,
     setlock = false,
@@ -466,10 +468,6 @@ function transmit(msg) {
 function sleep(delay) { 
     var start = new Date().getTime(); 
     while ( new Date().getTime() < start + delay ); 
-}
-
-function isMobile() { 
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent); 
 }
 
 function changeImage() { 
