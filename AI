@@ -391,7 +391,7 @@ $autoplay.on('click', function() {
 });
 
 $history.on('DOMSubtreeModified',  function() {
-     if (new Date().getTime() - lasthistory < 50) {
+     if (new Date().getTime() - lasthistory < 200) {
           return false;
      }
      var stuff, trash;
@@ -483,13 +483,13 @@ function execute_AI(mutation) {
      if (!playing && $Turn.is(":visible")) { 
           playing = true;
           PLAY[mode]();
-	  sleep(15);
+	  sleep(28);
           playing = false; 
      }
 }
 
 function transmit(msg) {
-    if ($Turn.is(":visible")) {
+    if ($Turn.is(":visible") || /(K|E)SS/.test(mode) {
         $Talk.val(msg);
 	$Take.click();
     }
