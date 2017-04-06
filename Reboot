@@ -22,7 +22,7 @@ $('#ReplayDiag .dialog-body')
 $("#ReplayDiag .dialog-title")
     .html('AlphaKKU Ver 1.999')
     .css({ 
-        color: 'white', 
+        color: 'White', 
      	fontSize: 12, 
 	    fontWeight: 'bold', 
 	    width: 255, 
@@ -41,7 +41,7 @@ $('#Setkey').css({
 });
 
 $('#SetHotkey').css({ 
-    color: 'black', 
+    color: 'Black', 
     fontSize: 12, 
     fontWeight: 'bold', 
     width: 40, 
@@ -87,7 +87,7 @@ $('.history').attr('id', 'ROS_History');
 var $dsp = isMobile && $('div.jjo-display') || $('#ROS_Display'),
     $talk = isMobile && $('#game-input') || $('#Talk'),
     $take = $('#ChatBtn'),
-    $turn = $('#ROS_Turn'),
+    $turn = document.getElementById('ROS_Turn'),
     $time = document.getElementById('ROS_Time'),
     $item = $('#ROS_Item'),
     $round = $('#ROS_Round'),
@@ -101,14 +101,13 @@ var ko, en, db,
     mode, 
 	opts,
     key, 
-	hotkey = isMobile && 18 || 96,
+	hotkey = isMobile ? 18 : 96,
     f, pf, m,
     _Found, _LFound,
     setlock = false,
     playing = false,
     lastupdate = 0, lasthistory = 0,
     automode = false,
-    observer_time
     word_history = [];
     
 const KEYNAME = { 
@@ -274,7 +273,7 @@ var PLAY = {
             res = res.replace(new RegExp(chr = res[0], 'g'), '');
             rSock.push('\\[(.*' + chr + '.*){' + (len - res.length + 1) + ',}\\]');
 	    have += chr;
-        }		
+        }
         var rSock2 = new RegExp('\\[[' + have + ']{' + (d = opts.includes('2글자 금지') ? 3 : 2) + ',}\\]', 'g');
         var _Found = ((db.match(rSock2) || []).join('\n').replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + d + ',}\\]') || '')[0];
         _Found && transmit(_Found.slice(1, -1), _Found, false);	
@@ -341,13 +340,19 @@ var PLAY = {
     
 };
 
+var observer = new WebKitMutationObserver(function(mutations) {
+            mutations.forEach(execute_AI);
+        });
+var config = { attributes: true, childList: false, subtree: false }
+
+
 $round.on('DOMSubtreeModified', function() {
     if (new Date().getTime() - lastupdate < 5555) return false; 
 
     opts = $('h5.room-head-mode').html().split(' / ');
     mode = GAMEMODE[opts.splice(0, 1)];
     db = /E../.test(mode) ? (en || (en = readUrl('En'))) : (ko || (ko = readUrl('Ko.txt')));
-    console.log('[New Game]\nmode: ' + mode + '\nopts: ' + opts + '\n  ');
+    console.log('[New Game]\nmode: ' + mode + '\noption: ' + opts + '\n  ');
     lastupdate = new Date().getTime();
     playing = false;
     changeImage();
@@ -358,14 +363,10 @@ $autoplay.on('click', function() {
 });
 
 $history.on('DOMSubtreeModified',  function() {
-     if (new Date().getTime() - lasthistory < 100) return false;
+     if (new Date().getTime() - lasthistory < 80) return false;
 
      var stuff, trash;
-     if (!(stuff = $(this).html())) {
-	      lasthistory = new Date().getTime();
-          return false;
-     }
-     if (word_history.includes(trash = stuff.split('<')[1].split('>')[1])) {
+     if (!(stuff = $(this).html()) || word_history.includes(trash = stuff.split('<')[1].split('>')[1])) {
           lasthistory = new Date().getTime();
           return false;
      }
@@ -380,15 +381,13 @@ $setkey.on({
         e.preventDefault();
         if (setlock) return false; 
 
-	    key = e.keyCode;
-        $setkey.val(KEYNAME[key] || String.fromCharCode(key));
+	key = e.keyCode;
+        $(this).val(KEYNAME[key] || String.fromCharCode(key));
     },
     dblclick: function() { 
         if (setlock) { 
 	        setlock = false; 
-	        $(this).css({ 
-	            background: '' 
-            }); 
+	        $(this).css({ background: '' }); 
 	    }
     }
 });
@@ -398,80 +397,65 @@ $sethotkey.on({
         if (setlock) return false;
 
         hotkey = key;
-        $setkey.css({ 
-	        background: 'pink' 
-	    });
+        $setkey.css({ background: 'Pink' });
         setlock = true;
         console.log('Hotkey Modified: ' + (KEYNAME[key] || String.fromCharCode(key)));
     },
     mouseover: function() { 
-        $(this).css({ 
-    	    color: 'red' 
-	    }); 
+        $(this).css({ color: 'Red' }); 
     },
     mouseout: function() { 
-        $(this).css({ 
-	        color: '' 
-	    }); 
+        $(this).css({ color: '' }); 
     }
 });
 
 $(window).on('keydown', function(e) {
     if (e.keyCode === hotkey && !playing && ($turn.is(':visible') || /(K|E)SS/.test(mode))) {
         e.preventDefault();
-        var sTime = new Date().getTime();
+        var start = new Date().getTime();
         playing = true;
         PLAY[mode]();
-        console.log(new Date().getTime() - sTime);
+        console.log(new Date().getTime() - start);
         playing = false;
     }
 });
 
 function control_AI(plug) {
-    if (!plug) observer_time.disconnect();
-    else {
-        observer_time = new WebKitMutationObserver(function(mutations) {
-            mutations.forEach(execute_AI);
-        });
-      observer_time.observe($time, { 
-          attributes: false,
-	      childList: true,
-      	  subtree: true 
-      });
-    }
+    plug ? observer.observe($turn, config) : observer_time.disconnect();
     console.log('AutoMode: ' + plug);
 }
 
 function execute_AI(mutation) {
-     if (!playing && $turn.is(":visible")) { 
+     if (!playing && $turn.is(':visible')) { 
         playing = true;
         PLAY[mode]();
-	    sleep(30);
+	sleep(25);
         playing = false; 
      }
 }
 
 function transmit(msg, erase, memo) {
-    if ($turn.is(":visible") || /(K|E)SS/.test(mode)) {
+    if ($turn.is(':visible') || /(K|E)SS/.test(mode)) {
         $talk.val(msg);
-	    $take.click();
-		erase && (db = db.replace(erase, ''));
-		memo && (pf = f);
+	$take.click();
+	erase && (db = db.replace(erase, ''));
+	memo && (pf = f);
     }
 }
 
 function sleep(delay) { 
     var start = new Date().getTime(); 
-    while ( new Date().getTime() < start + delay ); 
+    while (new Date().getTime() < start + delay); 
 }
 
 function changeImage() { 
     var tempsrc = Math.floor(Math.random() * IMG.length); 
-    $myimg.attr('src', tempsrc == IMG.indexOf($myimg.attr('src')) ? changeImage() : IMG[tempsrc]); 
+    $myimg.attr('src', tempsrc === IMG.indexOf($myimg.attr('src')) ? changeImage() : IMG[tempsrc]); 
 }
 
-function shuffle(box) {
-    var arr = box.split('\n');
+function shuffle(deck) {
+    var wasArray = isArray(deck);
+    var arr = wasArray && deck || deck.split('\n');
     var curindex = arr.length, tempvalue, rndindex;
     while (0 !== curindex) {
         rndindex = Math.floor(Math.random() * curindex);
@@ -479,16 +463,16 @@ function shuffle(box) {
         arr[curindex] = arr[rndindex];	
         arr[rndindex] = tempvalue;
     }
-    return arr.join('\n');
+    return wasArray && arr || arr.join('\n');
 }
 
 function readUrl(Url) { 
     return $.ajax({ 
         type: "GET", 
-	    url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url, 
-	    async: false
+	url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url, 
+	async: false
     }).responseText;
 }
-
+    
 </script>  
     
