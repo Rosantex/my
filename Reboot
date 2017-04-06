@@ -24,10 +24,10 @@ $("#ReplayDiag .dialog-title")
     .css({ 
         color: 'White', 
      	fontSize: 12, 
-	    fontWeight: 'bold', 
-	    width: 255, 
- 	    background: 'MidnightBlue', 
-	    WebkitUserSelect: 'none' 
+	fontWeight: 'bold', 
+	width: 255, 
+ 	background: 'MidnightBlue', 
+	WebkitUserSelect: 'none' 
     });
 
 $('#Setkey').css({ 
@@ -98,10 +98,10 @@ var $dsp = isMobile && $('div.jjo-display') || $('#ROS_Display'),
     $autoplay = $('#Autoplay');
     
 var ko, en, db,
-    mode, 
-	opts,
+    mode,
+    opts,
     key, 
-	hotkey = isMobile ? 18 : 96,
+    hotkey = isMobile ? 18 : 96,
     f, pf, m,
     _Found, _LFound,
     setlock = false,
@@ -288,7 +288,7 @@ var PLAY = {
         f = f.includes(':') ? pf : f; 
         var res = f.replace(/([\u1100-\u1112])/g, function($1) { 
             var a = ($1.charCodeAt(0) - 4352) * 588 + 44032; 
-	          return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
+	    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
         });	
         _Found = (db.match('\\[' + res + '\\]') || '')[0] && transmit(_Found.slice(1, -1), _Found, true);	
     },
@@ -331,7 +331,7 @@ var PLAY = {
         while (len = res.length) {
             res = res.replace(new RegExp(chr = res[0], 'g'), '');
             rSock.push('\\[(.*' + chr + '.*){' + (len - res.length + 1) + ',}\\]');
-	        have += chr;
+	    have += chr;
         }
         rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?]) + \\]');
         var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + (opts.includes('2글자 금지') ? 3 : 2) + ',}\\]') || '')[0];
@@ -343,8 +343,7 @@ var PLAY = {
 var observer = new WebKitMutationObserver(function(mutations) {
             mutations.forEach(execute_AI);
         });
-var config = { attributes: true, childList: false, subtree: false }
-
+var config = { attributes: true, childList: false, subtree: false };
 
 $round.on('DOMSubtreeModified', function() {
     if (new Date().getTime() - lastupdate < 5555) return false; 
@@ -362,7 +361,7 @@ $autoplay.on('click', function() {
     control_AI(automode = !automode);
 });
 
-$history.on('DOMSubtreeModified',  function() {
+$history.on('DOMSubtreeModified', function() {
      if (new Date().getTime() - lasthistory < 80) return false;
 
      var stuff, trash;
@@ -421,7 +420,7 @@ $(window).on('keydown', function(e) {
 });
 
 function control_AI(plug) {
-    plug ? observer.observe($turn, config) : observer_time.disconnect();
+    plug ? observer.observe($turn, config) : observer.disconnect();
     console.log('AutoMode: ' + plug);
 }
 
@@ -454,7 +453,7 @@ function changeImage() {
 }
 
 function shuffle(deck) {
-    var wasArray = isArray(deck);
+    var wasArray = Array.isArray(deck);
     var arr = wasArray && deck || deck.split('\n');
     var curindex = arr.length, tempvalue, rndindex;
     while (0 !== curindex) {
