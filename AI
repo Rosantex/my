@@ -1,7 +1,6 @@
-
 <script type ="text/javascript">
 
-var isMobile = Number(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && $("#mobile").html() == "true");
+var isMobile = Number(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
 
 $(document).off('paste');
 
@@ -10,21 +9,25 @@ $('#ReplayDiag.dialog').css({
     width: 278
 });
 
-$('#ReplayDiag.dialog.dialog-front').css({ background: 'MintCream' });
+$('#ReplayDiag.dialog.dialog-front').css({
+    background: 'MintCream'
+});
 
 $('#ReplayDiag .dialog-body')
     .html("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' /><input type='button' id='Autoplay' value='Auto' />")
-    .css({ position: 'relative' });
+    .css({ 
+        position: 'relative' 
+    });
 
 $("#ReplayDiag .dialog-title")
     .html('AlphaKKU Ver 1.999')
     .css({ 
         color: 'white', 
      	fontSize: 12, 
-	fontWeight: 'bold', 
-	width: 255, 
- 	background: 'MidnightBlue', 
-	WebkitUserSelect: 'none' 
+	    fontWeight: 'bold', 
+	    width: 255, 
+ 	    background: 'MidnightBlue', 
+	    WebkitUserSelect: 'none' 
     });
 
 $('#Setkey').css({ 
@@ -69,7 +72,9 @@ $('#BgImg').css({
 
 $('#DictionaryBtn')
     .off('click')  
-    .on('click', function() { $("#ReplayBtn").click(); })
+    .on('click', function() { 
+         $("#ReplayBtn").click();    
+    })
     .click();
  
 $('.jjo-display').attr('id', 'ROS_Display');
@@ -93,10 +98,10 @@ var $dsp = isMobile && $('div.jjo-display') || $('#ROS_Display'),
     $autoplay = $('#Autoplay');
     
 var ko, en, db,
-    mode,
-    opts,
+    mode, 
+	opts,
     key, 
-    hotkey = isMobile && 18 || 96,
+	hotkey = isMobile && 18 || 96,
     f, pf, m,
     _Found, _LFound,
     setlock = false,
@@ -342,7 +347,7 @@ $round.on('DOMSubtreeModified', function() {
     opts = $('h5.room-head-mode').html().split(' / ');
     mode = GAMEMODE[opts.splice(0, 1)];
     db = /E../.test(mode) ? (en || (en = readUrl('En'))) : (ko || (ko = readUrl('Ko.txt')));
-    console.log('[New Game]\nmode: ' + mode + '\noption: ' + opts + '\n  ');
+    console.log('[New Game]\nmode: ' + mode + '\nopts: ' + opts + '\n  ');
     lastupdate = new Date().getTime();
     playing = false;
     changeImage();
@@ -353,11 +358,11 @@ $autoplay.on('click', function() {
 });
 
 $history.on('DOMSubtreeModified',  function() {
-     if (new Date().getTime() - lasthistory < 80) return false;
+     if (new Date().getTime() - lasthistory < 100) return false;
 
      var stuff, trash;
      if (!(stuff = $(this).html())) {
-	  lasthistory = new Date().getTime();
+	      lasthistory = new Date().getTime();
           return false;
      }
      if (word_history.includes(trash = stuff.split('<')[1].split('>')[1])) {
@@ -375,14 +380,16 @@ $setkey.on({
         e.preventDefault();
         if (setlock) return false; 
 
-	key = e.keyCode;
-        $(this).val(KEYNAME[key] || String.fromCharCode(key));
+	    key = e.keyCode;
+        $setkey.val(KEYNAME[key] || String.fromCharCode(key));
     },
     dblclick: function() { 
         if (setlock) { 
-	    setlock = false; 
-	    $(this).css({ background: '' }); 
-	}
+	        setlock = false; 
+	        $(this).css({ 
+	            background: '' 
+            }); 
+	    }
     }
 });
 
@@ -391,25 +398,31 @@ $sethotkey.on({
         if (setlock) return false;
 
         hotkey = key;
-        $setkey.css({ background: 'pink' });
+        $setkey.css({ 
+	        background: 'pink' 
+	    });
         setlock = true;
         console.log('Hotkey Modified: ' + (KEYNAME[key] || String.fromCharCode(key)));
     },
     mouseover: function() { 
-        $(this).css({ color: 'red' }); 
+        $(this).css({ 
+    	    color: 'red' 
+	    }); 
     },
     mouseout: function() { 
-        $(this).css({ color: '' }); 
+        $(this).css({ 
+	        color: '' 
+	    }); 
     }
 });
 
 $(window).on('keydown', function(e) {
     if (e.keyCode === hotkey && !playing && ($turn.is(':visible') || /(K|E)SS/.test(mode))) {
         e.preventDefault();
-        var start = new Date().getTime();
+        var sTime = new Date().getTime();
         playing = true;
         PLAY[mode]();
-        console.log(new Date().getTime() - start);
+        console.log(new Date().getTime() - sTime);
         playing = false;
     }
 });
@@ -422,7 +435,7 @@ function control_AI(plug) {
         });
       observer_time.observe($time, { 
           attributes: false,
-	  childList: false,
+	      childList: true,
       	  subtree: true 
       });
     }
@@ -433,7 +446,7 @@ function execute_AI(mutation) {
      if (!playing && $turn.is(":visible")) { 
         playing = true;
         PLAY[mode]();
-	sleep(25);
+	    sleep(30);
         playing = false; 
      }
 }
@@ -441,20 +454,20 @@ function execute_AI(mutation) {
 function transmit(msg, erase, memo) {
     if ($turn.is(":visible") || /(K|E)SS/.test(mode)) {
         $talk.val(msg);
-	$take.click();
-	erase && (db = db.replace(erase, ''));
-	memo && (pf = f);
+	    $take.click();
+		erase && (db = db.replace(erase, ''));
+		memo && (pf = f);
     }
 }
 
 function sleep(delay) { 
     var start = new Date().getTime(); 
-    while (new Date().getTime() < start + delay); 
+    while ( new Date().getTime() < start + delay ); 
 }
 
 function changeImage() { 
     var tempsrc = Math.floor(Math.random() * IMG.length); 
-    $myimg.attr('src', tempsrc === IMG.indexOf($myimg.attr('src')) ? changeImage() : IMG[tempsrc]); 
+    $myimg.attr('src', tempsrc == IMG.indexOf($myimg.attr('src')) ? changeImage() : IMG[tempsrc]); 
 }
 
 function shuffle(box) {
@@ -472,8 +485,8 @@ function shuffle(box) {
 function readUrl(Url) { 
     return $.ajax({ 
         type: "GET", 
-        url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url, 
-	async: false
+	    url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url, 
+	    async: false
     }).responseText;
 }
 
