@@ -99,7 +99,6 @@ var ko, en, db,
     f, pf, m,
     _Found, _LFound,
     setlock = false,
-    playing = false,
     lastupdate = 0, lasthistory = 0, lastplay = 0,
     automode = false,
     word_history = [];
@@ -398,26 +397,24 @@ $sethotkey.on({
 });
 
 $(window).on('keydown', function(e) {
-    if (e.keyCode === hotkey && !playing && ($turn.is(':visible') || /(K|E)SS/.test(mode))) {
+    if (e.keyCode === hotkey && ($turn.is(':visible') || /(K|E)SS/.test(mode))) {
         e.preventDefault();
         var start = new Date().getTime();
-        playing = true;
         PLAY[mode]();
         console.log(new Date().getTime() - start);
-        playing = false;
     }
 });
 
 function control_AI(plug) {
-    plug && observer.observe($time, config) || observer.disconnect();
+    plug ? observer.observe($time, config) : observer.disconnect();
     console.log('AutoMode: ' + plug);
 }
 
 function execute_AI(mutation) {
      if ((new Date().getTime() - lastplay > 50) && $turn.is(":visible")) {
         control_AI(false);
-        PLAY[mode]();
 	console.log('mutate');
+        PLAY[mode]();
 	lastplay = new Date().getTime();
 	control_AI(true);
      }
@@ -439,7 +436,7 @@ function sleep(delay) {
 
 function changeImage() { 
     var tempsrc = Math.floor(Math.random() * IMG.length); 
-    $myimg.attr('src', tempsrc == IMG.indexOf($myimg.attr('src')) ? changeImage() : IMG[tempsrc]); 
+    $myimg.attr('src', tempsrc === IMG.indexOf($myimg.attr('src')) ? changeImage() : IMG[tempsrc]); 
 }
 
 function shuffle(deck) {
