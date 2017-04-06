@@ -344,7 +344,7 @@ $autoplay.on('click', function() {
 });
 
 $history.on('DOMSubtreeModified',  function() {
-     if (new Date().getTime() - lasthistory < 100) return false;
+     if (new Date().getTime() - lasthistory < 200) return false;
 
      var stuff, trash;
      if (!(stuff = $(this).html()) || word_history.includes(trash = stuff.split('<')[1].split('>')[1])) {
@@ -418,9 +418,9 @@ function control_AI(plug) {
 }
 
 function execute_AI(mutation) {
-     if ((new Date().getTime() - lastplay > 25) && $turn.is(":visible")) { 
+     if ((new Date().getTime() - lastplay > 95) && $turn.is(":visible")) { 
         PLAY[mode]();
-	console.log('fire-time mutation');
+	console.log('mutate');
 	lastplay = new Date().getTime();
      }
 }
