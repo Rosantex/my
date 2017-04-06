@@ -9,25 +9,21 @@ $('#ReplayDiag.dialog').css({
     width: 278
 });
 
-$('#ReplayDiag.dialog.dialog-front').css({
-    background: 'MintCream'
-});
+$('#ReplayDiag.dialog.dialog-front').css({ background: 'MintCream' });
 
 $('#ReplayDiag .dialog-body')
     .html("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' /><input type='button' id='Autoplay' value='Auto' />")
-    .css({ 
-        position: 'relative' 
-    });
+    .css({ position: 'relative' });
 
 $("#ReplayDiag .dialog-title")
     .html('AlphaKKU Ver 1.999')
     .css({ 
         color: 'white', 
      	fontSize: 12, 
-	    fontWeight: 'bold', 
-	    width: 255, 
- 	    background: 'MidnightBlue', 
-	    WebkitUserSelect: 'none' 
+	fontWeight: 'bold', 
+	width: 255, 
+ 	background: 'MidnightBlue', 
+	WebkitUserSelect: 'none' 
     });
 
 $('#Setkey').css({ 
@@ -55,7 +51,7 @@ $('#SetHotkey').css({
 $('#Autoplay').css({ 
     fontWeight: 'bold', 
     left: 190, 
-    position: 'absolute', 
+    position: 'absolute',
     background: 'LimeGreen' 
 });
 
@@ -72,9 +68,7 @@ $('#BgImg').css({
 
 $('#DictionaryBtn')
     .off('click')  
-    .on('click', function() { 
-         $("#ReplayBtn").click();    
-    })
+    .on('click', function() { $("#ReplayBtn").click(); })
     .click();
  
 $('.jjo-display').attr('id', 'ROS_Display');
@@ -99,9 +93,9 @@ var $dsp = isMobile && $('div.jjo-display') || $('#ROS_Display'),
     
 var ko, en, db,
     mode, 
-	opts,
+    opts,
     key, 
-	hotkey = isMobile && 18 || 96,
+    hotkey = isMobile ? 18 : 96,
     f, pf, m,
     _Found, _LFound,
     setlock = false,
@@ -226,11 +220,9 @@ var PLAY = {
         f = $dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;		
         _Found = opts.includes('미션') && ( m = $item.text() ) ? db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]') : '';		
-        if (_Found) {
-            while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}[^다]\\]'));
-        } else {
-             _LFound = (db.match('\\[(' + f + '.*[^다])\\]') || '')[0];
-        }	
+        if (_Found) while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}[^다]\\]'));
+        else  _LFound = (db.match('\\[(' + f + '.*[^다])\\]') || '')[0];
+       
         (_Found = _LFound) && transmit(_Found.slice(1, -1), _Found, true);
     },
     
@@ -247,11 +239,9 @@ var PLAY = {
         f = $dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
         _Found = opts.includes('미션') && ( m = $item.text() ) ? db.match('\\[(.*' + m + '.*)+' + f + '\\]') : '';	
-        if (_Found) {
-            while (_Found = db.match('\\[(.*' + m  + '.*){' + (_LFound = _Found[0]).split(m).length + ',}' + f + '\\]'));
-        } else {
-             _LFound = (db.match('\\[(.+' + f + ')\\]') || '')[0];
-        }	
+        if (_Found)  while (_Found = db.match('\\[(.*' + m  + '.*){' + (_LFound = _Found[0]).split(m).length + ',}' + f + '\\]'));
+        else _LFound = (db.match('\\[(.+' + f + ')\\]') || '')[0];
+  	
         (_Found = _LFound) && transmit(_Found.slice(1, -1), _Found, true);
     },
     
@@ -289,7 +279,7 @@ var PLAY = {
         f = f.includes(':') ? pf : f; 
         var res = f.replace(/([\u1100-\u1112])/g, function($1) { 
             var a = ($1.charCodeAt(0) - 4352) * 588 + 44032; 
-	          return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
+	    return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
         });	
         _Found = (db.match('\\[' + res + '\\]') || '')[0] && transmit(_Found.slice(1, -1), _Found, true);	
     },
@@ -298,11 +288,9 @@ var PLAY = {
         f = $dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;		
         _Found = opts.includes('미션') && ( m = $item.text() ) ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';		
-        if (_Found) {
-            while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}\\]'));
-        } else {
-            _LFound = (db.match('\\[(' + f + '.+)\\]') || '')[0];
-        }	
+        if (_Found) while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}\\]'));
+        else  _LFound = (db.match('\\[(' + f + '.+)\\]') || '')[0];
+       
         (_Found = _LFound) && transmit(_Found.slice(1, -1), _Found, true);
     },
     
@@ -310,11 +298,9 @@ var PLAY = {
         f = $dsp.text();
         f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
         _Found = opts.includes('미션') && ( m = $item.text() ) ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';
-        if (_Found) {
-            while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}\\]'));
-        } else {
-             _LFound = (db.match('\\[(' + f + '.+)\\]') || '')[0];
-        }	
+        if (_Found)  while (_Found = db.match('\\[' + f + '(.*' + m + '.*){' + (_LFound = _Found[0]).split(m).length + ',}\\]'));
+        else _LFound = (db.match('\\[(' + f + '.+)\\]') || '')[0];
+        	
         (_Found = _LFound) && transmit(_Found.slice(1, -1), _Found, true);
     },
     
@@ -332,7 +318,7 @@ var PLAY = {
         while (len = res.length) {
             res = res.replace(new RegExp(chr = res[0], 'g'), '');
             rSock.push('\\[(.*' + chr + '.*){' + (len - res.length + 1) + ',}\\]');
-	        have += chr;
+	    have += chr;
         }
         rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?]) + \\]');
         var _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + (opts.includes('2글자 금지') ? 3 : 2) + ',}\\]') || '')[0];
@@ -361,11 +347,7 @@ $history.on('DOMSubtreeModified',  function() {
      if (new Date().getTime() - lasthistory < 100) return false;
 
      var stuff, trash;
-     if (!(stuff = $(this).html())) {
-	      lasthistory = new Date().getTime();
-          return false;
-     }
-     if (word_history.includes(trash = stuff.split('<')[1].split('>')[1])) {
+     if (!(stuff = $(this).html()) || word_history.includes(trash = stuff.split('<')[1].split('>')[1])) {
           lasthistory = new Date().getTime();
           return false;
      }
@@ -380,16 +362,14 @@ $setkey.on({
         e.preventDefault();
         if (setlock) return false; 
 
-	    key = e.keyCode;
+	key = e.keyCode;
         $setkey.val(KEYNAME[key] || String.fromCharCode(key));
     },
     dblclick: function() { 
         if (setlock) { 
-	        setlock = false; 
-	        $(this).css({ 
-	            background: '' 
-            }); 
-	    }
+	    setlock = false; 
+	    $(this).css({ background: '' }); 
+	}
     }
 });
 
@@ -398,31 +378,25 @@ $sethotkey.on({
         if (setlock) return false;
 
         hotkey = key;
-        $setkey.css({ 
-	        background: 'pink' 
-	    });
+        $setkey.css({ background: 'pink' });
         setlock = true;
         console.log('Hotkey Modified: ' + (KEYNAME[key] || String.fromCharCode(key)));
     },
     mouseover: function() { 
-        $(this).css({ 
-    	    color: 'red' 
-	    }); 
+        $(this).css({ color: 'red' }); 
     },
     mouseout: function() { 
-        $(this).css({ 
-	        color: '' 
-	    }); 
+        $(this).css({ color: '' }); 
     }
 });
 
 $(window).on('keydown', function(e) {
     if (e.keyCode === hotkey && !playing && ($turn.is(':visible') || /(K|E)SS/.test(mode))) {
         e.preventDefault();
-        var sTime = new Date().getTime();
+        var start = new Date().getTime();
         playing = true;
         PLAY[mode]();
-        console.log(new Date().getTime() - sTime);
+        console.log(new Date().getTime() - start);
         playing = false;
     }
 });
@@ -435,8 +409,8 @@ function control_AI(plug) {
         });
       observer_time.observe($time, { 
           attributes: false,
-	      childList: true,
-      	  subtree: true 
+	  childList: true,
+      	  subtree: true
       });
     }
     console.log('AutoMode: ' + plug);
@@ -446,17 +420,18 @@ function execute_AI(mutation) {
      if (!playing && $turn.is(":visible")) { 
         playing = true;
         PLAY[mode]();
-	    sleep(30);
-        playing = false; 
+	console.log('fire');
+	sleep(20);
+        playing = false;
      }
 }
 
 function transmit(msg, erase, memo) {
     if ($turn.is(":visible") || /(K|E)SS/.test(mode)) {
         $talk.val(msg);
-	    $take.click();
-		erase && (db = db.replace(erase, ''));
-		memo && (pf = f);
+	$take.click();
+	erase && (db = db.replace(erase, ''));
+	memo && (pf = f);
     }
 }
 
@@ -470,8 +445,9 @@ function changeImage() {
     $myimg.attr('src', tempsrc == IMG.indexOf($myimg.attr('src')) ? changeImage() : IMG[tempsrc]); 
 }
 
-function shuffle(box) {
-    var arr = box.split('\n');
+function shuffle(deck) {
+    var wasArray = Array.isArray(deck);
+    var arr = wasArray ? deck : deck.split('\n');
     var curindex = arr.length, tempvalue, rndindex;
     while (0 !== curindex) {
         rndindex = Math.floor(Math.random() * curindex);
@@ -479,14 +455,14 @@ function shuffle(box) {
         arr[curindex] = arr[rndindex];	
         arr[rndindex] = tempvalue;
     }
-    return arr.join('\n');
+    return wasArray ? arr : arr.join('\n');
 }
 
 function readUrl(Url) { 
     return $.ajax({ 
         type: "GET", 
-	    url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url, 
-	    async: false
+	url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url, 
+	async: false
     }).responseText;
 }
 
