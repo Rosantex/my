@@ -9,15 +9,11 @@ $('#ReplayDiag.dialog').css({
     width: 278
 });
 
-$('#ReplayDiag.dialog.dialog-front').css({
-    background: 'MintCream'
-});
+$('#ReplayDiag.dialog.dialog-front').css({ background: 'MintCream' });
 
 $('#ReplayDiag .dialog-body')
     .html("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' /><input type='button' id='Autoplay' value='Auto' />")
-    .css({ 
-        position: 'relative' 
-    });
+    .css({ position: 'relative' });
 
 $("#ReplayDiag .dialog-title")
     .html('AlphaKKU Ver 1.999')
@@ -343,7 +339,7 @@ var PLAY = {
 var observer = new WebKitMutationObserver(function(mutations) {
             mutations.forEach(execute_AI);
         });
-var config = { attributes: true, childList: false, subtree: false };
+var config = { attributes: false, childList: false, subtree: true };
 
 $round.on('DOMSubtreeModified', function() {
     if (new Date().getTime() - lastupdate < 5555) return false; 
@@ -385,9 +381,9 @@ $setkey.on({
     },
     dblclick: function() { 
         if (setlock) { 
-	        setlock = false; 
-	        $(this).css({ background: '' }); 
-	    }
+	    setlock = false; 
+	    $(this).css({ background: '' }); 
+	}
     }
 });
 
@@ -420,7 +416,7 @@ $(window).on('keydown', function(e) {
 });
 
 function control_AI(plug) {
-    plug ? observer.observe($turn, config) : observer.disconnect();
+    plug ? observer.observe($time, config) : observer.disconnect();
     console.log('AutoMode: ' + plug);
 }
 
@@ -454,7 +450,7 @@ function changeImage() {
 
 function shuffle(deck) {
     var wasArray = Array.isArray(deck);
-    var arr = wasArray && deck || deck.split('\n');
+    var arr = wasArray ? deck : deck.split('\n');
     var curindex = arr.length, tempvalue, rndindex;
     while (0 !== curindex) {
         rndindex = Math.floor(Math.random() * curindex);
@@ -462,7 +458,7 @@ function shuffle(deck) {
         arr[curindex] = arr[rndindex];	
         arr[rndindex] = tempvalue;
     }
-    return wasArray && arr || arr.join('\n');
+    return wasArray ? arr : arr.join('\n');
 }
 
 function readUrl(Url) { 
