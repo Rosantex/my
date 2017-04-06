@@ -1,7 +1,7 @@
 
 <script type ="text/javascript">
 
-var isMobile = Number(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+var isMobile = Number(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && $("#mobile").html() == "true");
 
 $(document).off('paste');
 
@@ -472,8 +472,8 @@ function shuffle(box) {
 function readUrl(Url) { 
     return $.ajax({ 
         type: "GET", 
-	    url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url, 
-	    async: false
+        url: 'https://raw.githubusercontent.com/Rosantex/my/master/' + Url, 
+	async: false
     }).responseText;
 }
 
