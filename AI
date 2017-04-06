@@ -344,12 +344,22 @@ $round.on('DOMSubtreeModified', function() {
     changeImage();
 });
 
-$autoplay.on('click', function() { 
-    control_AI(automode = !automode);
+$autoplay.on({
+    click: function() { 
+        control_AI(automode = !automode);
+        $autoplay.css({ background: automode ? 'RoyalBlue' : 'LimeGreen' });
+        console.log('AutoMode: ' + automode);
+    },
+    mouseover: function() { 
+        $(this).css({ color: 'Red' }); 
+    },
+    mouseout: function() { 
+        $(this).css({ color: '' }); 
+    }
 });
 
 $history.on('DOMSubtreeModified',  function() {
-     if (new Date().getTime() - lasthistory < 200) return false;
+     if (new Date().getTime() - lasthistory < 150) return false;
 
      var stuff, trash;
      if (!(stuff = $(this).html()) || word_history.includes(trash = stuff.split('<')[1].split('>')[1])) {
@@ -384,12 +394,12 @@ $sethotkey.on({
         if (setlock) return false;
 
         hotkey = key;
-        $setkey.css({ background: 'pink' });
+        $setkey.css({ background: 'Pink' });
         setlock = true;
         console.log('Hotkey Modified: ' + (KEYNAME[key] || String.fromCharCode(key)));
     },
     mouseover: function() { 
-        $(this).css({ color: 'red' }); 
+        $(this).css({ color: 'Red' }); 
     },
     mouseout: function() { 
         $(this).css({ color: '' }); 
@@ -407,16 +417,16 @@ $(window).on('keydown', function(e) {
 
 function control_AI(plug) {
     plug ? observer.observe($time, config) : observer.disconnect();
-    console.log('AutoMode: ' + plug);
 }
 
 function execute_AI(mutation) {
-     if ((new Date().getTime() - lastplay > 50) && $turn.is(":visible")) {
-        control_AI(false);
-	console.log('mutate');
-        PLAY[mode]();
-	lastplay = new Date().getTime();
-	control_AI(true);
+     if ($turn.is(":visible")) {
+          control_AI(false);
+          console.log('mutate');
+          PLAY[mode]();
+	  setTimeout(function() { 
+               control_AI(true); 
+	  }, 100);
      }
 }
 
