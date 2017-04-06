@@ -100,7 +100,7 @@ var ko, en, db,
     _Found, _LFound,
     setlock = false,
     playing = false,
-    lastupdate = 0, lasthistory = 0,
+    lastupdate = 0, lasthistory = 0, lastplay = 0,
     automode = false,
     observer_time
     word_history = [];
@@ -410,7 +410,7 @@ function control_AI(plug) {
         });
       observer_time.observe($time, { 
           attributes: false,
-	  childList: false,
+	  childList: true,
       	  subtree: true
       });
     }
@@ -418,12 +418,10 @@ function control_AI(plug) {
 }
 
 function execute_AI(mutation) {
-     if (!playing && $turn.is(":visible")) { 
-        playing = true;
+     if ((new Date().getTime() - lastplay > 25) && $turn.is(":visible")) { 
         PLAY[mode]();
 	console.log('fire-time mutation');
-	sleep(30);
-        playing = false;
+	lastplay = new Date().getTime();
      }
 }
 
