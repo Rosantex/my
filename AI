@@ -102,8 +102,12 @@ var ko, en, db,
     playing = false,
     lastupdate = 0, lasthistory = 0, lastplay = 0,
     automode = false,
-    observer_time
     word_history = [];
+    
+var observer = new WebKitMutationObserver(function(Mutaions) {
+          Mutations.forEach(execute_AI);
+    });
+var config = { attributes: false, childList: true, subtree: true };
     
 const KEYNAME = { 
 
@@ -405,22 +409,12 @@ $(window).on('keydown', function(e) {
 });
 
 function control_AI(plug) {
-    if (!plug) observer_time.disconnect();
-    else {
-        observer_time = new WebKitMutationObserver(function(mutations) {
-            mutations.forEach(execute_AI);
-        });
-      observer_time.observe($time, { 
-          attributes: false,
-	  childList: true,
-      	  subtree: true
-      });
-    }
+    plug && observer.observe($time, config) || observer.disconnect();
     console.log('AutoMode: ' + plug);
 }
 
 function execute_AI(mutation) {
-     if ((new Date().getTime() - lastplay > 95) && $turn.is(":visible")) { 
+     if ((new Date().getTime() - lastplay > 95) && $turn.is(":visible")) {
         PLAY[mode]();
 	console.log('mutate');
 	lastplay = new Date().getTime();
