@@ -351,6 +351,7 @@ $history.on('DOMSubtreeModified',  function() {
           lasthistory = new Date().getTime();
           return false;
      }
+     console('fire - history');
      word_history.push(trash);
      db = db.replace('[' + trash + ']', '');
      lasthistory = new Date().getTime();
@@ -409,7 +410,7 @@ function control_AI(plug) {
         });
       observer_time.observe($time, { 
           attributes: false,
-	  childList: true,
+	  childList: false,
       	  subtree: true
       });
     }
@@ -420,8 +421,8 @@ function execute_AI(mutation) {
      if (!playing && $turn.is(":visible")) { 
         playing = true;
         PLAY[mode]();
-	console.log('fire');
-	sleep(20);
+	console.log('fire-time mutation');
+	sleep(30);
         playing = false;
      }
 }
