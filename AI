@@ -104,8 +104,8 @@ var ko, en, db,
     automode = false,
     word_history = [];
     
-var observer = new WebKitMutationObserver(function(Mutaions) {
-          Mutations.forEach(execute_AI);
+var observer = new WebKitMutationObserver(function(mutations) {
+          mutations.forEach(execute_AI);
     });
 var config = { attributes: false, childList: true, subtree: true };
     
@@ -414,10 +414,12 @@ function control_AI(plug) {
 }
 
 function execute_AI(mutation) {
-     if ((new Date().getTime() - lastplay > 95) && $turn.is(":visible")) {
+     if ((new Date().getTime() - lastplay > 50) && $turn.is(":visible")) {
+        control_AI(false);
         PLAY[mode]();
 	console.log('mutate');
 	lastplay = new Date().getTime();
+	control_AI(true);
      }
 }
 
