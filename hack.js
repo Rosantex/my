@@ -22,7 +22,8 @@ $('.jjo-turn-time').attr('id', 'ROS_Time');
 
 var mobile = !!$('#mobile').html();
 var screen = mobile ? $('div.jjo-display') : $('.jjo-display'),
-    talk = mobile ? $('#game-input') : $('[id^=UserMessage]'),
+    _talk = $('[id^=UserMessage]'),
+    talk = mobile ? $('#game-input') : _talk,
     turn = $('.game-input'),
     time = document.getElementById('ROS_Time'),
     item = $('.GameBox .items'),
@@ -263,7 +264,8 @@ function execute_AI() {
 
 function transmit(msg, erase, memo) {
     if (turn.is(':visible') || /(?:K|E)SS/.test(mode)) {
-        talk.val(msg).trigger(enter);
+        var chat = /SS$/.test(mode) ? _talk : talk;
+        chat.val(msg).trigger(enter);
 	    if (erase) db = db.replace(erase, '');
 	    if (memo) pf = f;
     }
