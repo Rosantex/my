@@ -2,17 +2,16 @@
 
 var Hack = (function() {
 
-$('head').append('<style>#ReplayDiag{-webkit-user-select:none;}#ReplayDiag.dialog{width:278px;height:245px;}#ReplayDiag .dialog-body{position:relative;}#Setkey{position:absolute;top:0;left:0;width:120px;font-size:12px;font-weight:bold;background-color:#F5FFFA;}#SetHotkey{position:absolute;top:0;left:140px;width:40px;background-color:#87CEED;font-size:12px;font-weight:bold;color:#000;}#Autoplay{position:absolute;left:190px;background-color:#32CD32;font-weight:bold;}#BgImg{position:absolute;top:35px;left:5px;width:265px;height:166px;padding:0;pointer-events:none;}</style>');
-$('#ReplayDiag.dialog.dialog-front').css({ backgroundColor: 'MintCream' });
+$('head').append('<style>#ReplayDiag{-webkit-user-select:none;}#ReplayDiag.dialog{width:278px;height:245px;}#ReplayDiag.dialog.dialog-front{background-color:#F5FFFA;}#ReplayDiag .dialog-body{position:relative;}#Setkey{position:absolute;top:0;left:0;width:120px;font-size:12px;font-weight:bold;background-color:#F5FFFA;}#SetHotkey{position:absolute;top:0;left:140px;width:40px;background-color:#87CEED;font-size:12px;font-weight:bold;color:#000;}#Autoplay{position:absolute;left:190px;background-color:#32CD32;font-weight:bold;}#BgImg{position:absolute;top:35px;left:5px;width:265px;height:166px;padding:0;pointer-events:none;}</style>');
 $('#ReplayDiag .dialog-body').html('<img id="BgImg" src="https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg" /><input id="Setkey" placeholder="keydown here" /><button id="SetHotkey">OK</button><button id="Autoplay">AUTO</button>');
-$("#ReplayDiag .dialog-title")
+$('#ReplayDiag .dialog-title')
     .html('AlphaKKU Ver 2.0')
     .css({ 
-        color: '#FFF', 
+        color: '#FFF',
      	fontSize: 12, 
 	    fontWeight: 'bold', 
 	    width: 255, 
- 	    backgroundColor: 'MidnightBlue'
+ 	    backgroundColor: '#191970'
     });
 $('#DictionaryBtn, #ReplayBtn')
     .off('click')  
@@ -24,10 +23,9 @@ $('.jjo-turn-time').attr('id', 'ROS_Time');
 var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 var screen = mobile ? $('div.jjo-display') : $('.jjo-display'),
     talk = $('[id^=UserMessage]') || (mobile ? $('#game-input') : $('#Talk')),
-    send = $('#ChatBtn'),
     turn = $('.game-input'),
     time = document.getElementById('ROS_Time'),
-    item = $('.GameBox.items'),
+    item = $('.GameBox .items'),
     round = $('.rounds'),
     record = $('.history'),
     pic = $('#BgImg'),
@@ -35,23 +33,21 @@ var screen = mobile ? $('div.jjo-display') : $('.jjo-display'),
     sethotkey = $('#SetHotkey'),
     autoplay = $('#Autoplay');
 var ko, en, db,
-    mode, 
-    opts,
-    key, 
-    hotkey = mobile ? 18 : 96,
+    mode, opts,
+    key, hotkey = mobile ? 18 : 96,
     f, pf,
-    setlock = false,
     lastupdate = 0, lasthistory = 0,
-    automode = false,
+    setlock = false, automode = false,
     word_history = [];
 var observer = new WebKitMutationObserver(function(mutations) {
           mutations.forEach(execute_AI);
     });
 var config = { attributes: false, childList: true, subtree: true };
-    
+var enter = $.Event('keydown', { keyCode: 13 });
+
 const KEYNAME = {
     8: "BackSpace", 
-    9: "Tab", 
+    9: "Tab",
     12: "Form Feed",
     13: "Enter", 
     16: "Shift", 
@@ -267,8 +263,7 @@ function execute_AI() {
 
 function transmit(msg, erase, memo) {
     if (turn.is(':visible') || /(?:K|E)SS/.test(mode)) {
-        talk.val(msg);
-	    send.click();
+        talk.val(msg).trigger(enter);
 	    if (erase) db = db.replace(erase, '');
 	    if (memo) pf = f;
     }
@@ -324,7 +319,7 @@ setkey.on({
         e.preventDefault();
         if (setlock) return false; 
 
-	key = e.keyCode;
+	key = e.which;
         setkey.val(KEYNAME[key] || String.fromCharCode(key));
     },
     dblclick: function() { 
@@ -350,7 +345,7 @@ sethotkey.on({
     }
 });
 $(window).keydown(function(e) {
-    if (e.keyCode === hotkey && (turn.is(':visible') || /(?:K|E)SS/.test(mode))) {
+    if (e.which === hotkey && (turn.is(':visible') || /(?:K|E)SS/.test(mode))) {
         e.preventDefault();
         PLAY[mode]();
     }
