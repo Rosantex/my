@@ -2,60 +2,18 @@
 
 var Hack = (function() {
 
-$('#ReplayDiag.dialog').css({
-    height: 245, 
-    width: 278 
-});
-$('#ReplayDiag.dialog.dialog-front').css({ background: 'MintCream' });
-$('#ReplayDiag .dialog-body')
-    .html("<input type='image' id='BgImg' src='https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg' /><input type='text' id='Setkey' value='keydown here' /><input type='button' id='SetHotkey' value='OK' /><input type='button' id='Autoplay' value='Auto' />")
-    .css({ position: 'relative' });
+$('head').append('<style>#ReplayDiag{-webkit-user-select:none;}#ReplayDiag.dialog{width:278px;height:245px;}#ReplayDiag .dialog-body{position:relative;}#Setkey{position:absolute;top:0;left:0;width:120px;font-size:12px;font-weight:bold;background-color:#F5FFFA;}#SetHotkey{position:absolute;top:0;left:140px;width:40px;background-color:#87CEED;font-size:12px;font-weight:bold;color:#000;}#Autoplay{position:absolute;left:190px;background-color:#32CD32;font-weight:bold;}#BgImg{position:absolute;top:35px;left:5px;width:265px;height:166px;padding:0;pointer-events:none;}</style>');
+$('#ReplayDiag.dialog.dialog-front').css({ backgroundColor: 'MintCream' });
+$('#ReplayDiag .dialog-body').html('<img id="BgImg" src="https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg" /><input id="Setkey" placeholder="keydown here" /><button id="SetHotkey">OK</button><button id="Autoplay">AUTO</button>');
 $("#ReplayDiag .dialog-title")
-    .html('AlphaKKU Ver 1.999')
+    .html('AlphaKKU Ver 2.0')
     .css({ 
-        color: 'white', 
+        color: '#FFF', 
      	fontSize: 12, 
 	    fontWeight: 'bold', 
 	    width: 255, 
- 	    background: 'MidnightBlue', 
-	    WebkitUserSelect: 'none' 
+ 	    backgroundColor: 'MidnightBlue'
     });
-$('#Setkey').css({ 
-    fontSize: 12, 
-    fontWeight: 'bold', 
-    width: 120, 
-    top: 0, 
-    left: 0, 
-    position: 'absolute', 
-    background: 'MintCream' 
-});
-$('#SetHotkey').css({ 
-    color: 'black', 
-    fontSize: 12, 
-    fontWeight: 'bold', 
-    width: 40, 
-    top: 0, 
-    left: 140, 
-    position:'absolute', 
-    background: 'skyblue', 
-    WebkitUserSelect: 'none' 
-});
-$('#Autoplay').css({ 
-    fontWeight: 'bold', 
-    left: 190, 
-    position: 'absolute',
-    background: 'LimeGreen' 
-});
-$('#BgImg').css({ 
-    width:265, 
-    height: 166, 
-    top: 35, 
-    left: 5, 
-    padding: 0, 
-    position: 'absolute', 
-    pointerEvents: 'none', 
-    WebkitUserSelect: 'none' 
-});
 $('#DictionaryBtn, #ReplayBtn')
     .off('click')  
     .click(function() { 
@@ -83,7 +41,7 @@ var ko, en, db,
     hotkey = mobile ? 18 : 96,
     f, pf,
     setlock = false,
-    lastupdate = 0, lasthistory = 0, lastplay = 0,
+    lastupdate = 0, lasthistory = 0,
     automode = false,
     word_history = [];
 var observer = new WebKitMutationObserver(function(mutations) {
@@ -296,7 +254,7 @@ var PLAY = {
 };
 
 function control_AI(power) {
-    power ? observer.observe(turn, config) : observer.disconnect();
+    power ? observer.observe(time, config) : observer.disconnect();
 }
 
 function execute_AI() {
@@ -316,27 +274,9 @@ function transmit(msg, erase, memo) {
     }
 }
 
-function sleep(delay) { 
-    var start = +new Date(); 
-    while (+new Date() < start + delay); 
-}
-
 function changeImage() { 
     var tempsrc = ~~(Math.random() * IMG.length); 
     pic.attr('src', tempsrc === IMG.indexOf(pic.attr('src')) ? changeImage() : IMG[tempsrc]); 
-}
-
-function shuffle(deck) {
-    var wasArray = Array.isArray(deck);
-    var arr = wasArray ? deck : deck.split('\n');
-    var curindex = arr.length, tempvalue, rndindex;
-    while (curindex !== 0) {
-        rndindex = ~~(Math.random() * curindex);
-        tempvalue = arr[--curindex];	
-        arr[curindex] = arr[rndindex];	
-        arr[rndindex] = tempvalue;
-    }
-    return wasArray ? arr : arr.join('\n');
 }
 
 function ajax(url) { 
@@ -352,13 +292,12 @@ round.on('DOMSubtreeModified', function() {
     mode = GAMEMODE[opts.shift()];
     db = mode.charAt(0) === 'E' ? en : ko;
     lastupdate = +new Date();
-    playing = false;
     changeImage();
 });
 autoplay.on({
     click: function() { 
         control_AI(automode = !automode);
-        this.style.backgroundColor = automode ? 'RoyalBlue' : 'LimeGreen';
+        this.style.backgroundColor = automode ? 'RoyalBlue' : '#32CD32';
     },
     mouseover: function() { 
         this.style.color = '#F00'; 
@@ -400,7 +339,7 @@ sethotkey.on({
         if (setlock) return false;
 
         hotkey = key;
-        setkey.css({ background: 'Pink' });
+        setkey.css({ backgroundColor: 'Pink' });
         setlock = true;
     },
     mouseover: function() { 
@@ -423,6 +362,8 @@ ajax('Ko.txt').then(function(res) {
 ajax('En').then(function(res) {
     en = res;
 });
+
+$('#ReplayDiag').fadeIn(500);
 
 })();
 
