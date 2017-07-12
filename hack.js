@@ -20,9 +20,9 @@ $('#DictionaryBtn, #ReplayBtn')
     });
 $('.jjo-turn-time').attr('id', 'ROS_Time');
 
-var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+var mobile = !!$('#mobile').html();
 var screen = mobile ? $('div.jjo-display') : $('.jjo-display'),
-    talk = $('[id^=UserMessage]') || (mobile ? $('#game-input') : $('#Talk')),
+    talk = mobile ? $('#game-input') : $('[id^=UserMessage]'),
     turn = $('.game-input'),
     time = document.getElementById('ROS_Time'),
     item = $('.GameBox .items'),
@@ -237,14 +237,14 @@ var PLAY = {
     },
     'ESS': function() {
         var res = screen.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g,'');
-        var len = 0, chr = '', have = '', rSock = [], _Found;
+        var len = 0, chr = '', chrs = '', rSock = [], _Found;
         while (len = res.length) {
             res = res.replace(new RegExp(chr = res[0], 'g'), '');
-            rSock.push('\\[(.*' + chr + '.*){' + (len - res.length + 1) + ',}\\]');
-	        have += chr;
+            rSock.push('\\[(?:.*?' + chr + '){' + (len - res.length + 1) + '}.*\\]');
+	        chrs += chr;
         }
-        rSock.unshift('\\[[' + have + ']*([^' + have + '][' + have + '?]) + \\]');
-        _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + (opts.includes('2글자 금지') ? 3 : 2) + ',}\\]') || '')[0];
+        rSock.unshift('\\[.*[^' + chrs + '\\s].*\\]');
+        _Found = ('\\[[' + chrs + ']{' + (opts.includes('2글자 금지') ? 3 : 2) + ',}\\]').exec(db.replace(new RegExp(rSock.join('|'), 'g'), ''));
         if (_Found) transmit(_Found.slice(1, -1), _Found, false);
     }
 };
@@ -358,7 +358,9 @@ ajax('En').then(function(res) {
     en = res;
 });
 
-$('#ReplayDiag').fadeIn(500);
+$('#ReplayDiag').fadeIn(300);
+
+if (!talk.length) talk = $('#Talk');
 
 })();
 
