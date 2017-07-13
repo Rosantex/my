@@ -1,6 +1,4 @@
-<script>
-
-var Hack = (function() {
+(function() {
 
 $('head').append('<style>#ReplayDiag{-webkit-user-select:none;}#ReplayDiag.dialog{width:278px;height:245px;}#ReplayDiag.dialog.dialog-front{background-color:#F5FFFA;}#ReplayDiag .dialog-body{position:relative;}#Setkey{position:absolute;top:0;left:0;width:120px;font-size:12px;font-weight:bold;background-color:#F5FFFA;}#SetHotkey{position:absolute;top:0;left:140px;width:40px;background-color:#87CEED;font-size:12px;font-weight:bold;color:#000;}#Autoplay{position:absolute;left:190px;background-color:#32CD32;font-weight:bold;}#BgImg{position:absolute;top:35px;left:5px;width:265px;height:166px;padding:0;pointer-events:none;}</style>');
 $('#ReplayDiag .dialog-body').html('<img id="BgImg" src="https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg" /><input id="Setkey" placeholder="keydown here" /><button id="SetHotkey">OK</button><button id="Autoplay">AUTO</button>');
@@ -21,9 +19,9 @@ $('#DictionaryBtn, #ReplayBtn')
 $('.jjo-turn-time').attr('id', 'ROS_Time');
 
 var mobile = !!$('#mobile').html();
-var screen = mobile ? $('div.jjo-display') : $('.jjo-display'),
+var screen = mobile ? $('div.jjo-display').attr('readonly', true) : $('.jjo-display'),
     _talk = $('[id^=UserMessage]'),
-    talk = mobile ? $('#game-input') : _talk,
+    talk = mobile ? $('#game-input').attr('readonly', true) : _talk.length ? _talk : $('#Talk'),
     turn = $('.game-input'),
     time = document.getElementById('ROS_Time'),
     item = $('.GameBox .items'),
@@ -45,8 +43,8 @@ var observer = new WebKitMutationObserver(function(mutations) {
     });
 var config = { attributes: false, childList: true, subtree: true };
 var enter = $.Event('keydown', { keyCode: 13 });
-
-const KEYNAME = {
+ 
+var KEYNAME = {
     8: "BackSpace", 
     9: "Tab",
     12: "Form Feed",
@@ -111,7 +109,7 @@ const KEYNAME = {
     225: "RCtrl", 
     229: "RAlt"
 };
-const IMG = [
+var IMG = [
     'http://www.planwallpaper.com/static/images/53823.jpg',
     'https://wallpaperbrowse.com/media/images/cool-wallpaper-2.jpg',
     'https://wallpaperbrowse.com/media/images/cool-pictures-24.jpg',
@@ -130,7 +128,7 @@ const IMG = [
     'http://www.planwallpaper.com/static/images/7004205-cool-black-backgrounds-27640_lhK8IKI.jpg',
     'http://coolwallpaper.website/wp-content/uploads/2016/11/Nice-Really-Cool-Wallpaper-Free-download-best-Latest-3D-HD-desktop-wallpapers-background-Wide-Most-Popular-Images-in-high-quality-resolutions-big-lounge-sofa.jpg'
 ];
-const GAMEMODE = { 
+var GAMEMODE = { 
     '한국어 끝말잇기': 'KSH', 
     '한국어 쿵쿵따': 'KKT', 
     '한국어 앞말잇기': 'KAP', 
@@ -187,14 +185,14 @@ var PLAY = {
     },
     'KSS': function() {
         var res = screen.html().match(/%;">[가-힣](?=<\/div>)/g).join('').replace(/[^가-힣]/g,'');
-        var d, len = 0, chr = '', have = '', rSock = [], rSock2, _Found;
+        var d, len = 0, chr = '', chrs = '', rSock = [], rSock2, _Found;
         while (len = res.length) {
             res = res.replace(new RegExp(chr = res[0], 'g'), '');
             rSock.push('\\[(.*' + chr + '.*){' + (len - res.length + 1) + ',}\\]');
-	        have += chr;
+	        chrs += chr;
         }		
-        rSock2 = new RegExp('\\[[' + have + ']{' + (d = opts.includes('2글자 금지') ? 3 : 2) + ',}\\]', 'g');
-        _Found = ((db.match(rSock2) || []).join('\n').replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + have + ']{' + d + ',}\\]') || '')[0];
+        rSock2 = new RegExp('\\[[' + chrs + ']{' + (d = opts.includes('2글자 금지') ? 3 : 2) + ',}\\]', 'g');
+        _Found = ((db.match(rSock2) || []).join('\n').replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + chrs + ']{' + d + ',}\\]') || '')[0];
         if (_Found) transmit(_Found.slice(1, -1), _Found, false);	
     },
     'CSQ': function() { 
@@ -231,7 +229,7 @@ var PLAY = {
         if (_Found = _LFound) transmit(_Found.slice(1, -1), _Found, true);
     },
     'ETY': function() { 
-        return this.KTY;
+        this['KTY'];
     },
     'EDA': function() { 
         // console.log('영단-준비중'); 
@@ -240,12 +238,12 @@ var PLAY = {
         var res = screen.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g,'');
         var len = 0, chr = '', chrs = '', rSock = [], _Found;
         while (len = res.length) {
-            res = res.replace(new RegExp(chr = res[0], 'g'), '');
+            res = res.split(chr = res[0]).join('');
             rSock.push('\\[(?:.*?' + chr + '){' + (len - res.length + 1) + '}.*\\]');
 	        chrs += chr;
         }
         rSock.unshift('\\[.*[^' + chrs + '\\s].*\\]');
-        _Found = ('\\[[' + chrs + ']{' + (opts.includes('2글자 금지') ? 3 : 2) + ',}\\]').exec(db.replace(new RegExp(rSock.join('|'), 'g'), ''));
+        _Found = (db.replace(new RegExp(rSock.join('|'), 'g'), '')).match('\\[[' + chrs + ']{' + (opts.includes('2글자 금지') ? 3 : 2) + ',}\\]');
         if (_Found) transmit(_Found.slice(1, -1), _Found, false);
     }
 };
@@ -362,8 +360,4 @@ ajax('En').then(function(res) {
 
 $('#ReplayDiag').fadeIn(300);
 
-if (!talk.length) talk = $('#Talk');
-
 })();
-
-</script>
