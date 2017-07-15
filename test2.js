@@ -1,7 +1,7 @@
 (function() {
 
     var link = document.createElement('link');
-    link.href = 'https://cdn.rawgit.com/Rosantex/my/bfa410d6/hack.css';
+    link.href = 'https://cdn.rawgit.com/Rosantex/my/dce8dab5/hack.css';
     link.rel = 'stylesheet';
     document.getElementsByTagName('head')[0].appendChild(link);
 
@@ -161,7 +161,7 @@
                 res;
             while (len = t.length) {
                 t = t.split(chr = t[0]).join('');
-                reg.push('\\[(?:.*?' + chr + '){' + (len - t.length + 1) + '}.*\\]');
+                reg.push('\\[(?:.*?' + chr + '){' + (len - t.length + 1) + '}.*?\\]');
                 chrs += chr;
             }
             reg.unshift('\\[.*?[^' + chrs + '].*?\\]');
