@@ -1,0 +1,29 @@
+#GUI {
+    display: inline-block;
+    text-align: center;
+    -webkit-user-select: none;
+}
+.gui_btn:focus { outline: none }
+.gui_btn {
+    display: block;
+    width: 90px;
+    margin: 6px;
+    padding: 12px 20px;
+    border: 2px solid #F35626;
+    border-radius: 4px;
+    background-color: transparent;
+    font-weight: 700;
+    line-height: 1.375;
+    color: #F35626;
+    cursor: pointer;
+    -webkit-animation: hue 60s infinite linear;
+}
+button {
+    -webkit-appearance: none;
+    font: inherit;
+    color: inherit;
+}
+@-webkit-keyframes hue {
+    0% { -webkit-filter: hue-rotate(-3600deg) }
+    100% { -webkit-filter: hue-rotate(0deg) }
+}
