@@ -39,7 +39,7 @@
             var f, m, res, tmp;
             
             f = screen.text();
-            f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
+            f = ~f.indexOf('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
             res = opts.includes('미션') && (m = item.text()) ? db.match('\\[' + f + '(.*' + m + '.*)+[^다]\\]') : '';
             if (res)
                 while (res = db.match('\\[' + f + '(.*' + m + '.*){' + (tmp = res[0]).split(m).length + ',}[^다]\\]'));
@@ -52,7 +52,7 @@
             
             f = screen.text();
             f = f.replace((d = f.match(/\((\d)\)/))[0], '');
-            f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
+            f = ~f.indexOf('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
             res = (db.match('\\[' + f + '.{' + (+d[1] - 2 + '') + '}[^다]\\]') || '')[0];
             if (res) send(res.slice(1, -1), res, f);
         },
@@ -60,7 +60,7 @@
             var f, m, res, tmp;
             
             f = screen.text();
-            f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
+            f = ~f.indexOf('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
             res = opts.includes('미션') && (m = item.text()) ? db.match('\\[(.*' + m + '.*)+' + f + '\\]') : '';
             if (res)
                 while (res = db.match('\\[(.*' + m + '.*){' + (tmp = res[0]).split(m).length + ',}' + f + '\\]'));
@@ -69,7 +69,7 @@
             if (res = tmp) send(res.slice(1, -1), res, f);
         },
         'KTY': function() {
-            send(opts.includes('속담') ? screen.text() : /\S+/.exec(screen.text()));
+            send(~opts.indexOf('속담') ? screen.text() : /\S+/.exec(screen.text()));
         },
         'KSS': function() {
             var t = screen.html().match(/%;">[가-힣](?=<\/div>)/g).join('').replace(/[^가-힣]/g, '');
@@ -92,7 +92,7 @@
             var f, t, res;
             
             f = screen.text().slice(1, -1);
-            f = f.includes(':') ? pf : f;
+            f = ~f.indexOf(':') ? pf : f;
             t = f.replace(/[\u1100-\u1112]/g, function(j) {
                 var a = (j.charCodeAt(0) - 4352) * 588 + 44032;
                 return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
@@ -103,7 +103,7 @@
             var f, m, res, tmp;
             
             f = screen.text();
-            f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
+            f = ~f.indexOf('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
             res = opts.includes('미션') && (m = item.text()) ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';
             if (res)
                 while (res = db.match('\\[' + f + '(.*' + m + '.*){' + (tmp = res[0]).split(m).length + ',}\\]'));
@@ -115,7 +115,7 @@
             var f, m, res, tmp;
             
             f = screen.text();
-            f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
+            f = ~f.indexOf('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
             res = opts.includes('미션') && (m = item.text()) ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';
             if (res)
                 while (res = db.match('\\[' + f + '(.*' + m + '.*){' + (tmp = res[0]).split(m).length + ',}\\]'));
@@ -133,6 +133,7 @@
                 chrs = '',
                 reg = [],
                 res;
+                
             while (len = t.length) {
                 t = t.split(chr = t[0]).join('');
                 reg.push('\\[(?:.*?' + chr + '){' + (len - t.length + 1) + '}.*?\\]');
@@ -170,7 +171,7 @@
     function onNewRecord() {
         var stuff, trash;
         
-        if (+new Date() - lastRecord < 300) return false;
+        if (+new Date() - lastRecord < 200) return false;
         if (!(stuff = this.innerHTML) || stack.includes(trash = stuff.split('<')[1].split('>')[1])) {
             lastRecord = +new Date();
             return false;
@@ -196,8 +197,13 @@
     }
     
     $('#autoBtn').click(function() {
-        if (autoPlay = !autoPlay) setObserver();
-        this.style.backgroundColor = autoPlay ? 'rgba(255, 0, 0, 0.3)' : '';
+        autoPlay = !autoPlay;
+        if (autoPlay) {
+            setObserver();
+            this.style.backgroundColor = 'rgba(255, 0, 0, 0.3)';
+        } else {
+            this.style.backgroundColor = '';
+        }
     });
     $('#fireBtn').on({
         touchstart: function() {
