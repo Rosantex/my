@@ -13,11 +13,10 @@
         round = $('.rounds'),
         record = $('.history');
     var ko, en, db,
-        mode, opts,
-        f, pf,
-        lastupdate = 0,
-        lasthistory = 0,
-        automode = false,
+        mode, opts, pf,
+        lastRound = 0,
+        lastRecord = 0,
+        autoPlay = false,
         stack = [];
     var mutate = 'DOMSubtreeModified';
     var enter = $.Event('keydown', {
@@ -37,7 +36,7 @@
     };
     var PLAY = {
         'KSH': function() {
-            var m, res, tmp;
+            var f, m, res, tmp;
             
             f = screen.text();
             f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
@@ -46,18 +45,20 @@
                 while (res = db.match('\\[' + f + '(.*' + m + '.*){' + (tmp = res[0]).split(m).length + ',}[^다]\\]'));
             else tmp = (db.match('\\[(' + f + '.*[^다])\\]') || '')[0];
 
-            if (res = tmp) send(res.slice(1, -1), res, true);
+            if (res = tmp) send(res.slice(1, -1), res, f);
         },
         'KKT': function() {
-            var d, res;
+            var f, d, res;
+            
             f = screen.text();
             f = f.replace((d = f.match(/\((\d)\)/))[0], '');
             f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
             res = (db.match('\\[' + f + '.{' + (+d[1] - 2 + '') + '}[^다]\\]') || '')[0];
-            if (res) send(res.slice(1, -1), res, true);
+            if (res) send(res.slice(1, -1), res, f);
         },
         'KAP': function() {
-            var m, res, tmp;
+            var f, m, res, tmp;
+            
             f = screen.text();
             f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
             res = opts.includes('미션') && (m = item.text()) ? db.match('\\[(.*' + m + '.*)+' + f + '\\]') : '';
@@ -65,58 +66,62 @@
                 while (res = db.match('\\[(.*' + m + '.*){' + (tmp = res[0]).split(m).length + ',}' + f + '\\]'));
             else tmp = (db.match('\\[(.+' + f + ')\\]') || '')[0];
 
-            if (res = tmp) send(res.slice(1, -1), res, true);
+            if (res = tmp) send(res.slice(1, -1), res, f);
         },
         'KTY': function() {
-            send(opts.includes('속담') ? screen.text() : /\S+/.exec(screen.text()), false, false);
+            send(opts.includes('속담') ? screen.text() : /\S+/.exec(screen.text()));
         },
         'KSS': function() {
             var t = screen.html().match(/%;">[가-힣](?=<\/div>)/g).join('').replace(/[^가-힣]/g, '');
             var d, len = 0,
                 chr = '',
                 chrs = '',
-                rSock = [],
-                rSock2, res;
+                reg = [],
+                reg2, res;
+                
             while (len = t.length) {
-                t = t.replace(new RegExp(chr = t[0], 'g'), '');
-                rSock.push('\\[(.*' + chr + '.*){' + (len - t.length + 1) + ',}\\]');
+                t = t.split(chr = t[0]).join('');
+                reg.push('\\[(.*' + chr + '.*){' + (len - t.length + 1) + ',}\\]');
                 chrs += chr;
             }
-            rSock2 = new RegExp('\\[[' + chrs + ']{' + (d = opts.includes('2글자 금지') ? 3 : 2) + ',}\\]', 'g');
-            res = ((db.match(rSock2) || []).join('\n').replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + chrs + ']{' + d + ',}\\]') || '')[0];
-            if (res) send(res.slice(1, -1), res, false);
+            reg2 = new RegExp('\\[[' + chrs + ']{' + (d = opts.includes('2글자 금지') ? 3 : 2) + ',}\\]', 'g');
+            res = (db.match(reg2) || []).join('\n').replace(new RegExp(reg.join('|'), 'g'), '').match(/\[.+?\]/);
+            if (res) send(res.slice(1, -1), res);
         },
         'HUN': function() {
-            var t, res;
+            var f, t, res;
+            
             f = screen.text().slice(1, -1);
             f = f.includes(':') ? pf : f;
-            t = f.replace(/([\u1100-\u1112])/g, function($1) {
-                var a = ($1.charCodeAt(0) - 4352) * 588 + 44032;
+            t = f.replace(/[\u1100-\u1112]/g, function(j) {
+                var a = (j.charCodeAt(0) - 4352) * 588 + 44032;
                 return '[' + String.fromCharCode(a) + '-' + String.fromCharCode(587 + a) + ']';
             });
-            if (res = (db.match('\\[' + t + '\\]') || '')[0]) send(res.slice(1, -1), res, true);
+            if (res = (db.match('\\[' + t + '\\]'))) send(res.slice(1, -1), res, f);
         },
         'ESH': function() {
-            var m, res, tmp;
+            var f, m, res, tmp;
+            
             f = screen.text();
             f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
             res = opts.includes('미션') && (m = item.text()) ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';
             if (res)
                 while (res = db.match('\\[' + f + '(.*' + m + '.*){' + (tmp = res[0]).split(m).length + ',}\\]'));
-            else tmp = (db.match('\\[(' + f + '.+)\\]') || '')[0];
+            else tmp = db.match('\\[(' + f + '.+)\\]');
 
-            if (res = tmp) send(res.slice(1, -1), res, true);
+            if (res = tmp) send(res.slice(1, -1), res, f);
         },
         'EKT': function() {
-            var m, res, tmp;
+            var f, m, res, tmp;
+            
             f = screen.text();
             f = f.includes('(') ? '(' + f.replace('(', '|') : f.includes(':') ? pf : f;
             res = opts.includes('미션') && (m = item.text()) ? db.match('\\[' + f + '(.*' + m + '.*)+\\]') : '';
             if (res)
                 while (res = db.match('\\[' + f + '(.*' + m + '.*){' + (tmp = res[0]).split(m).length + ',}\\]'));
-            else tmp = (db.match('\\[(' + f + '.+)\\]') || '')[0];
+            else tmp = db.match('\\[(' + f + '.+)\\]');
 
-            if (res = tmp) send(res.slice(1, -1), res, true);
+            if (res = tmp) send(res.slice(1, -1), res, f);
         },
         'ETY': function() {
             this['KTY']();
@@ -133,9 +138,9 @@
                 reg.push('\\[(?:.*?' + chr + '){' + (len - t.length + 1) + '}.*?\\]');
                 chrs += chr;
             }
-            reg.unshift('\\[.*?[^' + chrs + '].*?\\]');
+            // reg.unshift('\\[.*?[^' + chrs + '].*?\\]');
             res = (db.replace(new RegExp(reg.join('|'), 'g'), '')).match('\\[[' + chrs + ']{' + (opts.includes('2글자 금지') ? 3 : 2) + ',}\\]');
-            if (res) send(res.slice(1, -1), res, false);
+            if (res) send(res.slice(1, -1), res);
         },
         'NOP': function() {
             // alert('Not Supported');
@@ -148,42 +153,41 @@
     
     function execute() {
         if (turn.is(':visible')) PLAY[mode]();
-        if (automode) setObserver();
+        if (autoPlay) setObserver();
     }
      
     function onNewRound() {
-        if (new Date().getTime() - lastupdate < 5000) return false;
+        if (new Date().getTime() - lastRound < 5000) return false;
 
         opts = $('h5.room-head-mode').html().split(' / ');
         if (!opts) return false;
 
         mode = GAMEMODE[opts.shift()] || 'NOP';
         db = mode[0] === 'E' ? en : ko;
-        lastupdate = +new Date();
+        lastRound = +new Date();
     }
     
     function onNewRecord() {
         var stuff, trash;
         
-        if (+new Date() - lasthistory < 300) return false;
-
+        if (+new Date() - lastRecord < 300) return false;
         if (!(stuff = this.innerHTML) || stack.includes(trash = stuff.split('<')[1].split('>')[1])) {
-            lasthistory = +new Date();
+            lastRecord = +new Date();
             return false;
         }
         stack.push(trash);
         db = db.replace('[' + trash + ']', '');
-        lasthistory = +new Date();
+        lastRecord = +new Date();
     }
     
-    function send(wd, used, mem) {
+    function send(wd, used, f) {
         var isSock = mode.slice(1) === 'SS',
             input = isSock ? _talk : talk;
     
         if (turn.is(':visible') || isSock) {
             input.val(wd).trigger(enter);
             if (used) db = db.replace(used, '');
-            if (mem) pf = f;
+            if (f) pf = f;
         }
     }
     
@@ -192,13 +196,12 @@
     }
     
     $('#autoBtn').click(function() {
-        if (automode = !automode) setObserver();
-        this.style.backgroundColor = automode ? 'rgba(255, 0, 0, 0.3)' : '';
+        if (autoPlay = !autoPlay) setObserver();
+        this.style.backgroundColor = autoPlay ? 'rgba(255, 0, 0, 0.3)' : '';
     });
     $('#fireBtn').on({
         touchstart: function() {
             if (turn.is(':visible') || /SS$/.test(mode)) PLAY[mode]();
-            
             this.style.backgroundColor = 'rgba(255, 0, 0, 0.3)';
         },
         touchend: function() {
@@ -206,7 +209,7 @@
         }
     });
     $('#DictionaryBtn').off().click(function() {
-            GUI.toggle();
+        GUI.toggle();
     });
 
     ajax('Ko.txt').then(function(res) {
