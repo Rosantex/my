@@ -3,13 +3,6 @@
     $('head').append('<link rel="stylesheet" href="https://cdn.rawgit.com/Rosantex/my/dce8dab5/hack.css" />');
     
     var GUI = $('<div id="GUI"><button id="fireBtn" class="gui_btn" style="-webkit-animation:hue2 60s infinite linear">FIRE</button><button id="autoBtn" class="gui_btn" style="-webkit-animation:hue 60s infinite linear">AUTO</button></div>').appendTo(document.body);
-
-    $('#DictionaryBtn')
-        .off()
-        .click(function() {
-            GUI.toggle();
-        });
-
     var mobile = !!$('#mobile').html();
     var screen = mobile ? $('div.jjo-display').attr('readonly', true) : $('.jjo-display'),
         _talk = $('[id^=UserMessage]'),
@@ -183,14 +176,14 @@
         lasthistory = +new Date();
     }
     
-    function send(wd, used, memo) {
+    function send(wd, used, mem) {
         var isSock = mode.slice(1) === 'SS',
             input = isSock ? _talk : talk;
     
         if (turn.is(':visible') || isSock) {
             input.val(wd).trigger(enter);
             if (used) db = db.replace(used, '');
-            if (memo) pf = f;
+            if (mem) pf = f;
         }
     }
     
@@ -200,18 +193,20 @@
     
     $('#autoBtn').click(function() {
         if (automode = !automode) setObserver();
-        this.style.backgroundColor = (automode = !automode) ? 'rgba(255, 0, 0, 0.3)' : '';
+        this.style.backgroundColor = automode ? 'rgba(255, 0, 0, 0.3)' : '';
     });
     $('#fireBtn').on({
         touchstart: function() {
-            if (turn.is(':visible') || /SS$/.test(mode))
-                PLAY[mode]();
+            if (turn.is(':visible') || /SS$/.test(mode)) PLAY[mode]();
             
             this.style.backgroundColor = 'rgba(255, 0, 0, 0.3)';
         },
         touchend: function() {
             this.style.backgroundColor = '';
         }
+    });
+    $('#DictionaryBtn').off().click(function() {
+            GUI.toggle();
     });
 
     ajax('Ko.txt').then(function(res) {
