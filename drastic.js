@@ -26,6 +26,7 @@
         lasthistory = 0,
         automode = false,
         stack = [];
+    var mutate = 'DOMSubtreeModified';
     var enter = $.Event('keydown', {
         keyCode: 13
     });
@@ -149,26 +150,15 @@
     };
     
     function setObserver() {
-        time.one('DOMSubtreeModified', execute);
+        time.one(mutate, execute);
     }
     
     function execute() {
         if (turn.is(':visible')) PLAY[mode]();
         if (automode) setObserver();
     }
-
-    function send(wd, used, memo) {
-        var isSock = mode.slice(1) === 'SS',
-            input = isSock ? _talk : talk;
-            
-        if (turn.is(':visible') || isSock) {
-            input.val(wd).trigger(enter);
-            if (used) db = db.replace(used, '');
-            if (memo) pf = f;
-        }
-    }
      
-    function onNewRound(e) {
+    function onNewRound() {
         if (new Date().getTime() - lastupdate < 5000) return false;
 
         opts = $('h5.room-head-mode').html().split(' / ');
@@ -177,10 +167,9 @@
         mode = GAMEMODE[opts.shift()] || 'NOP';
         db = mode[0] === 'E' ? en : ko;
         lastupdate = +new Date();
-        $(e.target).one(e.type, onNewRound);
     }
     
-    function onNewRecord(e) {
+    function onNewRecord() {
         var stuff, trash;
         
         if (+new Date() - lasthistory < 300) return false;
@@ -192,19 +181,26 @@
         stack.push(trash);
         db = db.replace('[' + trash + ']', '');
         lasthistory = +new Date();
-        $(e.target).one(e.type, onNewRecord);
+    }
+    
+    function send(wd, used, memo) {
+        var isSock = mode.slice(1) === 'SS',
+            input = isSock ? _talk : talk;
+    
+        if (turn.is(':visible') || isSock) {
+            input.val(wd).trigger(enter);
+            if (used) db = db.replace(used, '');
+            if (memo) pf = f;
+        }
     }
     
     function ajax(url) {
         return $.ajax('https://raw.githubusercontent.com/Rosantex/my/master/' + url);
     }
     
-    record.one('DOMSubtreeModified', onNewRecord);
-    
-    round.one('DOMSubtreeModified', onNewRound);
-    
     $('#autoBtn').click(function() {
-        this.style.backgroundColor = (automode = !automode) ? (setObserver(), 'rgba(255, 0, 0, 0.3)') : '';
+        if (automode = !automode) setObserver();
+        this.style.backgroundColor = (automode = !automode) ? 'rgba(255, 0, 0, 0.3)' : '';
     });
     $('#fireBtn').on({
         touchstart: function() {
@@ -224,5 +220,7 @@
     ajax('En').then(function(res) {
         en = res;
     });
+    record.on(mutate, onNewRecord);
+    round.on(mutate, onNewRound);
 
 })();
