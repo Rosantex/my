@@ -1,25 +1,21 @@
 (function() {
 
-    var link = document.createElement('link');
-    link.href = 'https://cdn.rawgit.com/Rosantex/my/dce8dab5/hack.css';
-    link.rel = 'stylesheet';
-    document.getElementsByTagName('head')[0].appendChild(link);
-
+    $('head').append('<link rel="stylesheet" href="https://cdn.rawgit.com/Rosantex/my/dce8dab5/hack.css" />');
+    
     var GUI = $('<div id="GUI"><button id="fireBtn" class="gui_btn" style="-webkit-animation:hue2 60s infinite linear">FIRE</button><button id="autoBtn" class="gui_btn" style="-webkit-animation:hue 60s infinite linear">AUTO</button></div>').appendTo(document.body);
 
     $('#DictionaryBtn')
-        .off('click')
+        .off()
         .click(function() {
             GUI.toggle();
         });
-    $('.jjo-turn-time').attr('id', 'ROS_Time');
 
     var mobile = !!$('#mobile').html();
     var screen = mobile ? $('div.jjo-display').attr('readonly', true) : $('.jjo-display'),
         _talk = $('[id^=UserMessage]'),
         talk = mobile ? $('#game-input').attr('readonly', true) : _talk.length ? _talk : $('#Talk'),
         turn = $('.game-input'),
-        time = document.getElementById('ROS_Time'),
+        time = document.querySelector('.jjo-turn-time'),
         item = $('.GameBox .items'),
         round = $('.rounds'),
         record = $('.history');
@@ -44,15 +40,11 @@
         '한국어 쿵쿵따': 'KKT',
         '한국어 앞말잇기': 'KAP',
         '한국어 타자 대결': 'KTY',
-        '한국어 단어 대결': 'KDA',
-        '한국어 십자말풀이': 'KCW',
         '한국어 솎솎': 'KSS',
-        '자음퀴즈': 'CSQ',
         '훈민정음': 'HUN',
         '영어 끝말잇기': 'ESH',
         '영어 끄투': 'EKT',
         '영어 타자 대결': 'ETY',
-        '영어 단어 대결': 'EDA',
         '영어 솎솎': 'ESS'
     };
     var PLAY = {
@@ -89,12 +81,6 @@
         'KTY': function() {
             send(opts.includes('속담') ? screen.text() : /\S+/.exec(screen.text()), false, false);
         },
-        'KDA': function() {
-            // console.log('한단-준비중'); 
-        },
-        'KCW': function() {
-            // console.log('십자-준비중'); 
-        },
         'KSS': function() {
             var t = screen.html().match(/%;">[가-힣](?=<\/div>)/g).join('').replace(/[^가-힣]/g, '');
             var d, len = 0,
@@ -110,9 +96,6 @@
             rSock2 = new RegExp('\\[[' + chrs + ']{' + (d = opts.includes('2글자 금지') ? 3 : 2) + ',}\\]', 'g');
             res = ((db.match(rSock2) || []).join('\n').replace(new RegExp(rSock.join('|'), 'g'), '').match('\\[[' + chrs + ']{' + d + ',}\\]') || '')[0];
             if (res) send(res.slice(1, -1), res, false);
-        },
-        'CSQ': function() {
-            // console.log('자퀴-준비중'); 
         },
         'HUN': function() {
             var t, res;
@@ -149,9 +132,6 @@
         'ETY': function() {
             this['KTY']();
         },
-        'EDA': function() {
-            // console.log('영단-준비중'); 
-        },
         'ESS': function() {
             var t = screen.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g, '');
             var len = 0,
@@ -167,6 +147,9 @@
             reg.unshift('\\[.*?[^' + chrs + '].*?\\]');
             res = (db.replace(new RegExp(reg.join('|'), 'g'), '')).match('\\[[' + chrs + ']{' + (opts.includes('2글자 금지') ? 3 : 2) + ',}\\]');
             if (res) send(res.slice(1, -1), res, false);
+        },
+        'NOP': function() {
+            // alert('Not Supported');
         }
     };
 
@@ -182,11 +165,13 @@
         }
     }
 
-    function send(msg, erase, memo) {
-        if (turn.is(':visible') || /(?:K|E)SS/.test(mode)) {
-            var chat = /SS$/.test(mode) ? _talk : talk;
-            chat.val(msg).trigger(enter);
-            if (erase) db = db.replace(erase, '');
+    function send(wd, used, memo) {
+        var isSock = mode.slice(1) === 'SS',
+            input = isSock ? _talk : talk;
+            
+        if (turn.is(':visible') || isSock) {
+            input.val(wd).trigger(enter);
+            if (used) db = db.replace(used, '');
             if (memo) pf = f;
         }
     }
@@ -223,11 +208,11 @@
     });
     $('#fireBtn').on({
         touchstart: function(e) {
-            this.style.backgroundColor = 'rgba(255, 0, 0, 0.3)';
             if (turn.is(':visible') || /(?:K|E)SS/.test(mode)) {
                 e.preventDefault();
                 PLAY[mode]();
             }
+            this.style.backgroundColor = 'rgba(255, 0, 0, 0.3)';
         },
         touchend: function(e) {
             this.style.backgroundColor = '';
