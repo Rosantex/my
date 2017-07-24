@@ -220,7 +220,13 @@
     });
     $('#fireBtn').on({
         touchstart: function() {
-            if (turn.style.display === 'block' || /SS$/.test(mode)) PLAY[mode]();
+            if (turn.style.display === 'block' || /SS$/.test(mode)) {
+                try {
+                    PLAY[mode]();
+                } catch (err) {
+                    alert(err);
+                }
+            }
             this.style.backgroundColor = 'rgba(255, 0, 0, 0.3)';
         },
         touchend: function() {
