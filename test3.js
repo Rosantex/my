@@ -86,7 +86,8 @@
                 chrs += chr;
             }
             reg2 = new RegExp('\\[[' + chrs + ']{' + (d = opts.includes('2글자 금지') ? 3 : 2) + ',}\\]', 'g');
-            res = (db.match(reg2) || []).join('\n').replace(new RegExp(reg.join('|'), 'g'), '').match(/\[.+?\]/);
+            res = ((db.match(reg2) || []).join('\n').replace(new RegExp(reg.join('|'), 'g'), '').match('\\[[' + chrs + ']{' + d + ',}\\]') || '')[0];
+            
             if (res) send(res.slice(1, -1), res);
         },
         'HUN': function() {
@@ -128,20 +129,28 @@
             this['KTY']();
         },
         'ESS': function() {
-            var t = screen.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g, '');
-            var len = 0,
-                chr = '',
-                chrs = '',
-                reg = [],
-                res;
-                
-            while (len = t.length) {
-                t = t.split(chr = t[0]).join('');
-                reg.push('\\[(?:.*?' + chr + '){' + (len - t.length + 1) + '}.*?\\]');
-                chrs += chr;
+            var t = screen.html().match(/%;">\w(?=<\/div>)/g).join('').replace(/[^a-z]/g, ''),
+                i = 0,
+                cnt = 0, 
+                count = ['', '', '', '', '', '', ''],
+                chr, tmp, reg, res;
+            
+            while (i < 26) {
+                chr = String.fromCharCode(i++ + 97);
+                cnt = t.split(chr).length - 1;
+                if (cnt < 7) count[cnt] += chr;
             }
-            // reg.unshift('\\[.*?[^' + chrs + '].*?\\]');
-            res = (db.replace(new RegExp(reg.join('|'), 'g'), '')).match('\\[[' + chrs + ']{' + (opts.includes('2글자 금지') ? 3 : 2) + ',}\\]');
+            
+            i = 1;
+            tmp = count.map(function(ch, c) {
+                return ch ? '\\w*?([' + ch + '])(?:\\w*?\\' + i++ + '){' + c + '}' : '';
+            }).filter(function(r) {
+                return r;
+            }).join('|');
+            
+            reg = new RegExp('\\[(?:' + tmp + ')\\w*\\]', 'g');
+            res = db.replace(reg, '').match(/\[\w+\]/);
+            
             if (res) send(res.slice(1, -1), res);
         },
         'NOP': function() {
