@@ -1,21 +1,10 @@
 (function() {
 
-$('head').append('<style>#ReplayDiag{-webkit-user-select:none;}#ReplayDiag.dialog{width:278px;height:245px;}#ReplayDiag.dialog.dialog-front{background-color:#F5FFFA;}#ReplayDiag .dialog-body{position:relative;}#Setkey{position:absolute;top:0;left:0;width:120px;font-size:12px;font-weight:bold;background-color:#F5FFFA;}#SetHotkey{position:absolute;top:0;left:140px;width:40px;background-color:#87CEED;font-size:12px;font-weight:bold;color:#000;}#Autoplay{position:absolute;left:190px;background-color:#32CD32;font-weight:bold;}#BgImg{position:absolute;top:35px;left:5px;width:265px;height:166px;padding:0;pointer-events:none;}</style>');
+$('<link rel="stylesheet" href="https://github.com/Rosantex/my/blob/master/style.css">').appendTo('head');
 $('#ReplayDiag .dialog-body').html('<img id="BgImg" src="https://s-media-cache-ak0.pinimg.com/originals/c5/cb/45/c5cb45eccf4d1cbd58d63ea274ceb825.jpg" /><input id="Setkey" placeholder="keydown here" /><button id="SetHotkey">OK</button><button id="Autoplay">AUTO</button>');
-$('#ReplayDiag .dialog-title')
-    .html('AlphaKKU Ver 2.0')
-    .css({ 
-        color: '#FFF',
-     	fontSize: 12, 
-	    fontWeight: 'bold', 
-	    width: 255, 
- 	    backgroundColor: '#191970'
-    });
-$('#DictionaryBtn, #ReplayBtn')
-    .off('click')  
-    .click(function() { 
-	    $('#ReplayDiag').toggle(); 
-    });
+$('#DictionaryBtn, #ReplayBtn').off().click(function() {
+    $('#ReplayDiag').toggle(); 
+});
 $('.jjo-turn-time').attr('id', 'ROS_Time');
 
 var mobile = !!$('#mobile').html();
