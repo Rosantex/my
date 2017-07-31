@@ -1,0 +1,51 @@
+#ReplayDiag.dialog {
+    height: 245px;
+    width: 278px;
+}
+
+#ReplayDiag {
+    background-color: MintCream;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#ReplayDiag .dialog-body { position: relative }
+
+#ReplayDiag .dialog-title {
+    color: #FFF;
+    width: 255px;
+    background-color: MidnightBlue;
+}
+
+#Setkey {
+    width: 120px; 
+    top: 0;
+    left: 0; 
+    position: absolute;
+    background-color: MintCream;
+}
+
+#SetHotkey {
+    position: absolute;
+	top: 0;
+	left: 140px;
+	width: 40px;
+    background-color: SkyBlue;
+	color: #000;
+}
+
+#Autoplay {
+    position: absolute;
+    left: 190px;
+    background: LimeGreen;
+}
+
+#BgImg {
+    position: absolute;
+	top: 35px;
+	left: 5px;
+    width:265px;
+    height: 166px;
+    padding: 0;
+    pointer-events: none;
+}
